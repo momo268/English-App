@@ -1,6 +1,6 @@
 # English App
 
-一个基于 pnpm monorepo 的前后端项目，包含 Web 前端与服务端。
+一个基于 pnpm monorepo nest的前后端项目，包含 Web 前端与服务端。
 
 ## 目录结构
 

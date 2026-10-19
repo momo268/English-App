@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UploadedFile, UseInterceptors, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import type { UserLogin, UserRegister, Token, UserUpdate } from '@en/common/user';
+import { FileInterceptor } from '@nestjs/platform-express'
+import { AuthGuard } from '@libs/shared/auth/auth.guard';
+import type { Request } from 'express';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+
+  //登录
+  @Post('login')
+  login(@Body() createUserDto: UserLogin) {
+    return this.userService.login(createUserDto);
+  }
+  //注册
+  @Post('register')
+  register(@Body() createUserDto: UserRegister) {
+    return this.userService.register(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  // 刷新token 只需要一个参数 refreshToken
+  @Post('refresh-token')
+  refreshToken(@Body() refreshTokenDto: Omit<Token, 'accessToken'>) {
+    return this.userService.refreshToken(refreshTokenDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  // 上传头像
+  @Post('upload-avatar')
+  @UseInterceptors(FileInterceptor('file')) // 限制前端的key必须为file
+  uploadAvatar(@UploadedFile() file: Express.Multer.File) {
+    return this.userService.uploadAvatar(file);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  //更新用户信息
+  @UseGuards(AuthGuard)//不传tolen401 传了之后payload userId name email
+  @Post('update-user')
+  updateUser(@Body() createUserDto: UserUpdate, @Req() req: Request) {
+    const user = req.user;
+    return this.userService.updateUser(createUserDto, user);
   }
 }

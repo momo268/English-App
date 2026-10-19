@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { WorkBookService } from './work-book.service';
-import { CreateWorkBookDto } from './dto/create-work-book.dto';
-import { UpdateWorkBookDto } from './dto/update-work-book.dto';
 import type { WordQuery } from "@en/common/word";
+import { AuthGuard } from "@libs/shared/auth/auth.guard";
 
 @Controller('work-book')
 export class WorkBookController {
   constructor(private readonly workBookService: WorkBookService) { }
 
 
+  // @UseGuards(AuthGuard)
   @Get()
   findAll(@Query() query: WordQuery) {
     return this.workBookService.findAll(query);

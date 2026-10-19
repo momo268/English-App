@@ -10,12 +10,12 @@ export class ResponseService {
             data: data ?? null,
         }
     }
-    error(data = null, message: string, code: number) {
+    error(message: string, data?: any, code?: number) {
         return {
             code: code || 0,
             message: message || "请求失败",
             success: false,
-            data,
+            data: data || null,
         }
     }
 }

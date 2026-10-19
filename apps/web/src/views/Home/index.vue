@@ -1,6 +1,6 @@
 <template>
   <div class="w-[1200px] mx-auto mt-10 pb-30">
-    <!-- 🎯 背景区域 -->
+    <!-- 背景区域 -->
     <div class="relative flex justify-between rounded-[20px] p-9">
       <div
         class="absolute inset-0 bg-linear-to-r from-gray-900 via-gray-900 to-gray-900/70 rounded-[20px]"
@@ -18,6 +18,7 @@
         </div>
         <div class="flex items-center gap-2 pt-10">
           <button
+            @click="showLogin"
             class="bg-indigo-700 text-white rounded-[100px] px-4 py-2 cursor-pointer text-sm block w-30 h-10"
           >
             立即学习
@@ -29,10 +30,11 @@
           </button>
         </div>
       </div>
-      <div class="relative z-8 p-8"><Hologram /></div>
+      <div class="relative z-8 p-8">
+        <Hologram />
+      </div>
     </div>
-
-    <!-- 📖 描述区域 -->
+    <!-- 描述区域 -->
     <div class="rounded-[20px] p-10 text-center">
       <div class="text-2xl text-why font-bold text-gray-800">
         为什么选择我们?
@@ -41,8 +43,7 @@
         我们经过科学的验证，AI学习英语的效果比传统学习方式更好，更高效。
       </div>
     </div>
-
-    <!-- 📊 数据统计区域 -->
+    <!-- 数据统计区域 -->
     <div class="mt-16 py-12 flex items-center justify-between">
       <template v-for="(item, index) in stats" :key="item.label">
         <div class="flex-1 text-center">
@@ -59,8 +60,6 @@
         <div v-if="index < stats.length - 1" class="w-px h-16 bg-gray-200" />
       </template>
     </div>
-
-    <!-- ✨ 核心优势区域 -->
     <div class="relative text-center py-8 mb-6">
       <!-- 装饰性光晕背景 -->
       <div
@@ -84,8 +83,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 🃏 特性卡片区域 -->
     <div
       class="grid cards-container grid-cols-3 gap-6"
       style="perspective: 1000px"
@@ -130,7 +127,8 @@ import Hologram from "./components/Hologram.vue";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { onMounted, reactive } from "vue";
-
+import { useLogin } from "@/hooks/useLogin";
+const { login } = useLogin();
 gsap.registerPlugin(ScrollTrigger);
 const stats = reactive([
   { value: 0, suffix: "+", label: "累计学员", target: 1000000 },
@@ -138,7 +136,6 @@ const stats = reactive([
   { value: 0, suffix: "%", label: "学员满意度", target: 98 },
   { value: 0, suffix: "+", label: "学习时长(小时)", target: 5000000 },
 ]);
-
 const abouts = [
   {
     icon: "🖼️",
@@ -163,13 +160,12 @@ const initProject = () => {
   stats.forEach((item) => {
     gsap.to(item, {
       value: item.target, //目标值
-      duration: 1.5, //持续时间
+      duration: 2, //持续时间
       ease: "power2.inOut", //过度动画
     });
   });
-  // 卡片过度
+  //卡片过度
   const cards = gsap.utils.toArray(".about-card") as HTMLElement[];
-  console.log(cards);
   cards.forEach((card, index) => {
     gsap.fromTo(
       card,
@@ -263,6 +259,11 @@ const initProject = () => {
   );
 };
 
+const showLogin = () => {
+  login().then(() => {
+    console.log("登录成功之后跳转页面");
+  });
+};
 onMounted(() => {
   initProject();
 });

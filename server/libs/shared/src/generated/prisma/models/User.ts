@@ -49,6 +49,9 @@ export type UserMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   lastLoginAt: Date | null
+  bio: string | null
+  isTimingTask: boolean | null
+  timingTaskTime: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -64,6 +67,9 @@ export type UserMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   lastLoginAt: Date | null
+  bio: string | null
+  isTimingTask: boolean | null
+  timingTaskTime: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -79,6 +85,9 @@ export type UserCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   lastLoginAt: number
+  bio: number
+  isTimingTask: number
+  timingTaskTime: number
   _all: number
 }
 
@@ -106,6 +115,9 @@ export type UserMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   lastLoginAt?: true
+  bio?: true
+  isTimingTask?: true
+  timingTaskTime?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -121,6 +133,9 @@ export type UserMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   lastLoginAt?: true
+  bio?: true
+  isTimingTask?: true
+  timingTaskTime?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -136,6 +151,9 @@ export type UserCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   lastLoginAt?: true
+  bio?: true
+  isTimingTask?: true
+  timingTaskTime?: true
   _all?: true
 }
 
@@ -238,6 +256,9 @@ export type UserGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   lastLoginAt: Date | null
+  bio: string | null
+  isTimingTask: boolean
+  timingTaskTime: string
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -276,6 +297,9 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
+  isTimingTask?: Prisma.BoolFilter<"User"> | boolean
+  timingTaskTime?: Prisma.StringFilter<"User"> | string
   wordBookRecords?: Prisma.WordBookRecordListRelationFilter
   paymentRecords?: Prisma.PaymentRecordListRelationFilter
   courseRecords?: Prisma.CourseRecordListRelationFilter
@@ -294,6 +318,9 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  isTimingTask?: Prisma.SortOrder
+  timingTaskTime?: Prisma.SortOrder
   wordBookRecords?: Prisma.WordBookRecordOrderByRelationAggregateInput
   paymentRecords?: Prisma.PaymentRecordOrderByRelationAggregateInput
   courseRecords?: Prisma.CourseRecordOrderByRelationAggregateInput
@@ -315,6 +342,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
+  isTimingTask?: Prisma.BoolFilter<"User"> | boolean
+  timingTaskTime?: Prisma.StringFilter<"User"> | string
   wordBookRecords?: Prisma.WordBookRecordListRelationFilter
   paymentRecords?: Prisma.PaymentRecordListRelationFilter
   courseRecords?: Prisma.CourseRecordListRelationFilter
@@ -333,6 +363,9 @@ export type UserOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  isTimingTask?: Prisma.SortOrder
+  timingTaskTime?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -356,6 +389,9 @@ export type UserScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  isTimingTask?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  timingTaskTime?: Prisma.StringWithAggregatesFilter<"User"> | string
 }
 
 export type UserCreateInput = {
@@ -371,6 +407,9 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
@@ -389,6 +428,9 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
@@ -407,6 +449,9 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
@@ -425,6 +470,9 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -443,6 +491,9 @@ export type UserCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
 }
 
 export type UserUpdateManyMutationInput = {
@@ -458,6 +509,9 @@ export type UserUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -473,6 +527,9 @@ export type UserUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -488,6 +545,9 @@ export type UserCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
+  isTimingTask?: Prisma.SortOrder
+  timingTaskTime?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -508,6 +568,9 @@ export type UserMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
+  isTimingTask?: Prisma.SortOrder
+  timingTaskTime?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -523,6 +586,9 @@ export type UserMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
+  bio?: Prisma.SortOrder
+  isTimingTask?: Prisma.SortOrder
+  timingTaskTime?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -557,6 +623,10 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type UserCreateNestedOneWithoutWordBookRecordsInput = {
@@ -614,6 +684,9 @@ export type UserCreateWithoutWordBookRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
 }
@@ -631,6 +704,9 @@ export type UserUncheckedCreateWithoutWordBookRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
 }
@@ -664,6 +740,9 @@ export type UserUpdateWithoutWordBookRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
 }
@@ -681,6 +760,9 @@ export type UserUncheckedUpdateWithoutWordBookRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -698,6 +780,9 @@ export type UserCreateWithoutPaymentRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
 }
@@ -715,6 +800,9 @@ export type UserUncheckedCreateWithoutPaymentRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
 }
@@ -748,6 +836,9 @@ export type UserUpdateWithoutPaymentRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
 }
@@ -765,6 +856,9 @@ export type UserUncheckedUpdateWithoutPaymentRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -782,6 +876,9 @@ export type UserCreateWithoutCourseRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
 }
@@ -799,6 +896,9 @@ export type UserUncheckedCreateWithoutCourseRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
   wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
 }
@@ -832,6 +932,9 @@ export type UserUpdateWithoutCourseRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
 }
@@ -849,6 +952,9 @@ export type UserUncheckedUpdateWithoutCourseRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
   wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -915,6 +1021,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   lastLoginAt?: boolean
+  bio?: boolean
+  isTimingTask?: boolean
+  timingTaskTime?: boolean
   wordBookRecords?: boolean | Prisma.User$wordBookRecordsArgs<ExtArgs>
   paymentRecords?: boolean | Prisma.User$paymentRecordsArgs<ExtArgs>
   courseRecords?: boolean | Prisma.User$courseRecordsArgs<ExtArgs>
@@ -934,6 +1043,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   lastLoginAt?: boolean
+  bio?: boolean
+  isTimingTask?: boolean
+  timingTaskTime?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -949,6 +1061,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   lastLoginAt?: boolean
+  bio?: boolean
+  isTimingTask?: boolean
+  timingTaskTime?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -964,9 +1079,12 @@ export type UserSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   lastLoginAt?: boolean
+  bio?: boolean
+  isTimingTask?: boolean
+  timingTaskTime?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "address" | "password" | "avatar" | "wordNumber" | "dayNumber" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "address" | "password" | "avatar" | "wordNumber" | "dayNumber" | "createdAt" | "updatedAt" | "lastLoginAt" | "bio" | "isTimingTask" | "timingTaskTime", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wordBookRecords?: boolean | Prisma.User$wordBookRecordsArgs<ExtArgs>
   paymentRecords?: boolean | Prisma.User$paymentRecordsArgs<ExtArgs>
@@ -996,6 +1114,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     updatedAt: Date
     lastLoginAt: Date | null
+    bio: string | null
+    isTimingTask: boolean
+    timingTaskTime: string
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1434,6 +1555,9 @@ export interface UserFieldRefs {
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly bio: Prisma.FieldRef<"User", 'String'>
+  readonly isTimingTask: Prisma.FieldRef<"User", 'Boolean'>
+  readonly timingTaskTime: Prisma.FieldRef<"User", 'String'>
 }
     
 

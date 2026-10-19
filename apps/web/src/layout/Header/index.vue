@@ -41,17 +41,19 @@
           userStore.getUser?.dayNumber ?? 0
         }}</span>
       </div>
-      <div
-        class="flex items-center gap-2 border-l cursor-pointer border-gray-200 pl-4"
-      >
-        <img
-          class="w-10 h-10 rounded-full ml-2 mr-2"
-          src="https://gips3.baidu.com/it/u=3493347002,3356558679&fm=3074&app=3074&f=PNG?w=2048&h=2048"
-        />
-        <span class="text-sm font-bold">{{
-          userStore.getUser?.name ?? "未登录"
-        }}</span>
-      </div>
+      <el-popover :width="340">
+        <template #reference>
+          <div
+            class="flex items-center gap-2 border-l cursor-pointer border-gray-200 pl-4"
+          >
+            <img class="w-10 h-10 rounded-full ml-2 mr-2" :src="avatar" />
+            <span class="text-sm font-bold">{{
+              userStore.getUser?.name ?? "游客"
+            }}</span>
+          </div>
+        </template>
+        <Profile />
+      </el-popover>
     </div>
   </header>
 </template>
@@ -69,6 +71,10 @@ import {
 import { useRouter } from "vue-router";
 import { watch, ref } from "vue";
 import { useUserStore } from "@/stores/user";
+import Profile from "../Profile/index.vue";
+import { useAvatar } from "@/hooks/useAvatar";
+
+const { avatar } = useAvatar();
 const userStore = useUserStore();
 const router = useRouter();
 const currentPath = ref("");

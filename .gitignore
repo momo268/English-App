@@ -1,0 +1,83 @@
+# ===== 依赖 / 构建产物 =====
+node_modules/
+dist/
+dist-ssr/
+build/
+/dist
+/node_modules
+/generated/prisma
+
+# 子项目构建产物
+apps/web/dist
+packages/*/dist
+
+# ===== 日志 =====
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ===== 系统 / 临时文件 =====
+.DS_Store
+.temp
+.tmp
+
+# ===== 测试 / 覆盖率 =====
+/coverage
+coverage
+/.nyc_output
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+# Vitest
+__screenshots__/
+
+# ===== IDE / 编辑器 =====
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ===== 环境变量 =====
+.env
+.env.*
+!.env.example
+
+# ===== 运行时数据 =====
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ===== 诊断报告 =====
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ===== 缓存 =====
+.cache
+.turbo
+.vite
+.eslintcache
+*.tsbuildinfo
+
+# ===== Vite =====
+*.timestamp-*-*.mjs
+
+# ===== 其他编辑器杂项 =====
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,99 +1,55 @@
-### 实战项目正式开始
+# English App
 
-正式学习之前一定要学完前置知识2-11集，否则会一脸懵逼。
+一个基于 pnpm monorepo 的前后端项目，包含 Web 前端与服务端。
 
-### 什么是monorepo?
+## 目录结构
 
-传统模式是一个项目对应一个仓库，而monorepo是一个仓库对应多个项目。
-
-- pnpm workspaces：轻量高效，基于硬链接节省磁盘空间；
-- yarn workspaces：与 yarn 包管理器集成，支持多包管理；
-- lerna：专注于多包发布、版本管理，常与 yarn/pnpm 配合使用；
-- turbo：专注于构建优化，通过缓存和并行构建提高构建速度；
-
-有什么优势吗？
-
-1. 根项目可以使用共享依赖：例如A B C三个项目都需要使用dayjs只需要在根目录安装一次即可，传统的做法就是每个项目都要安装一次。
-2. 子项目间的依赖可以直接引用本地包，实时更新，不需要重复安装依赖。
-3. TypeScript管理，前后端共用一份TypeScript类型，后端增加字段，前端同步更新，完美避开了丢失字段的问题。
-
-
-
-### 初始化项目
-
-```bash
-npm i pnpm -g
-```
-对其版本号
-
-pnpm 10.26.1
-node v24.11.1
-nest 11.0.14
-
-1. 新建apps目录，用于存放前端项目
-2. 新建server目录，用于存放后端项目
-3. 新建packages目录，用于存放公共包
-4. 新建子目录packages/common，用于存放公共类型
-5. 新建子目录packages/config，用于存放公共配置
-6. 创建pnpm-workspace.yaml管理monorepo项目
-
-```yaml
-packages:
-  - 'apps/*'
-  - 'server'
-  - 'packages/*'
+```text
+English-App/
+├── apps/
+│   └── web/              # 前端应用（Vue + Vite）
+├── packages/
+│   ├── common/           # 公共代码
+│   └── config/           # 共享配置
+├── server/               # 服务端
+├── package.json
+├── pnpm-lock.yaml
+└── pnpm-workspace.yaml
 ```
 
-定义package.json name字段 使用@开头
+## 环境要求
 
-apps执行,初始化vue项目
+- Node.js >= 24
+- pnpm >= 8
 
-```bash
-npm init vue
-```
+建议：
 
-server执行,初始化nest项目
-```json
-{
-  "webpack":true, //移除这一行代码
-  "generateOptions": {
-    "spec": false
-  }
-}
-```
-```bash
-nest new server
-cd server
-npx prisma init
-nest g app ai
-nest g lib shared
-nest g res chat --project ai
-nest g res user --project server
-nest g mo prisma --project shared
-nest g s  prisma --project shared
-```
+- Node.js： v24.11.1
+- pnpm：10.26.1
+- nest：11.0.14
 
-### 第二阶段配置启动命令
+## 项目启动
 
-concurrently可以同时启动多个命令
+1. 安装依赖：
 
-```bash
-pnpm install concurrently -w
-```
+   ```bash
+   pnpm install
+   ```
 
-pnpm --filter就是指定包名启动命令
+2. 配置环境变量（重要）：
 
-```bash
-pnpm --filter @en/server start:dev
-pnpm --filter @en/ai start:dev
-pnpm --filter @en/web start:dev
-```
+   ```bash
+   cd server/.env.example server/.env
+   ```
 
-安装本地模块
+   然后打开 server/.env，把里面的配置项改为你自己的真实值（数据库地址、端口、密钥等）。
 
-```bash
-pnpm --filter @en/web add @en/config@workspace:*
-pnpm --filter @en/server add @en/config@workspace:*
-```
+   <p style="color: red; font-weight: bold;"> ⚠️ 注意：请将 server 文件夹下的 .env.example 重命名为 .env，并把里面的配置改为你自己的。真实的 .env 文件不要提交到 Git 仓库。 </p>
 
-### 第三阶段配置数据库
+3. 启动服务：
+
+   ```bash
+   pnpm run all
+   ```
+
+   该命令会同时启动**前端和后端**所有服务。各服务使用的端口统一在 `packages/config/index.ts` 中定义，如需修改端口或新增服务，请在该文件中调整。

@@ -9,7 +9,7 @@
       </div>
 
       <div class="flex gap-2">
-        <el-button>重置</el-button>
+        <el-button @click="init">重置</el-button>
         <el-button @click="onSave" type="primary">保存</el-button>
       </div>
     </div>
@@ -233,7 +233,14 @@ const onAvatarSelect = async (file: UploadFile) => {
   }
 };
 
+const init = () => {
+  //如果用户登录了，则获取用户信息
+  if (userStore.getUser) {
+    form.value = { ...userStore.getUpdateUserInfo! };
+    preViewUrl.value = userStore.getUpdateUserInfo?.avatar!;
+  }
+};
 onMounted(() => {
-  form.value = userStore.getUpdateUserInfo ?? form.value;
+  init();
 });
 </script>

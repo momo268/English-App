@@ -22,6 +22,9 @@
   "dependencies": {
     "@en/common": "workspace:*",
     "@en/config": "workspace:*",
+    "@langchain/core": "^1.2.18",
+    "@langchain/deepseek": "^1.1.17",
+    "@langchain/langgraph-checkpoint-postgres": "^1.1.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^12.0.1",
     "@nestjs/core": "^11.0.1",
@@ -32,6 +35,7 @@
     "@prisma/client": "^7.2.0",
     "@types/multer": "^2.3.0",
     "dotenv": "^18.0.8",
+    "langchain": "^1.5.18",
     "minio": "^8.0.7",
     "prisma": "^7.2.0",
     "reflect-metadata": "^0.2.2",

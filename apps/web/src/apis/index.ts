@@ -5,6 +5,8 @@ import { refreshTokenApi } from './auth' //刷新token接口
 import { ElMessage } from 'element-plus'
 
 export const timeout = 50000
+export const uploadUrl = import.meta.env.DEV ? 'http://127.0.0.1:9000' : 'http://线上地址待定'
+export const socketUrl = import.meta.env.DEV ? 'http://127.0.0.1:3000' : 'http://线上地址待定'
 //server服务器接口
 export const serverApi = axios.create({
     baseURL: '/api/v1',

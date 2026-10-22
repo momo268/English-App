@@ -1,5 +1,5 @@
 import { Body, Injectable, Post } from '@nestjs/common';
-import { PrismaService, ResponseService } from '@libs/shared';
+import { PrismaService, ResponseService, digestQueueName, syncUserDigestScheduler } from '@libs/shared';
 import type { UserLogin, UserRegister, Token, RefreshTokenPayload, UserUpdate } from '@en/common/user';
 import type { Prisma } from '@libs/shared/generated/prisma/client';
 import { AuthService } from '../auth/auth.service'
@@ -8,6 +8,8 @@ import { MinioService } from '@libs/shared/minio/minio.service';
 import { ConfigService } from '@nestjs/config';
 import type { Request } from 'express';
 import { userSelect, updateUserSelect } from './user.select';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 
 @Injectable()
@@ -18,7 +20,8 @@ export class UserService {
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
     private readonly minioService: MinioService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    @InjectQueue(digestQueueName.name) private readonly digestQueue: Queue,
   ) { }
 
   // 登录
@@ -169,6 +172,11 @@ export class UserService {
 
   //更新用户信息
   async updateUser(createUserDto: UserUpdate, user: Request['user']) {
+    // 先取旧值，只有定时任务相关字段真的变了才动 Redis 里的调度器，避免每次保存资料都重排任务
+    const before = await this.prisma.user.findUnique({
+      where: { id: user.userId },
+      select: { email: true, isTimingTask: true, timingTaskTime: true },
+    });
     const updatedUser = await this.prisma.user.update({
       where: {
         id: user.userId,
@@ -184,6 +192,19 @@ export class UserService {
       },
       select: updateUserSelect
     });
+    // 用户改了定时开关/时间/邮箱后，立刻同步到 Redis 里的“按用户定时任务”
+    const timingChanged = !before ||
+      before.email !== updatedUser.email ||
+      before.isTimingTask !== updatedUser.isTimingTask ||
+      before.timingTaskTime !== updatedUser.timingTaskTime;
+    if (timingChanged) {
+      try {
+        await syncUserDigestScheduler(this.digestQueue, { id: user.userId, ...updatedUser });
+      } catch (error) {
+        // 同步失败不影响用户资料保存，AI 服务下次启动时会重新同步
+        console.error('同步用户定时任务失败', error);
+      }
+    }
     return this.response.success(updatedUser);
   }
 }

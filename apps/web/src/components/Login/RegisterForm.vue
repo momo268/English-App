@@ -1,7 +1,10 @@
 <template>
   <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-2">欢迎注册</h1>
-    <p class="text-gray-500 text-sm">请填写以下信息以完成注册</p>
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-teal-700">
+      Create Account
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-zinc-950">欢迎注册</h1>
+    <p class="mt-2 text-sm text-zinc-500">请填写以下信息以完成注册</p>
   </div>
   <el-form
     ref="formRef"
@@ -54,7 +57,7 @@
       <el-button
         type="primary"
         size="large"
-        class="w-full h-12 text-base font-semibold bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 border-0"
+        class="btn-ink h-12 w-full text-base font-semibold"
         @click="handleRegister"
       >
         注册
@@ -73,7 +76,7 @@ import type { FormInstance } from "element-plus";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/stores/user";
 import { useLogin } from "@/hooks/useLogin";
-const { hide } = useLogin();
+const { onLoginSuccess } = useLogin();
 const formRef = useTemplateRef<FormInstance>("formRef");
 const userStore = useUserStore();
 const form = ref<UserRegister>({
@@ -111,7 +114,7 @@ const handleRegister = async () => {
   if (res.code === 1) {
     userStore.setUser(res.data);
     ElMessage.success("注册成功");
-    hide();
+    onLoginSuccess();
   } else {
     ElMessage.error(res.message);
   }

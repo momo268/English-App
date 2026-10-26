@@ -1,7 +1,98 @@
 @import "tailwindcss";
 
+/* 让 dark: 走 .dark class，而不是跟随系统 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body,
 #app {
   @apply h-full w-full;
+}
+
+/* 全站主题：米白纸感 + 墨黑 + 深青绿 */
+html:root {
+  --el-color-primary: #0f766e;
+  --el-color-primary-light-3: #4f9b95;
+  --el-color-primary-light-5: #87b7b3;
+  --el-color-primary-light-7: #bfd6d3;
+  --el-color-primary-light-8: #d7e5e3;
+  --el-color-primary-light-9: #ebf2f1;
+  --el-color-primary-dark-2: #0b5f59;
+
+  --el-color-success: #059669;
+  --el-color-warning: #d97706;
+  --el-color-danger: #dc2626;
+  --el-color-info: #71717a;
+
+  --el-text-color-primary: #18181b;
+  --el-text-color-regular: #3f3f46;
+  --el-text-color-secondary: #71717a;
+  --el-text-color-placeholder: #a1a1aa;
+
+  --el-border-color: #e4e4e7;
+  --el-border-color-light: #f4f4f5;
+  --el-border-color-lighter: #fafafa;
+  --el-fill-color-blank: #ffffff;
+  --el-fill-color-light: #f4f4f5;
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f7f6f1;
+
+  --el-border-radius-base: 10px;
+  --el-border-radius-small: 8px;
+}
+
+body {
+  @apply bg-[#f7f6f1] text-zinc-900 antialiased;
+}
+
+::selection {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+/* 页面主操作按钮：墨黑底，避免各页继续出现蓝紫色主按钮 */
+.btn-ink {
+  background-color: #18181b !important;
+  border-color: #18181b !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-radius: 0.75rem;
+}
+.btn-ink:hover,
+.btn-ink:focus {
+  background-color: #27272a !important;
+  border-color: #27272a !important;
+  color: #ffffff !important;
+}
+.btn-ink.is-disabled,
+.btn-ink.is-loading {
+  opacity: 0.55;
+}
+
+.dark body {
+  @apply bg-zinc-950 text-zinc-100;
+}
+
+/* 学习页的通用过渡 */
+.learn-fade-enter-active,
+.learn-fade-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.learn-fade-enter-from,
+.learn-fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* 输错时抖动 */
+@keyframes learn-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.learn-shake {
+  animation: learn-shake 0.3s ease;
 }

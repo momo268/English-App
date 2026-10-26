@@ -1,97 +1,137 @@
 <template>
-  <div
-    class="w-[1200px] mx-auto mt-10 bg-linear-to-br from-blue-50 to-indigo-50 rounded-[20px] p-20 shadow-lg"
-  >
-    <div class="h-20">
-      <div class="flex items-center gap-2">
-        <el-icon color="#2563EB" size="20">
-          <Reading />
-        </el-icon>
-        <span class="text-2xl font-bold text-gray-800">词库列表</span>
-      </div>
-      <div class="text-sm text-gray-600">
-        词典来源：牛津、柯林斯、BNC、FRQ、高考、中考、GRE、TOEFL、IELTS、大学英语六级、大学英语四级、考研
-      </div>
-    </div>
-    <div class="flex items-center mb-10">
-      <el-input
-        @keyup.enter="searchWord"
-        class="mr-10"
-        v-model="query.word"
-        placeholder="请输入单词"
-      ></el-input>
-      <el-checkbox v-model="query.gk">高考</el-checkbox>
-      <el-checkbox v-model="query.zk">中考</el-checkbox>
-      <el-checkbox v-model="query.gre">GRE</el-checkbox>
-      <el-checkbox v-model="query.toefl">TOEFL</el-checkbox>
-      <el-checkbox v-model="query.ielts">IELTS</el-checkbox>
-      <el-checkbox v-model="query.cet6">六级</el-checkbox>
-      <el-checkbox v-model="query.cet4">四级</el-checkbox>
-      <el-checkbox v-model="query.ky">考研</el-checkbox>
-      <el-button @click="searchWord" class="ml-10" type="primary"
-        >搜索</el-button
+  <div class="mx-auto w-[1200px] max-w-full px-4 pb-20 pt-10">
+    <header class="border-b border-zinc-200 pb-8">
+      <p
+        class="text-[11px] font-semibold uppercase tracking-[0.3em] text-teal-700"
       >
-    </div>
-    <div class="grid grid-cols-3 gap-2">
-      <div
-        class="bg-white hover:bg-blue-50 border border-blue-200 text-gray-800 rounded-[10px] p-4 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md h-[220px]"
+        Word Library
+      </p>
+      <div class="mt-3 flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <div class="flex items-center gap-2">
+            <el-icon class="text-teal-700" :size="20">
+              <Reading />
+            </el-icon>
+            <h1 class="text-3xl font-semibold tracking-tight text-zinc-950">
+              词库列表
+            </h1>
+          </div>
+          <p class="mt-3 max-w-3xl text-sm leading-6 text-zinc-500">
+            词典来源：牛津、柯林斯、BNC、FRQ、高考、中考、GRE、TOEFL、IELTS、大学英语六级、大学英语四级、考研
+          </p>
+        </div>
+        <span class="text-xs text-zinc-400">共 {{ total }} 个词条</span>
+      </div>
+    </header>
+
+    <section class="mt-6 rounded-2xl border border-zinc-200/80 bg-white p-4 sm:p-5">
+      <div class="flex flex-wrap items-center gap-3">
+        <el-input
+          @keyup.enter="searchWord"
+          class="w-full sm:w-80"
+          v-model="query.word"
+          placeholder="请输入单词"
+          :prefix-icon="Search"
+        />
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <el-checkbox v-model="query.gk">高考</el-checkbox>
+          <el-checkbox v-model="query.zk">中考</el-checkbox>
+          <el-checkbox v-model="query.gre">GRE</el-checkbox>
+          <el-checkbox v-model="query.toefl">TOEFL</el-checkbox>
+          <el-checkbox v-model="query.ielts">IELTS</el-checkbox>
+          <el-checkbox v-model="query.cet6">六级</el-checkbox>
+          <el-checkbox v-model="query.cet4">四级</el-checkbox>
+          <el-checkbox v-model="query.ky">考研</el-checkbox>
+        </div>
+        <el-button class="btn-ink h-10 px-5" @click="searchWord"
+          >搜索</el-button
+        >
+      </div>
+    </section>
+
+    <div
+      v-loading="loading"
+      class="mt-6 grid min-h-40 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      <article
+        class="group flex min-h-[210px] flex-col rounded-2xl border border-zinc-200/80 bg-white p-5 transition-all duration-200 hover:border-teal-200 hover:shadow-[0_20px_50px_-38px_rgba(15,118,110,0.35)]"
         v-for="item in list"
         :key="item.id"
       >
-        <div class="">
-          <div class="text-sm font-semibold text-blue-600 mb-1">
+        <div class="flex items-start justify-between gap-3">
+          <h2 class="text-lg font-semibold tracking-tight text-zinc-950">
             {{ item.word }}
-          </div>
-          <div class="text-sm text-gray-500 mb-1 flex items-center gap-2">
-            {{ item.phonetic }}
-            <el-icon size="18" color="#2563EB" @click="playAudio(item.word)">
-              <VideoPlay />
-            </el-icon>
-          </div>
-          <div class="text-sm text-gray-700 mb-1 overflow-hidden line-clamp-2">
-            {{ item.definition }}
-          </div>
-          <div
-            v-html="item.translation"
-            class="text-sm text-gray-600 mb-1 overflow-hidden line-clamp-2"
-          ></div>
-          <div
-            class="text-sm text-gray-600 mt-3 flex items-center gap-2 flex-wrap"
+          </h2>
+          <button
+            type="button"
+            aria-label="播放发音"
+            class="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg text-teal-700 transition-colors hover:bg-teal-50"
+            @click="playAudio(item.word)"
           >
-            <el-tag v-if="item.gk" type="primary" size="small">高考</el-tag>
-            <el-tag v-if="item.zk" type="primary" size="small">中考</el-tag>
-            <el-tag v-if="item.gre" type="primary" size="small">GRE</el-tag>
-            <el-tag v-if="item.toefl" type="primary" size="small">TOEFL</el-tag>
-            <el-tag v-if="item.ielts" type="primary" size="small">IELTS</el-tag>
-            <el-tag v-if="item.cet6" type="primary" size="small">六级</el-tag>
-            <el-tag v-if="item.cet4" type="primary" size="small">四级</el-tag>
-            <el-tag v-if="item.ky" type="primary" size="small">考研</el-tag>
-          </div>
+            <el-icon :size="17"><VideoPlay /></el-icon>
+          </button>
         </div>
-      </div>
-      <el-pagination
-        class="mt-10"
-        background
-        v-model:current-page="query.page"
-        v-model:page-size="query.pageSize"
-        :total="total"
-        @current-change="getList"
-        @size-change="getList"
-      />
+        <p class="mt-1 text-xs tracking-wide text-zinc-400">
+          {{ item.phonetic }}
+        </p>
+        <p
+          class="mt-3 line-clamp-2 whitespace-pre-line text-sm leading-6 text-zinc-600"
+        >
+          {{ formatText(item.definition) }}
+        </p>
+        <p
+          class="mt-1 line-clamp-2 whitespace-pre-line text-sm leading-6 text-zinc-500"
+        >
+          {{ formatText(item.translation) }}
+        </p>
+        <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
+          <span
+            v-for="tag in wordTags(item)"
+            :key="tag"
+            class="rounded-md bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-700"
+          >
+            {{ tag }}
+          </span>
+        </div>
+      </article>
     </div>
+
+    <el-empty
+      v-if="!loading && !error && list.length === 0"
+      description="没有找到相关单词"
+    />
+    <p
+      v-if="error"
+      role="status"
+      class="mt-6 text-center text-sm text-zinc-500"
+    >
+      {{ error }}
+    </p>
+    <el-pagination
+      class="mt-10 flex justify-center"
+      background
+      v-model:current-page="query.page"
+      v-model:page-size="query.pageSize"
+      :total="total"
+      @current-change="getList"
+      @size-change="getList"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { getWordBookList } from "@/apis/word-book";
-import type { WordQuery, WordList } from "@en/common/word";
-import { Reading, VideoPlay } from "@element-plus/icons-vue";
+import type { Word, WordQuery, WordList } from "@en/common/word";
+import { Reading, Search, VideoPlay } from "@element-plus/icons-vue";
 import { useAudio } from "@/hooks/useAudio";
 
 const { playAudio } = useAudio({});
 const total = ref<WordList["total"]>(0);
 const list = ref<WordList["list"]>([]);
+const loading = ref(false);
+const error = ref('');
+let requestId = 0;
 const query = ref<WordQuery>({
   page: 1,
   pageSize: 12,
@@ -105,20 +145,53 @@ const query = ref<WordQuery>({
   cet4: false,
   ky: false,
 });
+const formatText = (text?: string) =>
+  text
+    ? text
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/\\r/g, "")
+        .replace(/\\n/g, "\n")
+        .replace(/\r\n?/g, "\n")
+    : "";
+const wordTags = (item: Word) =>
+  [
+    item.gk && "高考",
+    item.zk && "中考",
+    item.gre && "GRE",
+    item.toefl && "TOEFL",
+    item.ielts && "IELTS",
+    item.cet6 && "六级",
+    item.cet4 && "四级",
+    item.ky && "考研",
+  ].filter((tag): tag is string => Boolean(tag));
+
 const searchWord = () => {
   query.value.page = 1; //重置一下页数
   getList(); //重新获取列表
 };
 
 const getList = async () => {
-  const res = await getWordBookList(query.value);
-  if (res.success) {
-    total.value = res.data.total;
-    list.value = res.data.list;
+  const id = ++requestId;
+  loading.value = true;
+  error.value = '';
+  try {
+    const res = await getWordBookList({ ...query.value });
+    if (id !== requestId) return;
+    if (res.success) {
+      total.value = res.data.total;
+      list.value = res.data.list;
+    } else {
+      error.value = res.message || '加载失败，请重新搜索';
+    }
+  } catch {
+    if (id === requestId) error.value = '加载失败，请重新搜索';
+  } finally {
+    if (id === requestId) loading.value = false;
   }
 };
 
 onMounted(() => {
   getList();
 });
+onUnmounted(() => { requestId += 1; });
 </script>

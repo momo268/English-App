@@ -1,19 +1,33 @@
 <template>
-  <div
-    class="p-5 rounded-[5px] w-[256px] bg-purple-50 border border-right-1 border-t-0 border-b-0 border-l-0 border-gray-200"
+  <aside
+    class="w-[240px] shrink-0 rounded-2xl border border-zinc-200/80 bg-white p-3"
   >
     <div
+      class="px-2 pb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400"
+    >
+      对话模式
+    </div>
+    <p
+      v-if="!chatMode.length"
+      class="px-3 py-6 text-xs leading-6 text-zinc-400"
+    >
+      暂无可用对话模式
+    </p>
+    <button
+      type="button"
       @click="changeActive(value)"
-      :class="{ 'bg-purple-300': active === value.id }"
-      class="rounded-[5px] p-2 transition-all duration-300"
+      :class="
+        active === value.id
+          ? 'bg-teal-50 font-medium text-zinc-950'
+          : 'text-zinc-600 hover:bg-[#f7f6f1] hover:text-zinc-950'
+      "
+      class="flex w-full cursor-pointer items-center rounded-xl px-3 py-2.5 text-left text-sm transition-colors"
       v-for="value in chatMode"
       :key="value.id"
     >
-      <div class="text-sm cursor-pointer p-2 px-4 text-gray-700">
-        {{ value.label }}
-      </div>
-    </div>
-  </div>
+      {{ value.label }}
+    </button>
+  </aside>
 </template>
 
 <script setup lang="ts">
@@ -32,8 +46,11 @@ const changeActive = (value: ChatMode) => {
 const getChatModeList = async () => {
   const res = await getChatMode();
   chatMode.value = res.data;
-  active.value = res.data[0].id; //默认选中第一个
-  emits("onGetRole", res.data[0].role); //派发role
+  const first = res.data[0];
+  if (first) {
+    active.value = first.id; //默认选中第一个
+    emits("onGetRole", first.role); //派发role
+  }
 };
 onMounted(() => {
   getChatModeList();

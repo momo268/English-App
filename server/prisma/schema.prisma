@@ -39,6 +39,8 @@ model User {
   wordBookRecords WordBookRecord[]
   paymentRecords  PaymentRecord[]
   courseRecords   CourseRecord[]
+  studyGoal       StudyGoal?
+  checkIns        CheckIn[]
   bio             String? // 签名  
   isTimingTask    Boolean          @default(false) // 是否开启定时任务 
   timingTaskTime  String           @default("00:00:00") //定时任务时间默认晚上0点开始，每隔24小时执行一次
@@ -48,14 +50,48 @@ model User {
 model WordBookRecord {
   id        String   @id @default(cuid()) // 记录ID
   wordId    String // 单词ID
-  isMaster  Boolean  @default(false) // 是否掌握
+  isMaster  Boolean  @default(false) // 是否已学完（不是 SRS 的“掌握”）
   createdAt DateTime @default(now()) // 创建时间
   updatedAt DateTime @updatedAt // 更新时间
   userId    String // 用户ID 
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   word      WordBook @relation(fields: [wordId], references: [id], onDelete: Cascade)
 
+  // SRS（SM-2 简化）字段
+  mastery        Int       @default(0) // 0-5
+  correctCount   Int       @default(0)
+  wrongCount     Int       @default(0)
+  ease           Float     @default(2.5) // 1.3 - 3.0
+  intervalDays   Int       @default(0)
+  repetitions    Int       @default(0)
+  lastReviewedAt DateTime?
+  nextReviewAt   DateTime?
+
   @@unique([userId, wordId])
+  @@index([userId, nextReviewAt])
+}
+
+//每一次答题日志，用于统计/错词本/复习
+model PracticeLog {
+  id           String   @id @default(cuid())
+  userId       String
+  wordId       String
+  courseId     String?
+  mode         String // spelling | dictation | recall | review
+  isCorrect    Boolean
+  revealed     Boolean  @default(false)
+  answer       String?
+  expected     String?
+  durationMs   Int      @default(0)
+  inputCount   Int      @default(0)
+  correctInput Int      @default(0)
+  wrongInput   Int      @default(0)
+  attempts     Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, wordId])
+  @@index([userId, courseId])
 }
 
 //单词表
@@ -120,6 +156,10 @@ model CourseRecord {
   user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   course          Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  // 断点续学
+  lastWordIndex Int       @default(0)
+  lastStudiedAt DateTime?
+
   @@unique([userId, courseId])
 }
 
@@ -134,4 +174,31 @@ model Course {
   createdAt     DateTime       @default(now()) // 创建时间
   updatedAt     DateTime       @updatedAt // 更新时间
   courseRecords CourseRecord[]
+}
+
+// 每日学习目标
+model StudyGoal {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyNew     Int      @default(10) // 每日新词
+  dailyReview  Int      @default(20) // 每日复习
+  dailyMinutes Int      @default(15) // 每日学习分钟
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// 每日打卡（上海时区的 YYYY-MM-DD）
+model CheckIn {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      String // YYYY-MM-DD
+  words     Int      @default(0)
+  minutes   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId, date])
 }

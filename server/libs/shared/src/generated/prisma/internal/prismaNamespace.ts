@@ -399,10 +399,13 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   WordBookRecord: 'WordBookRecord',
+  PracticeLog: 'PracticeLog',
   WordBook: 'WordBook',
   PaymentRecord: 'PaymentRecord',
   CourseRecord: 'CourseRecord',
-  Course: 'Course'
+  Course: 'Course',
+  StudyGoal: 'StudyGoal',
+  CheckIn: 'CheckIn'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wordBookRecord" | "wordBook" | "paymentRecord" | "courseRecord" | "course"
+    modelProps: "user" | "wordBookRecord" | "practiceLog" | "wordBook" | "paymentRecord" | "courseRecord" | "course" | "studyGoal" | "checkIn"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -567,6 +570,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.WordBookRecordCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.WordBookRecordCountAggregateOutputType> | number
+        }
+      }
+    }
+    PracticeLog: {
+      payload: Prisma.$PracticeLogPayload<ExtArgs>
+      fields: Prisma.PracticeLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PracticeLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PracticeLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>
+        }
+        findFirst: {
+          args: Prisma.PracticeLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PracticeLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>
+        }
+        findMany: {
+          args: Prisma.PracticeLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>[]
+        }
+        create: {
+          args: Prisma.PracticeLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>
+        }
+        createMany: {
+          args: Prisma.PracticeLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PracticeLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>[]
+        }
+        delete: {
+          args: Prisma.PracticeLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>
+        }
+        update: {
+          args: Prisma.PracticeLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.PracticeLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PracticeLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PracticeLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.PracticeLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PracticeLogPayload>
+        }
+        aggregate: {
+          args: Prisma.PracticeLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePracticeLog>
+        }
+        groupBy: {
+          args: Prisma.PracticeLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PracticeLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PracticeLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PracticeLogCountAggregateOutputType> | number
         }
       }
     }
@@ -866,6 +943,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    StudyGoal: {
+      payload: Prisma.$StudyGoalPayload<ExtArgs>
+      fields: Prisma.StudyGoalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudyGoalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudyGoalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>
+        }
+        findFirst: {
+          args: Prisma.StudyGoalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudyGoalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>
+        }
+        findMany: {
+          args: Prisma.StudyGoalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>[]
+        }
+        create: {
+          args: Prisma.StudyGoalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>
+        }
+        createMany: {
+          args: Prisma.StudyGoalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudyGoalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>[]
+        }
+        delete: {
+          args: Prisma.StudyGoalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>
+        }
+        update: {
+          args: Prisma.StudyGoalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudyGoalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudyGoalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudyGoalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudyGoalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudyGoalPayload>
+        }
+        aggregate: {
+          args: Prisma.StudyGoalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudyGoal>
+        }
+        groupBy: {
+          args: Prisma.StudyGoalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudyGoalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudyGoalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudyGoalCountAggregateOutputType> | number
+        }
+      }
+    }
+    CheckIn: {
+      payload: Prisma.$CheckInPayload<ExtArgs>
+      fields: Prisma.CheckInFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CheckInFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CheckInFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>
+        }
+        findFirst: {
+          args: Prisma.CheckInFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CheckInFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>
+        }
+        findMany: {
+          args: Prisma.CheckInFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>[]
+        }
+        create: {
+          args: Prisma.CheckInCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>
+        }
+        createMany: {
+          args: Prisma.CheckInCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CheckInCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>[]
+        }
+        delete: {
+          args: Prisma.CheckInDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>
+        }
+        update: {
+          args: Prisma.CheckInUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>
+        }
+        deleteMany: {
+          args: Prisma.CheckInDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CheckInUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CheckInUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>[]
+        }
+        upsert: {
+          args: Prisma.CheckInUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CheckInPayload>
+        }
+        aggregate: {
+          args: Prisma.CheckInAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCheckIn>
+        }
+        groupBy: {
+          args: Prisma.CheckInGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CheckInGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CheckInCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CheckInCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -932,10 +1157,39 @@ export const WordBookRecordScalarFieldEnum = {
   isMaster: 'isMaster',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  mastery: 'mastery',
+  correctCount: 'correctCount',
+  wrongCount: 'wrongCount',
+  ease: 'ease',
+  intervalDays: 'intervalDays',
+  repetitions: 'repetitions',
+  lastReviewedAt: 'lastReviewedAt',
+  nextReviewAt: 'nextReviewAt'
 } as const
 
 export type WordBookRecordScalarFieldEnum = (typeof WordBookRecordScalarFieldEnum)[keyof typeof WordBookRecordScalarFieldEnum]
+
+
+export const PracticeLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  wordId: 'wordId',
+  courseId: 'courseId',
+  mode: 'mode',
+  isCorrect: 'isCorrect',
+  revealed: 'revealed',
+  answer: 'answer',
+  expected: 'expected',
+  durationMs: 'durationMs',
+  inputCount: 'inputCount',
+  correctInput: 'correctInput',
+  wrongInput: 'wrongInput',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+} as const
+
+export type PracticeLogScalarFieldEnum = (typeof PracticeLogScalarFieldEnum)[keyof typeof PracticeLogScalarFieldEnum]
 
 
 export const WordBookScalarFieldEnum = {
@@ -990,7 +1244,9 @@ export const CourseRecordScalarFieldEnum = {
   isPurchased: 'isPurchased',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  paymentRecordId: 'paymentRecordId'
+  paymentRecordId: 'paymentRecordId',
+  lastWordIndex: 'lastWordIndex',
+  lastStudiedAt: 'lastStudiedAt'
 } as const
 
 export type CourseRecordScalarFieldEnum = (typeof CourseRecordScalarFieldEnum)[keyof typeof CourseRecordScalarFieldEnum]
@@ -1009,6 +1265,32 @@ export const CourseScalarFieldEnum = {
 } as const
 
 export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
+
+
+export const StudyGoalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  dailyNew: 'dailyNew',
+  dailyReview: 'dailyReview',
+  dailyMinutes: 'dailyMinutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudyGoalScalarFieldEnum = (typeof StudyGoalScalarFieldEnum)[keyof typeof StudyGoalScalarFieldEnum]
+
+
+export const CheckInScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  words: 'words',
+  minutes: 'minutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CheckInScalarFieldEnum = (typeof CheckInScalarFieldEnum)[keyof typeof CheckInScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1091,6 +1373,20 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -1115,20 +1411,6 @@ export type EnumTradeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'TradeStatus[]'
  */
 export type ListEnumTradeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TradeStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1284,10 +1566,13 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   wordBookRecord?: Prisma.WordBookRecordOmit
+  practiceLog?: Prisma.PracticeLogOmit
   wordBook?: Prisma.WordBookOmit
   paymentRecord?: Prisma.PaymentRecordOmit
   courseRecord?: Prisma.CourseRecordOmit
   course?: Prisma.CourseOmit
+  studyGoal?: Prisma.StudyGoalOmit
+  checkIn?: Prisma.CheckInOmit
 }
 
 /* Types for Logging */

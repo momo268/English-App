@@ -53,10 +53,13 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   WordBookRecord: 'WordBookRecord',
+  PracticeLog: 'PracticeLog',
   WordBook: 'WordBook',
   PaymentRecord: 'PaymentRecord',
   CourseRecord: 'CourseRecord',
-  Course: 'Course'
+  Course: 'Course',
+  StudyGoal: 'StudyGoal',
+  CheckIn: 'CheckIn'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -102,10 +105,39 @@ export const WordBookRecordScalarFieldEnum = {
   isMaster: 'isMaster',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  mastery: 'mastery',
+  correctCount: 'correctCount',
+  wrongCount: 'wrongCount',
+  ease: 'ease',
+  intervalDays: 'intervalDays',
+  repetitions: 'repetitions',
+  lastReviewedAt: 'lastReviewedAt',
+  nextReviewAt: 'nextReviewAt'
 } as const
 
 export type WordBookRecordScalarFieldEnum = (typeof WordBookRecordScalarFieldEnum)[keyof typeof WordBookRecordScalarFieldEnum]
+
+
+export const PracticeLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  wordId: 'wordId',
+  courseId: 'courseId',
+  mode: 'mode',
+  isCorrect: 'isCorrect',
+  revealed: 'revealed',
+  answer: 'answer',
+  expected: 'expected',
+  durationMs: 'durationMs',
+  inputCount: 'inputCount',
+  correctInput: 'correctInput',
+  wrongInput: 'wrongInput',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+} as const
+
+export type PracticeLogScalarFieldEnum = (typeof PracticeLogScalarFieldEnum)[keyof typeof PracticeLogScalarFieldEnum]
 
 
 export const WordBookScalarFieldEnum = {
@@ -160,7 +192,9 @@ export const CourseRecordScalarFieldEnum = {
   isPurchased: 'isPurchased',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  paymentRecordId: 'paymentRecordId'
+  paymentRecordId: 'paymentRecordId',
+  lastWordIndex: 'lastWordIndex',
+  lastStudiedAt: 'lastStudiedAt'
 } as const
 
 export type CourseRecordScalarFieldEnum = (typeof CourseRecordScalarFieldEnum)[keyof typeof CourseRecordScalarFieldEnum]
@@ -179,6 +213,32 @@ export const CourseScalarFieldEnum = {
 } as const
 
 export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
+
+
+export const StudyGoalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  dailyNew: 'dailyNew',
+  dailyReview: 'dailyReview',
+  dailyMinutes: 'dailyMinutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudyGoalScalarFieldEnum = (typeof StudyGoalScalarFieldEnum)[keyof typeof StudyGoalScalarFieldEnum]
+
+
+export const CheckInScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  words: 'words',
+  minutes: 'minutes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CheckInScalarFieldEnum = (typeof CheckInScalarFieldEnum)[keyof typeof CheckInScalarFieldEnum]
 
 
 export const SortOrder = {

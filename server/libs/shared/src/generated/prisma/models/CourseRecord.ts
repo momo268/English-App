@@ -20,8 +20,18 @@ export type CourseRecordModel = runtime.Types.Result.DefaultSelection<Prisma.$Co
 
 export type AggregateCourseRecord = {
   _count: CourseRecordCountAggregateOutputType | null
+  _avg: CourseRecordAvgAggregateOutputType | null
+  _sum: CourseRecordSumAggregateOutputType | null
   _min: CourseRecordMinAggregateOutputType | null
   _max: CourseRecordMaxAggregateOutputType | null
+}
+
+export type CourseRecordAvgAggregateOutputType = {
+  lastWordIndex: number | null
+}
+
+export type CourseRecordSumAggregateOutputType = {
+  lastWordIndex: number | null
 }
 
 export type CourseRecordMinAggregateOutputType = {
@@ -32,6 +42,8 @@ export type CourseRecordMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   paymentRecordId: string | null
+  lastWordIndex: number | null
+  lastStudiedAt: Date | null
 }
 
 export type CourseRecordMaxAggregateOutputType = {
@@ -42,6 +54,8 @@ export type CourseRecordMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   paymentRecordId: string | null
+  lastWordIndex: number | null
+  lastStudiedAt: Date | null
 }
 
 export type CourseRecordCountAggregateOutputType = {
@@ -52,9 +66,19 @@ export type CourseRecordCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   paymentRecordId: number
+  lastWordIndex: number
+  lastStudiedAt: number
   _all: number
 }
 
+
+export type CourseRecordAvgAggregateInputType = {
+  lastWordIndex?: true
+}
+
+export type CourseRecordSumAggregateInputType = {
+  lastWordIndex?: true
+}
 
 export type CourseRecordMinAggregateInputType = {
   id?: true
@@ -64,6 +88,8 @@ export type CourseRecordMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   paymentRecordId?: true
+  lastWordIndex?: true
+  lastStudiedAt?: true
 }
 
 export type CourseRecordMaxAggregateInputType = {
@@ -74,6 +100,8 @@ export type CourseRecordMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   paymentRecordId?: true
+  lastWordIndex?: true
+  lastStudiedAt?: true
 }
 
 export type CourseRecordCountAggregateInputType = {
@@ -84,6 +112,8 @@ export type CourseRecordCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   paymentRecordId?: true
+  lastWordIndex?: true
+  lastStudiedAt?: true
   _all?: true
 }
 
@@ -125,6 +155,18 @@ export type CourseRecordAggregateArgs<ExtArgs extends runtime.Types.Extensions.I
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CourseRecordAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CourseRecordSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CourseRecordMinAggregateInputType
@@ -155,6 +197,8 @@ export type CourseRecordGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   _count?: CourseRecordCountAggregateInputType | true
+  _avg?: CourseRecordAvgAggregateInputType
+  _sum?: CourseRecordSumAggregateInputType
   _min?: CourseRecordMinAggregateInputType
   _max?: CourseRecordMaxAggregateInputType
 }
@@ -167,7 +211,11 @@ export type CourseRecordGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   paymentRecordId: string | null
+  lastWordIndex: number
+  lastStudiedAt: Date | null
   _count: CourseRecordCountAggregateOutputType | null
+  _avg: CourseRecordAvgAggregateOutputType | null
+  _sum: CourseRecordSumAggregateOutputType | null
   _min: CourseRecordMinAggregateOutputType | null
   _max: CourseRecordMaxAggregateOutputType | null
 }
@@ -198,6 +246,8 @@ export type CourseRecordWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CourseRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CourseRecord"> | Date | string
   paymentRecordId?: Prisma.StringNullableFilter<"CourseRecord"> | string | null
+  lastWordIndex?: Prisma.IntFilter<"CourseRecord"> | number
+  lastStudiedAt?: Prisma.DateTimeNullableFilter<"CourseRecord"> | Date | string | null
   paymentRecord?: Prisma.XOR<Prisma.PaymentRecordNullableScalarRelationFilter, Prisma.PaymentRecordWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
@@ -211,6 +261,8 @@ export type CourseRecordOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   paymentRecordId?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastWordIndex?: Prisma.SortOrder
+  lastStudiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentRecord?: Prisma.PaymentRecordOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   course?: Prisma.CourseOrderByWithRelationInput
@@ -228,6 +280,8 @@ export type CourseRecordWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"CourseRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CourseRecord"> | Date | string
   paymentRecordId?: Prisma.StringNullableFilter<"CourseRecord"> | string | null
+  lastWordIndex?: Prisma.IntFilter<"CourseRecord"> | number
+  lastStudiedAt?: Prisma.DateTimeNullableFilter<"CourseRecord"> | Date | string | null
   paymentRecord?: Prisma.XOR<Prisma.PaymentRecordNullableScalarRelationFilter, Prisma.PaymentRecordWhereInput> | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
@@ -241,9 +295,13 @@ export type CourseRecordOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   paymentRecordId?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastWordIndex?: Prisma.SortOrder
+  lastStudiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CourseRecordCountOrderByAggregateInput
+  _avg?: Prisma.CourseRecordAvgOrderByAggregateInput
   _max?: Prisma.CourseRecordMaxOrderByAggregateInput
   _min?: Prisma.CourseRecordMinOrderByAggregateInput
+  _sum?: Prisma.CourseRecordSumOrderByAggregateInput
 }
 
 export type CourseRecordScalarWhereWithAggregatesInput = {
@@ -257,6 +315,8 @@ export type CourseRecordScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CourseRecord"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"CourseRecord"> | Date | string
   paymentRecordId?: Prisma.StringNullableWithAggregatesFilter<"CourseRecord"> | string | null
+  lastWordIndex?: Prisma.IntWithAggregatesFilter<"CourseRecord"> | number
+  lastStudiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CourseRecord"> | Date | string | null
 }
 
 export type CourseRecordCreateInput = {
@@ -264,6 +324,8 @@ export type CourseRecordCreateInput = {
   isPurchased?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
   paymentRecord?: Prisma.PaymentRecordCreateNestedOneWithoutCourseRecordsInput
   user: Prisma.UserCreateNestedOneWithoutCourseRecordsInput
   course: Prisma.CourseCreateNestedOneWithoutCourseRecordsInput
@@ -277,6 +339,8 @@ export type CourseRecordUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentRecordId?: string | null
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordUpdateInput = {
@@ -284,6 +348,8 @@ export type CourseRecordUpdateInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paymentRecord?: Prisma.PaymentRecordUpdateOneWithoutCourseRecordsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCourseRecordsNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutCourseRecordsNestedInput
@@ -297,6 +363,8 @@ export type CourseRecordUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordCreateManyInput = {
@@ -307,6 +375,8 @@ export type CourseRecordCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentRecordId?: string | null
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordUpdateManyMutationInput = {
@@ -314,6 +384,8 @@ export type CourseRecordUpdateManyMutationInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordUncheckedUpdateManyInput = {
@@ -324,6 +396,8 @@ export type CourseRecordUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordListRelationFilter = {
@@ -349,6 +423,12 @@ export type CourseRecordCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   paymentRecordId?: Prisma.SortOrder
+  lastWordIndex?: Prisma.SortOrder
+  lastStudiedAt?: Prisma.SortOrder
+}
+
+export type CourseRecordAvgOrderByAggregateInput = {
+  lastWordIndex?: Prisma.SortOrder
 }
 
 export type CourseRecordMaxOrderByAggregateInput = {
@@ -359,6 +439,8 @@ export type CourseRecordMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   paymentRecordId?: Prisma.SortOrder
+  lastWordIndex?: Prisma.SortOrder
+  lastStudiedAt?: Prisma.SortOrder
 }
 
 export type CourseRecordMinOrderByAggregateInput = {
@@ -369,6 +451,12 @@ export type CourseRecordMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   paymentRecordId?: Prisma.SortOrder
+  lastWordIndex?: Prisma.SortOrder
+  lastStudiedAt?: Prisma.SortOrder
+}
+
+export type CourseRecordSumOrderByAggregateInput = {
+  lastWordIndex?: Prisma.SortOrder
 }
 
 export type CourseRecordCreateNestedManyWithoutUserInput = {
@@ -502,6 +590,8 @@ export type CourseRecordCreateWithoutUserInput = {
   isPurchased?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
   paymentRecord?: Prisma.PaymentRecordCreateNestedOneWithoutCourseRecordsInput
   course: Prisma.CourseCreateNestedOneWithoutCourseRecordsInput
 }
@@ -513,6 +603,8 @@ export type CourseRecordUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentRecordId?: string | null
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordCreateOrConnectWithoutUserInput = {
@@ -552,6 +644,8 @@ export type CourseRecordScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CourseRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CourseRecord"> | Date | string
   paymentRecordId?: Prisma.StringNullableFilter<"CourseRecord"> | string | null
+  lastWordIndex?: Prisma.IntFilter<"CourseRecord"> | number
+  lastStudiedAt?: Prisma.DateTimeNullableFilter<"CourseRecord"> | Date | string | null
 }
 
 export type CourseRecordCreateWithoutPaymentRecordInput = {
@@ -559,6 +653,8 @@ export type CourseRecordCreateWithoutPaymentRecordInput = {
   isPurchased?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutCourseRecordsInput
   course: Prisma.CourseCreateNestedOneWithoutCourseRecordsInput
 }
@@ -570,6 +666,8 @@ export type CourseRecordUncheckedCreateWithoutPaymentRecordInput = {
   isPurchased?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordCreateOrConnectWithoutPaymentRecordInput = {
@@ -603,6 +701,8 @@ export type CourseRecordCreateWithoutCourseInput = {
   isPurchased?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
   paymentRecord?: Prisma.PaymentRecordCreateNestedOneWithoutCourseRecordsInput
   user: Prisma.UserCreateNestedOneWithoutCourseRecordsInput
 }
@@ -614,6 +714,8 @@ export type CourseRecordUncheckedCreateWithoutCourseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentRecordId?: string | null
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordCreateOrConnectWithoutCourseInput = {
@@ -649,6 +751,8 @@ export type CourseRecordCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentRecordId?: string | null
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordUpdateWithoutUserInput = {
@@ -656,6 +760,8 @@ export type CourseRecordUpdateWithoutUserInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paymentRecord?: Prisma.PaymentRecordUpdateOneWithoutCourseRecordsNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutCourseRecordsNestedInput
 }
@@ -667,6 +773,8 @@ export type CourseRecordUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordUncheckedUpdateManyWithoutUserInput = {
@@ -676,6 +784,8 @@ export type CourseRecordUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordCreateManyPaymentRecordInput = {
@@ -685,6 +795,8 @@ export type CourseRecordCreateManyPaymentRecordInput = {
   isPurchased?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordUpdateWithoutPaymentRecordInput = {
@@ -692,6 +804,8 @@ export type CourseRecordUpdateWithoutPaymentRecordInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutCourseRecordsNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutCourseRecordsNestedInput
 }
@@ -703,6 +817,8 @@ export type CourseRecordUncheckedUpdateWithoutPaymentRecordInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordUncheckedUpdateManyWithoutPaymentRecordInput = {
@@ -712,6 +828,8 @@ export type CourseRecordUncheckedUpdateManyWithoutPaymentRecordInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordCreateManyCourseInput = {
@@ -721,6 +839,8 @@ export type CourseRecordCreateManyCourseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentRecordId?: string | null
+  lastWordIndex?: number
+  lastStudiedAt?: Date | string | null
 }
 
 export type CourseRecordUpdateWithoutCourseInput = {
@@ -728,6 +848,8 @@ export type CourseRecordUpdateWithoutCourseInput = {
   isPurchased?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paymentRecord?: Prisma.PaymentRecordUpdateOneWithoutCourseRecordsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutCourseRecordsNestedInput
 }
@@ -739,6 +861,8 @@ export type CourseRecordUncheckedUpdateWithoutCourseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CourseRecordUncheckedUpdateManyWithoutCourseInput = {
@@ -748,6 +872,8 @@ export type CourseRecordUncheckedUpdateManyWithoutCourseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentRecordId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastWordIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -760,6 +886,8 @@ export type CourseRecordSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   paymentRecordId?: boolean
+  lastWordIndex?: boolean
+  lastStudiedAt?: boolean
   paymentRecord?: boolean | Prisma.CourseRecord$paymentRecordArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -773,6 +901,8 @@ export type CourseRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   paymentRecordId?: boolean
+  lastWordIndex?: boolean
+  lastStudiedAt?: boolean
   paymentRecord?: boolean | Prisma.CourseRecord$paymentRecordArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -786,6 +916,8 @@ export type CourseRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   paymentRecordId?: boolean
+  lastWordIndex?: boolean
+  lastStudiedAt?: boolean
   paymentRecord?: boolean | Prisma.CourseRecord$paymentRecordArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -799,9 +931,11 @@ export type CourseRecordSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   paymentRecordId?: boolean
+  lastWordIndex?: boolean
+  lastStudiedAt?: boolean
 }
 
-export type CourseRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "courseId" | "isPurchased" | "createdAt" | "updatedAt" | "paymentRecordId", ExtArgs["result"]["courseRecord"]>
+export type CourseRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "courseId" | "isPurchased" | "createdAt" | "updatedAt" | "paymentRecordId" | "lastWordIndex" | "lastStudiedAt", ExtArgs["result"]["courseRecord"]>
 export type CourseRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paymentRecord?: boolean | Prisma.CourseRecord$paymentRecordArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -833,6 +967,8 @@ export type $CourseRecordPayload<ExtArgs extends runtime.Types.Extensions.Intern
     createdAt: Date
     updatedAt: Date
     paymentRecordId: string | null
+    lastWordIndex: number
+    lastStudiedAt: Date | null
   }, ExtArgs["result"]["courseRecord"]>
   composites: {}
 }
@@ -1266,6 +1402,8 @@ export interface CourseRecordFieldRefs {
   readonly createdAt: Prisma.FieldRef<"CourseRecord", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"CourseRecord", 'DateTime'>
   readonly paymentRecordId: Prisma.FieldRef<"CourseRecord", 'String'>
+  readonly lastWordIndex: Prisma.FieldRef<"CourseRecord", 'Int'>
+  readonly lastStudiedAt: Prisma.FieldRef<"CourseRecord", 'DateTime'>
 }
     
 

@@ -5,6 +5,7 @@ import setting from './setting/index'
 import chat from './chat/index'
 import course from './course/index'
 import learn from './learn/index'
+import plan from './plan/index'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,7 @@ const router = createRouter({
     ...chat, //聊天
     ...course, //课程
     ...learn, //学习
+    ...plan, //学习计划 / 错词本
   ]
 })
 

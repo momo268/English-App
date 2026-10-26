@@ -42,7 +42,10 @@ export const useVoiceToText = (options: Options) => {
         recognition.onresult = (event) => {
             let fullText = ''
             for (let i = 0; i < event.results.length; i++) {
-                fullText += event.results[i][0].transcript
+                const alternative = event.results[i]?.[0]
+                if (alternative) {
+                    fullText += alternative.transcript
+                }
             }
             callback?.(fullText)
         }

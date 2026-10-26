@@ -1,95 +1,107 @@
 <template>
-  <div v-if="isShow" class="fixed inset-0 w-full h-full z-40 bg-black opacity-30  blur-sm" />
-  <Transition name="fade">
-  <div v-if="isShow" class="fixed inset-0  shadow-lg z-50 p-30 pt-20">
-      <div :class="wordList.length > 0 ? 'rounded-tr-[10px] rounded-tl-[10px]' : 'rounded-[10px]'" class="flex items-center gap-2 shadow-lg w-1/2 mx-auto p-3  bg-white ">
-         <el-icon size="20">
-            <Search />
-         </el-icon>
-         <input v-focus  placeholder="搜索" type="text" v-model="search" class="w-full h-full text-sm border-none  rounded-lg p-2 focus:outline-none" />
-      </div>
-      <div v-if="wordList.length > 0" class="w-1/2 mx-auto max-h-[500px] border-t border-gray-200 overflow-y-auto">
-          <div @click="copyWord(item.word)" v-for="item in wordList" :key="item.id" class="bg-white hover:bg-blue-50   text-gray-800 p-4 cursor-pointer shadow-sm hover:shadow-md ">
-            <div class="text-sm font-semibold text-blue-600 mb-1">{{ item.word }}</div>
-            <div v-html="item.translation" class="text-sm text-gray-700 mb-1 overflow-hidden line-clamp-2" />
-          </div>
-      </div>
-  </div>
-</Transition>
+  <el-dialog v-model="isShow" title="搜索单词" width="min(640px, calc(100vw - 32px))" @opened="focusInput">
+    <input
+      ref="inputRef"
+      v-model="search"
+      aria-label="搜索单词"
+      placeholder="输入单词，点击结果即可复制"
+      class="w-full rounded-xl border border-zinc-200 bg-white p-3 text-sm text-zinc-900 outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+    />
+    <div class="mt-4 max-h-[50vh] overflow-y-auto" aria-live="polite">
+      <p v-if="loading" class="py-6 text-center text-sm text-gray-400">正在搜索…</p>
+      <p v-else-if="error" class="py-6 text-center text-sm text-gray-500">{{ error }}</p>
+      <p v-else-if="search.trim() && !wordList.length" class="py-6 text-center text-sm text-gray-400">没有找到相关单词</p>
+      <button
+        v-for="item in wordList"
+        v-else
+        :key="item.id"
+        type="button"
+        class="block w-full rounded-xl p-3 text-left transition-colors hover:bg-teal-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+        @click="copyWord(item.word)"
+      >
+        <span class="block text-sm font-semibold text-teal-700">{{ item.word }}</span>
+        <span class="mt-1 block whitespace-pre-line text-sm leading-6 text-zinc-500">{{ item.translation?.replace(/<br\s*\/?>/gi, '\n') }}</span>
+      </button>
+    </div>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref,customRef } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import type { Word } from '@en/common/word'
-import {getWordBookList} from '@/apis/word-book'
+import { getWordBookList } from '@/apis/word-book'
 import { ElMessage } from 'element-plus'
-const wordList = ref<Word[]>([]) //搜索结果
-const isShow = ref(false) //用来展示弹框的显示和隐藏的
-let timer: ReturnType<typeof setTimeout> | null = null
-const search = customRef((track,trigger)=>{
-    let value = '' //默认值
-    return {
-        get(){
-            track() //告诉vue追踪value的值
-            return value
-        },
-        set(newValue: string){
-            value = newValue
-            if(timer) {
-                clearTimeout(timer)
-            }
-            timer = setTimeout(() => {
-                console.log(value)
-                getList()
-                trigger() //告诉vue触发value的值，从而触发依赖
-            }, 500)
-        }
-    }
-}) //搜索的一个值
-const getList = async () => {
-    const res = await getWordBookList({ word: search.value, page: 1, pageSize: 20 })
-    if(res.success) {
-        wordList.value = res.data.list
-    }
+
+const isShow = ref(false)
+const search = ref('')
+const wordList = ref<Word[]>([])
+const loading = ref(false)
+const error = ref('')
+const inputRef = ref<HTMLInputElement | null>(null)
+let timer: ReturnType<typeof setTimeout> | undefined
+let requestId = 0
+
+const focusInput = () => inputRef.value?.focus()
+
+const getList = async (word: string, id: number) => {
+  try {
+    const res = await getWordBookList({ word, page: 1, pageSize: 20 })
+    // 用户可能已经输入了新词或关闭弹窗，只接收最新一次搜索结果。
+    if (id !== requestId || !isShow.value) return
+    if (res.success) wordList.value = res.data.list
+    else error.value = res.message || '搜索失败，请重新输入后重试'
+  } catch {
+    if (id === requestId && isShow.value) error.value = '搜索失败，请重新输入后重试'
+  } finally {
+    if (id === requestId) loading.value = false
+  }
 }
-const copyWord = (word: string) => {
-    try {
-        navigator.clipboard.writeText(word) //localhost  / https
-        ElMessage.success('复制成功')
-    } catch (error) {
-        ElMessage.error('复制失败')
-    }
+
+watch(search, (value) => {
+  clearTimeout(timer)
+  const id = ++requestId
+  const word = value.trim()
+  wordList.value = []
+  error.value = ''
+  loading.value = !!word && isShow.value
+  if (!loading.value) return
+  // 停止输入 300 毫秒后再请求，减少连续打字时的重复搜索。
+  timer = setTimeout(() => { void getList(word, id) }, 300)
+}, { flush: 'sync' })
+
+watch(isShow, (open) => {
+  if (open) return
+  clearTimeout(timer)
+  requestId += 1
+  search.value = ''
+  wordList.value = []
+  loading.value = false
+  error.value = ''
+}, { flush: 'sync' })
+
+const copyWord = async (word: string) => {
+  try {
+    await navigator.clipboard.writeText(word)
+    ElMessage.success('复制成功')
+  } catch {
+    ElMessage.error('复制失败，请检查浏览器的剪贴板权限')
+  }
 }
-window.addEventListener('keydown',(e: KeyboardEvent)=>{
-    if(e.key === 'f' && e.ctrlKey) {
-        e.preventDefault()
-        isShow.value = true
-        document.body.style.overflow = 'hidden'
-    }
-    if(e.key === 'Escape') {
-        isShow.value = false
-        search.value = ''
-        document.body.style.overflow = 'auto'
-    }
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.defaultPrevented || event.isComposing) return
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'f') {
+    const target = event.target as HTMLElement | null
+    if (!isShow.value && target?.closest('[role="dialog"]')) return
+    event.preventDefault()
+    isShow.value = true
+  }
+}
+
+onMounted(() => window.addEventListener('keydown', handleKeydown))
+onUnmounted(() => {
+  clearTimeout(timer)
+  requestId += 1
+  window.removeEventListener('keydown', handleKeydown)
 })
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-    transform: scale(0.5);
-}
-
-.fade-enter-to,
-.fade-leave-from {
-    opacity: 1;
-    transform: scale(1);
-}
-</style>

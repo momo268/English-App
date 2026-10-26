@@ -1,275 +1,714 @@
 <template>
-  <div class="min-h-[60vh] bg-zinc-50/80">
-    <div class="w-[1200px] mx-auto px-4 pt-12 pb-24">
-      <header class="mb-10 text-center">
-        <h1 class="text-3xl font-bold text-zinc-900 tracking-tight sm:text-4xl">
-          {{ title }}
-        </h1>
-        <p class="mt-3 text-zinc-500 text-sm">请根据释义和翻译拼写单词</p>
-      </header>
+  <div
+    class="relative flex min-h-dvh flex-col overflow-x-clip bg-[#f8f7f3] text-zinc-900 transition-colors duration-300 dark:bg-[#0b0b0c] dark:text-zinc-100"
+  >
+    <div :inert="paused || settingsOpen" class="flex min-h-dvh flex-1 flex-col">
+    <FocusHeader
+      :title="pageTitle"
+      :current="Math.min(currentIndex + 1, list.length || 1)"
+      :total="list.length"
+      :is-dark="isDark"
+      :show-word="defaultShow"
+      @back="back"
+      @toggle-theme="toggleTheme"
+      @open-settings="openSettings"
+      @toggle-default="toggleDefault"
+      @pause="pause"
+    />
 
-      <el-skeleton v-if="isLoading" :rows="10" animated />
-
-      <div v-if="list.length === 0" class="flex justify-center py-20">
-        <el-empty description="暂无单词或您尚未购买该课程" />
+    <main class="relative flex flex-1 flex-col">
+      <!-- 加载 -->
+      <div v-if="isLoading" class="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center gap-6 px-4 py-12 sm:px-6">
+        <div class="mx-auto h-10 w-40 animate-pulse rounded-full bg-zinc-200/70 dark:bg-white/5" />
+        <div class="mx-auto h-24 w-full max-w-xl animate-pulse rounded-2xl bg-zinc-200/50 dark:bg-white/5" />
       </div>
 
-      <template v-else>
-        <!-- 本组已学完 -->
-        <div
-          v-if="currentIndex >= list.length"
-          class="text-center py-16 px-6 bg-white rounded-2xl border border-zinc-100 shadow-sm"
+      <!-- 无单词 -->
+      <div v-else-if="!list.length" class="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 py-20 text-center">
+        <div class="text-5xl">{{ isReview ? '✅' : '📚' }}</div>
+        <h2 class="mt-4 text-xl font-bold text-zinc-900 dark:text-white">
+          {{ isReview ? '今天没有待复习的单词' : '暂无可学习的单词' }}
+        </h2>
+        <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+          {{ isReview
+            ? '到期的单词已经复习完，或者还没有到复习时间，先去学点新词吧。'
+            : '可能还没有购买这门课程，或者本组已经全部学完。' }}
+        </p>
+        <button
+          type="button"
+          class="mt-6 rounded-xl bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+          @click="back"
         >
-          <p class="text-zinc-600 mb-6">本组 10 个词已学完</p>
-          <el-button type="primary" size="large" @click="saveWordMaster">
-            再练一组
-          </el-button>
-        </div>
+          返回课程
+        </button>
+      </div>
 
-        <!-- 当前单词卡片 -->
-        <div v-else>
-          <div
-            class="mb-4 flex items-center justify-between text-sm text-zinc-500"
+      <!-- 本章总结 -->
+      <div v-else-if="isFinished" class="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
+        <SessionSummary
+          :title="title"
+          :accuracy="accuracy"
+          :elapsed="elapsed"
+          :wpm="wpm"
+          :total="list.length"
+          :learned-count="learnedCount"
+          :wrong-words="wrongWords"
+          :review-mode="isReview"
+          :review-has-more="isReview && reviewTotal > list.length"
+          @review-wrong="reviewWrong"
+          @restart="restartSame"
+          @next-chapter="nextChapter"
+          @play-word="speakWord"
+        />
+      </div>
+
+      <!-- 练习 -->
+      <template v-else-if="currentWord">
+        <div class="relative flex flex-1 flex-col">
+          <button
+            type="button"
+            class="absolute left-2 top-[42%] hidden h-10 w-10 items-center justify-center rounded-full text-zinc-300 transition hover:bg-white hover:text-zinc-700 disabled:cursor-not-allowed disabled:opacity-20 dark:hover:bg-white/5 dark:hover:text-white md:flex"
+            :disabled="currentIndex === 0"
+            title="上一题"
+            @click="prev"
           >
-            <span>第 {{ currentIndex + 1 }} / {{ list.length }} 个</span>
+            <el-icon :size="18"><ArrowLeft /></el-icon>
+          </button>
+          <button
+            type="button"
+            class="absolute right-2 top-[42%] hidden h-10 w-10 items-center justify-center rounded-full text-zinc-300 transition hover:bg-white hover:text-zinc-700 disabled:cursor-not-allowed disabled:opacity-20 dark:hover:bg-white/5 dark:hover:text-white md:flex"
+            :disabled="status === 'idle'"
+            title="下一题"
+            @click="next"
+          >
+            <el-icon :size="18"><ArrowRight /></el-icon>
+          </button>
+
+          <div class="flex flex-1 flex-col items-center justify-center px-4 py-8 sm:py-12">
+            <WordPrompt
+              :word="currentWord"
+              :revealed="status === 'revealed'"
+              :peeked="hovered"
+              :show-word="defaultShow"
+              :status="status"
+              :accent="accent"
+              :playing="isPlaying"
+              :loading="audioLoading"
+              :audio-error="audioError"
+              @speak="speakCurrent"
+            />
+
+            <SpellingInput
+              ref="spellingRef"
+              v-model="answer"
+              :expected="currentWord.word"
+              :status="status"
+              :attempts="attempts"
+              :disabled="!canPractice"
+              @keystroke="onKeystroke"
+              @wrong="onWrong"
+              @complete="onComplete"
+              @hover="hovered = $event"
+              @next="next"
+            />
+            <p class="mt-5 text-xs text-zinc-400 dark:text-zinc-500">直接键入即可练习 · 鼠标移至输入区可查看单词</p>
           </div>
-          <article
-            class="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden"
-          >
-            <div class="p-8 sm:p-10 relative">
-              <div class="flex justify-center mb-6">
-                <div
-                  :class="{ 'filter blur-md select-none': isWordBlurred }"
-                  class="transition-all duration-300 min-h-10 flex flex-col items-center text-center"
-                >
-                  <div
-                    class="text-2xl sm:text-3xl font-bold text-indigo-600 tracking-tight"
-                  >
-                    {{ currentWord?.word }}
-                  </div>
-                  <div class="flex items-center justify-center gap-2 mt-1">
-                    <span
-                      v-if="currentWord?.phonetic"
-                      class="text-base text-zinc-500 font-mono"
-                    >
-                      {{ currentWord.phonetic }}
-                    </span>
-                    <el-icon
-                      v-if="currentWord?.word"
-                      class="shrink-0 cursor-pointer text-slate-400 hover:text-indigo-400 transition-colors"
-                      :size="18"
-                      title="发音"
-                      @click="playAudio(currentWord!.word)"
-                    >
-                      <VideoPlay />
-                    </el-icon>
-                  </div>
-                </div>
-                <el-icon
-                  class="absolute! right-10 top-10 cursor-pointer text-slate-400 hover:text-indigo-400 transition-colors"
-                  :size="18"
-                  :title="isWordBlurred ? '点击显示单词' : '点击隐藏单词'"
-                  @click="isWordBlurred = !isWordBlurred"
-                >
-                  <View v-if="isWordBlurred" />
-                  <Hide v-else />
-                </el-icon>
-              </div>
-              <!-- 释义 -->
-              <div
-                class="mb-4 rounded-lg bg-zinc-50/80 border border-zinc-100 p-4"
-              >
-                <p
-                  class="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2"
-                >
-                  释义
-                </p>
-                <div
-                  class="text-zinc-700 leading-relaxed prose prose-sm max-w-none"
-                  v-html="currentWord?.definition"
-                />
-              </div>
-              <!-- 翻译 -->
-              <div class="rounded-lg bg-zinc-50/80 border border-zinc-100 p-4">
-                <p
-                  class="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2"
-                >
-                  翻译
-                </p>
-                <div
-                  class="text-zinc-600 leading-relaxed whitespace-pre-line prose prose-sm max-w-none"
-                  v-html="currentWord?.translation"
-                />
-              </div>
-              <!--拼写练习-->
-              <div class="rounded-lg bg-zinc-50/80 border border-zinc-100 p-4">
-                <p
-                  class="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2"
-                >
-                  拼写
-                </p>
-                <div class="flex items-center gap-2 justify-center">
-                  <input
-                    :maxlength="1"
-                    ref="inputRefs"
-                    @input="onInput(index)"
-                    v-for="(item, index) in wordList"
-                    @keydown="onKeyDown(index, $event)"
-                    :key="index"
-                    type="text"
-                    v-model="item.input"
-                    :class="{
-                      'border-indigo-500!': item.isTrue === true,
-                      'border-red-500!': item.isTrue === false,
-                    }"
-                    class="border-0 border-b-2 border-zinc-300 focus:border-indigo-500 bg-transparent outline-none w-10 text-center text-2xl font-bold"
-                  />
-                </div>
-              </div>
-              <!--控制按钮-->
-              <div class="flex justify-end gap-2">
-                <el-button type="primary" @click="pagePrev"> 上一个 </el-button>
-                <el-button type="primary" @click="pageNext"> 下一个 </el-button>
-              </div>
-            </div>
-          </article>
+
+          <div class="mx-auto w-full max-w-3xl px-4 pb-8 sm:px-6">
+            <SessionStats
+              :elapsed="elapsed"
+              :input-count="stats.inputCount"
+              :wpm="wpm"
+              :correct-input="stats.correctInput"
+              :accuracy="accuracy"
+            />
+            <ShortcutBar />
+          </div>
         </div>
       </template>
+    </main>
     </div>
+
+    <PauseOverlay :paused="paused && !settingsOpen" @resume="resume" />
+
+    <SettingsPanel
+      :open="settingsOpen"
+      :accent="accent"
+      :rate="rate"
+      :auto-play="autoPlay"
+      :is-dark="isDark"
+      :sound-enabled="soundEnabled"
+      :sound-volume="soundVolume"
+      :playing="isPlaying"
+      :loading="audioLoading"
+      :audio-error="audioError"
+      @close="closeSettings"
+      @use-accent="changeAccent"
+      @preview="previewVoice"
+      @set-rate="setRate"
+      @set-auto-play="setAutoPlay"
+      @toggle-theme="toggleTheme"
+      @set-sound-enabled="setSoundEnabled"
+      @set-sound-volume="setSoundVolume"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick, computed, useTemplateRef } from "vue";
-import { useRoute } from "vue-router";
-import type { Word } from "@en/common/word";
-import { useAudio } from "@/hooks/useAudio";
-import { View, Hide, VideoPlay } from "@element-plus/icons-vue";
-import { getWordList, saveWordMaster as saveWordMasterApi } from "@/apis/learn";
-import { ElMessage } from "element-plus";
-import { useUserStore } from "@/stores/user";
-const userStore = useUserStore();
-const inputRefs = useTemplateRef<HTMLInputElement[]>("inputRefs");
-interface WordItem {
-  word: string;
-  input: string;
-  isTrue: boolean | undefined;
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
+import type { LearnStatus, LearnWord } from '@en/common/learn'
+import { finishReview, finishSession, getReviewDue, getWordList, submitAnswer } from '@/apis/learn'
+import { useUserStore } from '@/stores/user'
+import { usePronunciation } from '@/hooks/usePronunciation'
+import { useTypingSounds } from '@/hooks/useTypingSounds'
+import { useTheme } from '@/hooks/useTheme'
+import FocusHeader from './components/FocusHeader.vue'
+import WordPrompt from './components/WordPrompt.vue'
+import SpellingInput from './components/SpellingInput.vue'
+import SessionStats from './components/SessionStats.vue'
+import SessionSummary from './components/SessionSummary.vue'
+import SettingsPanel from './components/SettingsPanel.vue'
+import PauseOverlay from './components/PauseOverlay.vue'
+import ShortcutBar from './components/ShortcutBar.vue'
+
+const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+const { isDark, toggleTheme } = useTheme()
+const {
+  accent,
+  isPlaying,
+  isLoading: audioLoading,
+  error: audioError,
+  needsGesture,
+  rate,
+  autoPlay,
+  useAccent,
+  setRate,
+  setAutoPlay,
+  preload,
+  speak,
+  stop: stopSpeak,
+} = usePronunciation()
+const { enabled: soundEnabled, volume: soundVolume, setEnabled: setSoundEnabled,
+  setVolume: setSoundVolume, play: playSound, stop: stopSounds } = useTypingSounds()
+
+const courseId = computed(() => String(route.params.courseId || ''))
+const title = computed(() => {
+  const raw = String(route.params.title || '单词学习')
+  try {
+    return decodeURIComponent(raw)
+  } catch {
+    return raw
+  }
+})
+const isReview = computed(() => route.path.startsWith('/review'))
+const pageTitle = computed(() => isReview.value ? `复习 · ${title.value}` : title.value)
+
+const list = ref<LearnWord[]>([])
+const currentIndex = ref(0)
+const currentWord = computed(() => list.value[currentIndex.value])
+const status = ref<LearnStatus>('idle')
+const answer = ref('')
+const hovered = ref(false)
+const defaultShow = ref(localStorage.getItem('learn-default-show') === '1')
+const paused = ref(false)
+const isLoading = ref(true)
+const isFinished = ref(false)
+const finishing = ref(false)
+const settingsOpen = ref(false)
+const canPractice = computed(() => !paused.value && !settingsOpen.value && !isLoading.value && !isFinished.value && !finishing.value && !!currentWord.value)
+const spellingRef = ref<InstanceType<typeof SpellingInput> | null>(null)
+const elapsed = ref(0)
+const startedAt = ref(0)
+const questionStart = ref(Date.now())
+const attempts = ref(0)
+const learnedCount = ref(0)
+const reviewTotal = ref(0)
+const wrongWords = ref<{ word: string; translation: string }[]>([])
+const wrongWordIds = ref<string[]>([])
+const wordInput = ref(0)
+const wordCorrect = ref(0)
+const wordWrong = ref(0)
+const stats = reactive({
+  inputCount: 0,
+  correctInput: 0,
+  wrongInput: 0,
+})
+
+let timer: number | undefined
+let autoPlayRequest = 0
+let pausedAt = 0
+let resumeAfterSettings = false
+let disposed = false
+
+const clearAutoPlay = () => {
+  autoPlayRequest += 1
 }
-const { playAudio } = useAudio({}); //发音的api
-const route = useRoute();
-const title = route.params.title || "我的课程";
-const isLoading = ref(false); //默认不加载
-const list = ref<Word[]>([]); //单词列表 [{},{},....] list[currentIndex.value]
-const currentIndex = ref(0); //当前单词索引
-const isWordBlurred = ref(true); //是否模糊显示单词 默认是模糊的
-const currentWord = computed<Word | undefined>(
-  () => list.value[currentIndex.value],
-); //当前的单词
-const wordList = ref<WordItem[]>([]); //拼写列表
+
+const accuracy = computed(() => {
+  return stats.inputCount
+    ? Math.round((stats.correctInput / stats.inputCount) * 100)
+    : 0
+})
+
+const wpm = computed(() => {
+  if (!elapsed.value) return 0
+  return Math.max(0, Math.round(stats.correctInput / 5 / (elapsed.value / 60)))
+})
+
+const startTimer = () => {
+  if (timer || !startedAt.value) return
+  timer = window.setInterval(() => {
+    elapsed.value = Math.floor((Date.now() - startedAt.value) / 1000)
+  }, 1000)
+}
+
+const stopTimer = () => {
+  if (timer) {
+    clearInterval(timer)
+    timer = undefined
+  }
+}
+
+const beginIfNeeded = () => {
+  if (!startedAt.value) {
+    startedAt.value = Date.now()
+  }
+  elapsed.value = Math.floor((Date.now() - startedAt.value) / 1000)
+  startTimer()
+}
+
+const pause = () => {
+  if (paused.value || isFinished.value || finishing.value || isLoading.value || !currentWord.value) return
+  if (startedAt.value) {
+    elapsed.value = Math.floor((Date.now() - startedAt.value) / 1000)
+  }
+  paused.value = true
+  pausedAt = Date.now()
+  hovered.value = false
+  clearAutoPlay()
+  spellingRef.value?.blur()
+  stopTimer()
+  stopSpeak()
+  stopSounds()
+}
+
+const resume = () => {
+  if (!paused.value || settingsOpen.value || document.hidden) return
+  paused.value = false
+  const pauseDuration = pausedAt ? Date.now() - pausedAt : 0
+  questionStart.value += pauseDuration
+  if (startedAt.value) {
+    startedAt.value += pauseDuration
+    startTimer()
+  }
+  pausedAt = 0
+  focusInput()
+  if (autoPlay.value) speakCurrent()
+}
+
+const focusInput = () => {
+  nextTick(() => { if (canPractice.value) spellingRef.value?.focus() })
+}
+
+const openSettings = () => {
+  resumeAfterSettings = canPractice.value
+  pause()
+  clearAutoPlay()
+  stopSpeak()
+  settingsOpen.value = true
+}
+
+const closeSettings = () => {
+  stopSpeak()
+  settingsOpen.value = false
+  if (resumeAfterSettings) resume()
+  resumeAfterSettings = false
+}
+
+const previewVoice = () => speak(currentWord.value?.word || 'hello')
+const changeAccent = (value: 'us' | 'uk') => { useAccent(value); previewVoice() }
+
+const toggleDefault = () => {
+  defaultShow.value = !defaultShow.value
+  localStorage.setItem('learn-default-show', defaultShow.value ? '1' : '0')
+}
+
+const speakCurrent = () => {
+  if (canPractice.value && currentWord.value) speak(currentWord.value.word)
+}
+
+const speakWord = (word: string) => {
+  speak(word)
+}
+
+const addWrong = () => {
+  if (!currentWord.value) return
+  const word = currentWord.value.word
+  if (!wrongWordIds.value.includes(currentWord.value.id)) {
+    wrongWordIds.value.push(currentWord.value.id)
+  }
+  if (!wrongWords.value.some((item) => item.word === word)) {
+    wrongWords.value.push({
+      word,
+      translation: currentWord.value.translation || '',
+    })
+  }
+}
+
+const resetWord = () => {
+  clearAutoPlay()
+  stopSpeak()
+  answer.value = ''
+  status.value = 'idle'
+  hovered.value = false
+  attempts.value = 0
+  wordInput.value = 0
+  wordCorrect.value = 0
+  wordWrong.value = 0
+  questionStart.value = Date.now()
+  if (paused.value) pausedAt = Date.now()
+  focusInput()
+  if (canPractice.value && autoPlay.value) {
+    const request = autoPlayRequest
+    nextTick(() => {
+      if (request === autoPlayRequest && canPractice.value && autoPlay.value) speakCurrent()
+    })
+  }
+}
+
+const recordAnswer = async (isCorrect: boolean, revealed: boolean) => {
+  if (!currentWord.value) return
+  try {
+    await submitAnswer({
+      wordId: currentWord.value.id,
+      courseId: courseId.value,
+      mode: isReview.value ? 'review' : 'spelling',
+      answer: answer.value,
+      expected: currentWord.value.word,
+      isCorrect,
+      revealed,
+      durationMs: Date.now() - questionStart.value,
+      index: currentIndex.value,
+      inputCount: wordInput.value,
+      correctInput: wordCorrect.value,
+      wrongInput: wordWrong.value,
+      attempts: attempts.value,
+    })
+  } catch (error) {
+    console.error('提交答题失败', error)
+  }
+}
+
+const onKeystroke = (correct: boolean) => {
+  if (!canPractice.value || !correct) return
+  void playSound('key')
+  beginIfNeeded()
+  wordInput.value += 1
+  wordCorrect.value += 1
+  stats.inputCount += 1
+  stats.correctInput += 1
+}
+
+const onWrong = () => {
+  if (!canPractice.value || status.value !== 'idle') return
+  void playSound('wrong')
+  beginIfNeeded()
+  attempts.value += 1
+  wordInput.value += 1
+  wordWrong.value += 1
+  stats.inputCount += 1
+  stats.wrongInput += 1
+  addWrong()
+  if (attempts.value >= 3) {
+    status.value = 'revealed'
+    void recordAnswer(false, true)
+  }
+}
+
+const onComplete = () => {
+  if (!canPractice.value || status.value !== 'idle') return
+  void playSound('complete')
+  beginIfNeeded()
+  status.value = 'correct'
+  void recordAnswer(true, false)
+}
+
+const reveal = () => {
+  if (!canPractice.value || status.value !== 'idle') return
+  beginIfNeeded()
+  status.value = 'revealed'
+  addWrong()
+  void recordAnswer(false, true)
+}
+
+const next = () => {
+  if (!canPractice.value || status.value === 'idle') return
+  if (currentIndex.value < list.value.length - 1) {
+    currentIndex.value += 1
+    return
+  }
+  void finish()
+}
+
+const prev = () => {
+  if (!canPractice.value || currentIndex.value <= 0) return
+  currentIndex.value -= 1
+}
+
+const finish = async () => {
+  if (isFinished.value || finishing.value) return
+  finishing.value = true
+  clearAutoPlay()
+  stopSpeak()
+  stopTimer()
+  try {
+    if (isReview.value) {
+      const res = await finishReview({
+        courseId: courseId.value,
+        wordIds: list.value.map((item) => item.id),
+        wrongWordIds: wrongWordIds.value,
+      })
+      if (res.success) {
+        learnedCount.value = res.data.learnedCount
+        if (res.data.wrongWords?.length) {
+          wrongWords.value = res.data.wrongWords
+        }
+        userStore.updateUserWordNumber(res.data.wordNumber)
+      } else {
+        ElMessage.error(res.message)
+      }
+    } else {
+      const res = await finishSession({
+        courseId: courseId.value,
+        wordIds: list.value.map((item) => item.id),
+        wrongWordIds: wrongWordIds.value,
+      })
+      if (res.success) {
+        learnedCount.value = res.data.learnedCount
+        if (res.data.wrongWords?.length) {
+          wrongWords.value = res.data.wrongWords
+        }
+        userStore.updateUserWordNumber(res.data.wordNumber)
+      } else {
+        ElMessage.error(res.message)
+      }
+    }
+  } catch (error) {
+    console.error('保存学习结果失败', error)
+    ElMessage.error('保存学习结果失败，请稍后重试')
+  }
+  finishing.value = false
+  isFinished.value = true
+}
+
+const resetStats = () => {
+  stopTimer()
+  elapsed.value = 0
+  startedAt.value = 0
+  stats.inputCount = 0
+  stats.correctInput = 0
+  stats.wrongInput = 0
+  wrongWords.value = []
+  wrongWordIds.value = []
+  learnedCount.value = 0
+  attempts.value = 0
+  wordInput.value = 0
+  wordCorrect.value = 0
+  wordWrong.value = 0
+}
+
+const restartSame = () => {
+  resetStats()
+  isFinished.value = false
+  currentIndex.value = 0
+  resetWord()
+}
+
+const reviewWrong = () => {
+  const ids = new Set(wrongWordIds.value)
+  const reviewList = list.value.filter((item) => ids.has(item.id))
+  if (!reviewList.length) return
+  list.value = reviewList
+  resetStats()
+  isFinished.value = false
+  currentIndex.value = 0
+  resetWord()
+}
+
+const nextChapter = async () => {
+  if (isReview.value) {
+    if (reviewTotal.value > list.value.length) {
+      resetStats()
+      isFinished.value = false
+      currentIndex.value = 0
+      await load()
+      return
+    }
+    back()
+    return
+  }
+  resetStats()
+  isFinished.value = false
+  currentIndex.value = 0
+  await load()
+}
+
+const load = async () => {
+  isLoading.value = true
+  try {
+    if (isReview.value) {
+      const focusWordId = typeof route.query.wordId === 'string' ? route.query.wordId : undefined
+      const res = await getReviewDue(courseId.value, 20, focusWordId)
+      if (disposed) return
+      if (!res.success) {
+        ElMessage.error(res.message)
+        return
+      }
+      list.value = res.data.list
+      reviewTotal.value = res.data.total
+      currentIndex.value = 0
+    } else {
+      const res = await getWordList(courseId.value)
+      if (disposed) return
+      if (!res.success) {
+        ElMessage.error(res.message)
+        return
+      }
+      list.value = res.data.list
+      const maxIndex = Math.max(0, list.value.length - 1)
+      currentIndex.value = Math.min(Math.max(0, res.data.lastWordIndex || 0), maxIndex)
+    }
+  } catch (error) {
+    console.error('加载单词失败', error)
+  } finally {
+    if (!disposed) {
+      isLoading.value = false
+      if (list.value.length) resetWord()
+      if (document.hidden) pause()
+    }
+  }
+}
+
+const back = () => {
+  stopSpeak()
+  router.push(isReview.value && route.query.wordId ? '/wrong-book/index' : '/courses/index')
+}
+
+const onKeydown = (event: KeyboardEvent) => {
+  // Modal ownership is checked before pause/resume or any learning shortcut.
+  if (settingsOpen.value || event.defaultPrevented || event.isComposing) return
+  const target = event.target as HTMLElement | null
+  const ownInput = target?.getAttribute('aria-label') === '输入单词拼写'
+  if (target?.closest('[role="dialog"], [aria-modal="true"], .el-overlay') &&
+      !target.closest('[aria-labelledby="pause-title"]')) return
+  if (!ownInput && target?.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')) return
+  if (paused.value) {
+    if (!event.ctrlKey && !event.metaKey && !event.altKey && !event.repeat &&
+        (/^[a-z]$/i.test(event.key) || event.key === ' ' || event.key === 'Enter')) {
+      event.preventDefault()
+      event.stopPropagation()
+      resume()
+    }
+    return
+  }
+  if (!canPractice.value) return
+
+  if ((event.ctrlKey || event.metaKey) && event.key === "'") {
+    event.preventDefault()
+    speakCurrent()
+    return
+  }
+  if ((event.ctrlKey || event.metaKey) && event.key === ';') {
+    event.preventDefault()
+    reveal()
+    return
+  }
+  if (event.ctrlKey || event.metaKey || event.altKey) return
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    pause()
+    return
+  }
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault()
+    prev()
+    return
+  }
+  if (event.key === 'ArrowRight') {
+    event.preventDefault()
+    next()
+    return
+  }
+  const onControl = !!target?.closest('button, a, [role="button"]')
+  if (event.key === 'Enter' && status.value !== 'idle' && !onControl) {
+    event.preventDefault()
+    next()
+    return
+  }
+  if (event.key === ' ' && !onControl) {
+    event.preventDefault()
+    speakCurrent()
+    return
+  }
+  if (status.value === 'idle' && (/^[a-z]$/i.test(event.key) || event.key === 'Backspace')) {
+    if (needsGesture.value && autoPlay.value) speakCurrent()
+    if (!ownInput) {
+      event.preventDefault()
+      spellingRef.value?.typeKey(event.key)
+      focusInput()
+    }
+  }
+}
+
+const handleVisibility = () => {
+  if (document.hidden) handleBlur()
+}
+
+const handleBlur = () => {
+  if (settingsOpen.value) resumeAfterSettings = false
+  pause()
+  stopSpeak()
+  stopSounds()
+}
+
+// Download ahead of interaction, including the alternative accent for instant preview.
+watch([currentWord, accent], () => {
+  preload(list.value.slice(currentIndex.value, currentIndex.value + 3).map((word) => word.word))
+  if (currentWord.value) preload([currentWord.value.word], accent.value === 'us' ? 'uk' : 'us')
+})
+
+watch(currentWord, () => resetWord())
 
 watch(
-  currentWord,
-  () => {
-    isWordBlurred.value = true;
-    const current = currentWord.value?.word || ""; //读取当前的单词
-    wordList.value = Array.from(current).map((item) => ({
-      word: item,
-      input: "",
-      isTrue: undefined,
-    }));
+  () => userStore.user?.id,
+  (id) => {
+    if (id && !list.value.length && !isLoading.value) {
+      load()
+    }
   },
-  { immediate: true },
-);
-
-//上一个
-const pagePrev = () => {
-  if (currentIndex.value <= 0) return;
-  currentIndex.value--;
-};
-//下一个
-const pageNext = () => {
-  if (wordList.value.some((item) => !item.isTrue)) {
-    ElMessage.error("请先完成拼写");
-    return;
-  }
-  currentIndex.value++;
-};
-
-//保存的方法
-const saveWordMaster = async () => {
-  //找到单词所有的id并且是一个数组
-  const wordIds = list.value.map((item) => item.id);
-  const res = await saveWordMasterApi(wordIds);
-  if (res.success) {
-    currentIndex.value = 0;
-    getWordListData();
-    userStore.updateUserWordNumber(res.data.wordNumber);
-    ElMessage.success(res.message);
-  } else {
-    ElMessage.error(res.message);
-  }
-};
-
-//输入的方法
-const onInput = (index: number) => {
-  const current = wordList.value[index]!;
-  current.isTrue = current.word === current.input;
-  nextTick(() => {
-    const inputs = inputRefs.value as HTMLInputElement[];
-    if (index < inputs.length - 1) {
-      //不是最后一个输入框
-      inputs[index + 1]!.focus(); //下一个输入框聚焦
-    }
-  });
-};
-//按键的方法
-const onKeyDown = (index: number, event: KeyboardEvent) => {
-  if (event.key === "Backspace") {
-    event.preventDefault();
-    const current = wordList.value[index]!;
-    current.input = "";
-    current.isTrue = undefined;
-    nextTick(() => {
-      const inputs = inputRefs.value as HTMLInputElement[];
-      if (index > 0) {
-        //不是第一个输入框
-        inputs[index - 1]!.focus();
-      }
-    });
-  }
-  //按下了一个键盘的某个字符 不是ctrl、不是windows win Mac command、不是alt键
-  if (
-    event.key.length == 1 &&
-    !event.ctrlKey &&
-    !event.metaKey &&
-    !event.altKey
-  ) {
-    const current = wordList.value[index]!;
-    if (current.input && index < wordList.value.length - 1) {
-      event.preventDefault();
-      wordList.value[index + 1]!.input = event.key;
-      wordList.value[index + 1]!.isTrue =
-        wordList.value[index + 1]!.word === event.key;
-      nextTick(() => {
-        const inputs = inputRefs.value as HTMLInputElement[];
-        inputs[index + 1]!.focus();
-      });
-    }
-  }
-};
-
-const getWordListData = async () => {
-  isLoading.value = true;
-  const res = await getWordList(route.params.courseId as string);
-  isLoading.value = false;
-  if (res.success) {
-    list.value = res.data;
-  } else {
-    ElMessage.error(res.message);
-  }
-};
+)
 
 onMounted(() => {
-  getWordListData();
-});
+  if (isDark.value) document.documentElement.classList.add('dark')
+  load()
+  window.addEventListener('keydown', onKeydown, true)
+  document.addEventListener('visibilitychange', handleVisibility)
+  window.addEventListener('blur', handleBlur)
+})
+
+onUnmounted(() => {
+  disposed = true
+  stopTimer()
+  clearAutoPlay()
+  stopSpeak()
+  document.documentElement.classList.remove('dark')
+  window.removeEventListener('keydown', onKeydown, true)
+  document.removeEventListener('visibilitychange', handleVisibility)
+  window.removeEventListener('blur', handleBlur)
+})
 </script>

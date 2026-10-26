@@ -20,8 +20,28 @@ export type WordBookRecordModel = runtime.Types.Result.DefaultSelection<Prisma.$
 
 export type AggregateWordBookRecord = {
   _count: WordBookRecordCountAggregateOutputType | null
+  _avg: WordBookRecordAvgAggregateOutputType | null
+  _sum: WordBookRecordSumAggregateOutputType | null
   _min: WordBookRecordMinAggregateOutputType | null
   _max: WordBookRecordMaxAggregateOutputType | null
+}
+
+export type WordBookRecordAvgAggregateOutputType = {
+  mastery: number | null
+  correctCount: number | null
+  wrongCount: number | null
+  ease: number | null
+  intervalDays: number | null
+  repetitions: number | null
+}
+
+export type WordBookRecordSumAggregateOutputType = {
+  mastery: number | null
+  correctCount: number | null
+  wrongCount: number | null
+  ease: number | null
+  intervalDays: number | null
+  repetitions: number | null
 }
 
 export type WordBookRecordMinAggregateOutputType = {
@@ -31,6 +51,14 @@ export type WordBookRecordMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
+  mastery: number | null
+  correctCount: number | null
+  wrongCount: number | null
+  ease: number | null
+  intervalDays: number | null
+  repetitions: number | null
+  lastReviewedAt: Date | null
+  nextReviewAt: Date | null
 }
 
 export type WordBookRecordMaxAggregateOutputType = {
@@ -40,6 +68,14 @@ export type WordBookRecordMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   userId: string | null
+  mastery: number | null
+  correctCount: number | null
+  wrongCount: number | null
+  ease: number | null
+  intervalDays: number | null
+  repetitions: number | null
+  lastReviewedAt: Date | null
+  nextReviewAt: Date | null
 }
 
 export type WordBookRecordCountAggregateOutputType = {
@@ -49,9 +85,35 @@ export type WordBookRecordCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   userId: number
+  mastery: number
+  correctCount: number
+  wrongCount: number
+  ease: number
+  intervalDays: number
+  repetitions: number
+  lastReviewedAt: number
+  nextReviewAt: number
   _all: number
 }
 
+
+export type WordBookRecordAvgAggregateInputType = {
+  mastery?: true
+  correctCount?: true
+  wrongCount?: true
+  ease?: true
+  intervalDays?: true
+  repetitions?: true
+}
+
+export type WordBookRecordSumAggregateInputType = {
+  mastery?: true
+  correctCount?: true
+  wrongCount?: true
+  ease?: true
+  intervalDays?: true
+  repetitions?: true
+}
 
 export type WordBookRecordMinAggregateInputType = {
   id?: true
@@ -60,6 +122,14 @@ export type WordBookRecordMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   userId?: true
+  mastery?: true
+  correctCount?: true
+  wrongCount?: true
+  ease?: true
+  intervalDays?: true
+  repetitions?: true
+  lastReviewedAt?: true
+  nextReviewAt?: true
 }
 
 export type WordBookRecordMaxAggregateInputType = {
@@ -69,6 +139,14 @@ export type WordBookRecordMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   userId?: true
+  mastery?: true
+  correctCount?: true
+  wrongCount?: true
+  ease?: true
+  intervalDays?: true
+  repetitions?: true
+  lastReviewedAt?: true
+  nextReviewAt?: true
 }
 
 export type WordBookRecordCountAggregateInputType = {
@@ -78,6 +156,14 @@ export type WordBookRecordCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   userId?: true
+  mastery?: true
+  correctCount?: true
+  wrongCount?: true
+  ease?: true
+  intervalDays?: true
+  repetitions?: true
+  lastReviewedAt?: true
+  nextReviewAt?: true
   _all?: true
 }
 
@@ -119,6 +205,18 @@ export type WordBookRecordAggregateArgs<ExtArgs extends runtime.Types.Extensions
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: WordBookRecordAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: WordBookRecordSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: WordBookRecordMinAggregateInputType
@@ -149,6 +247,8 @@ export type WordBookRecordGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   _count?: WordBookRecordCountAggregateInputType | true
+  _avg?: WordBookRecordAvgAggregateInputType
+  _sum?: WordBookRecordSumAggregateInputType
   _min?: WordBookRecordMinAggregateInputType
   _max?: WordBookRecordMaxAggregateInputType
 }
@@ -160,7 +260,17 @@ export type WordBookRecordGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   userId: string
+  mastery: number
+  correctCount: number
+  wrongCount: number
+  ease: number
+  intervalDays: number
+  repetitions: number
+  lastReviewedAt: Date | null
+  nextReviewAt: Date | null
   _count: WordBookRecordCountAggregateOutputType | null
+  _avg: WordBookRecordAvgAggregateOutputType | null
+  _sum: WordBookRecordSumAggregateOutputType | null
   _min: WordBookRecordMinAggregateOutputType | null
   _max: WordBookRecordMaxAggregateOutputType | null
 }
@@ -190,6 +300,14 @@ export type WordBookRecordWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"WordBookRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WordBookRecord"> | Date | string
   userId?: Prisma.StringFilter<"WordBookRecord"> | string
+  mastery?: Prisma.IntFilter<"WordBookRecord"> | number
+  correctCount?: Prisma.IntFilter<"WordBookRecord"> | number
+  wrongCount?: Prisma.IntFilter<"WordBookRecord"> | number
+  ease?: Prisma.FloatFilter<"WordBookRecord"> | number
+  intervalDays?: Prisma.IntFilter<"WordBookRecord"> | number
+  repetitions?: Prisma.IntFilter<"WordBookRecord"> | number
+  lastReviewedAt?: Prisma.DateTimeNullableFilter<"WordBookRecord"> | Date | string | null
+  nextReviewAt?: Prisma.DateTimeNullableFilter<"WordBookRecord"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   word?: Prisma.XOR<Prisma.WordBookScalarRelationFilter, Prisma.WordBookWhereInput>
 }
@@ -201,6 +319,14 @@ export type WordBookRecordOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
+  lastReviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextReviewAt?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   word?: Prisma.WordBookOrderByWithRelationInput
 }
@@ -216,6 +342,14 @@ export type WordBookRecordWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"WordBookRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WordBookRecord"> | Date | string
   userId?: Prisma.StringFilter<"WordBookRecord"> | string
+  mastery?: Prisma.IntFilter<"WordBookRecord"> | number
+  correctCount?: Prisma.IntFilter<"WordBookRecord"> | number
+  wrongCount?: Prisma.IntFilter<"WordBookRecord"> | number
+  ease?: Prisma.FloatFilter<"WordBookRecord"> | number
+  intervalDays?: Prisma.IntFilter<"WordBookRecord"> | number
+  repetitions?: Prisma.IntFilter<"WordBookRecord"> | number
+  lastReviewedAt?: Prisma.DateTimeNullableFilter<"WordBookRecord"> | Date | string | null
+  nextReviewAt?: Prisma.DateTimeNullableFilter<"WordBookRecord"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   word?: Prisma.XOR<Prisma.WordBookScalarRelationFilter, Prisma.WordBookWhereInput>
 }, "id" | "userId_wordId">
@@ -227,9 +361,19 @@ export type WordBookRecordOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
+  lastReviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextReviewAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WordBookRecordCountOrderByAggregateInput
+  _avg?: Prisma.WordBookRecordAvgOrderByAggregateInput
   _max?: Prisma.WordBookRecordMaxOrderByAggregateInput
   _min?: Prisma.WordBookRecordMinOrderByAggregateInput
+  _sum?: Prisma.WordBookRecordSumOrderByAggregateInput
 }
 
 export type WordBookRecordScalarWhereWithAggregatesInput = {
@@ -242,6 +386,14 @@ export type WordBookRecordScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WordBookRecord"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WordBookRecord"> | Date | string
   userId?: Prisma.StringWithAggregatesFilter<"WordBookRecord"> | string
+  mastery?: Prisma.IntWithAggregatesFilter<"WordBookRecord"> | number
+  correctCount?: Prisma.IntWithAggregatesFilter<"WordBookRecord"> | number
+  wrongCount?: Prisma.IntWithAggregatesFilter<"WordBookRecord"> | number
+  ease?: Prisma.FloatWithAggregatesFilter<"WordBookRecord"> | number
+  intervalDays?: Prisma.IntWithAggregatesFilter<"WordBookRecord"> | number
+  repetitions?: Prisma.IntWithAggregatesFilter<"WordBookRecord"> | number
+  lastReviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WordBookRecord"> | Date | string | null
+  nextReviewAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WordBookRecord"> | Date | string | null
 }
 
 export type WordBookRecordCreateInput = {
@@ -249,6 +401,14 @@ export type WordBookRecordCreateInput = {
   isMaster?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutWordBookRecordsInput
   word: Prisma.WordBookCreateNestedOneWithoutWordBookRecordsInput
 }
@@ -260,6 +420,14 @@ export type WordBookRecordUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
 }
 
 export type WordBookRecordUpdateInput = {
@@ -267,6 +435,14 @@ export type WordBookRecordUpdateInput = {
   isMaster?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWordBookRecordsNestedInput
   word?: Prisma.WordBookUpdateOneRequiredWithoutWordBookRecordsNestedInput
 }
@@ -278,6 +454,14 @@ export type WordBookRecordUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WordBookRecordCreateManyInput = {
@@ -287,6 +471,14 @@ export type WordBookRecordCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
 }
 
 export type WordBookRecordUpdateManyMutationInput = {
@@ -294,6 +486,14 @@ export type WordBookRecordUpdateManyMutationInput = {
   isMaster?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WordBookRecordUncheckedUpdateManyInput = {
@@ -303,6 +503,14 @@ export type WordBookRecordUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WordBookRecordListRelationFilter = {
@@ -327,6 +535,23 @@ export type WordBookRecordCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
+  lastReviewedAt?: Prisma.SortOrder
+  nextReviewAt?: Prisma.SortOrder
+}
+
+export type WordBookRecordAvgOrderByAggregateInput = {
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
 }
 
 export type WordBookRecordMaxOrderByAggregateInput = {
@@ -336,6 +561,14 @@ export type WordBookRecordMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
+  lastReviewedAt?: Prisma.SortOrder
+  nextReviewAt?: Prisma.SortOrder
 }
 
 export type WordBookRecordMinOrderByAggregateInput = {
@@ -345,6 +578,23 @@ export type WordBookRecordMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
+  lastReviewedAt?: Prisma.SortOrder
+  nextReviewAt?: Prisma.SortOrder
+}
+
+export type WordBookRecordSumOrderByAggregateInput = {
+  mastery?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  wrongCount?: Prisma.SortOrder
+  ease?: Prisma.SortOrder
+  intervalDays?: Prisma.SortOrder
+  repetitions?: Prisma.SortOrder
 }
 
 export type WordBookRecordCreateNestedManyWithoutUserInput = {
@@ -387,6 +637,14 @@ export type WordBookRecordUncheckedUpdateManyWithoutUserNestedInput = {
   update?: Prisma.WordBookRecordUpdateWithWhereUniqueWithoutUserInput | Prisma.WordBookRecordUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.WordBookRecordUpdateManyWithWhereWithoutUserInput | Prisma.WordBookRecordUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.WordBookRecordScalarWhereInput | Prisma.WordBookRecordScalarWhereInput[]
+}
+
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type WordBookRecordCreateNestedManyWithoutWordInput = {
@@ -436,6 +694,14 @@ export type WordBookRecordCreateWithoutUserInput = {
   isMaster?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
   word: Prisma.WordBookCreateNestedOneWithoutWordBookRecordsInput
 }
 
@@ -445,6 +711,14 @@ export type WordBookRecordUncheckedCreateWithoutUserInput = {
   isMaster?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
 }
 
 export type WordBookRecordCreateOrConnectWithoutUserInput = {
@@ -483,6 +757,14 @@ export type WordBookRecordScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"WordBookRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WordBookRecord"> | Date | string
   userId?: Prisma.StringFilter<"WordBookRecord"> | string
+  mastery?: Prisma.IntFilter<"WordBookRecord"> | number
+  correctCount?: Prisma.IntFilter<"WordBookRecord"> | number
+  wrongCount?: Prisma.IntFilter<"WordBookRecord"> | number
+  ease?: Prisma.FloatFilter<"WordBookRecord"> | number
+  intervalDays?: Prisma.IntFilter<"WordBookRecord"> | number
+  repetitions?: Prisma.IntFilter<"WordBookRecord"> | number
+  lastReviewedAt?: Prisma.DateTimeNullableFilter<"WordBookRecord"> | Date | string | null
+  nextReviewAt?: Prisma.DateTimeNullableFilter<"WordBookRecord"> | Date | string | null
 }
 
 export type WordBookRecordCreateWithoutWordInput = {
@@ -490,6 +772,14 @@ export type WordBookRecordCreateWithoutWordInput = {
   isMaster?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutWordBookRecordsInput
 }
 
@@ -499,6 +789,14 @@ export type WordBookRecordUncheckedCreateWithoutWordInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
 }
 
 export type WordBookRecordCreateOrConnectWithoutWordInput = {
@@ -533,6 +831,14 @@ export type WordBookRecordCreateManyUserInput = {
   isMaster?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
 }
 
 export type WordBookRecordUpdateWithoutUserInput = {
@@ -540,6 +846,14 @@ export type WordBookRecordUpdateWithoutUserInput = {
   isMaster?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   word?: Prisma.WordBookUpdateOneRequiredWithoutWordBookRecordsNestedInput
 }
 
@@ -549,6 +863,14 @@ export type WordBookRecordUncheckedUpdateWithoutUserInput = {
   isMaster?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WordBookRecordUncheckedUpdateManyWithoutUserInput = {
@@ -557,6 +879,14 @@ export type WordBookRecordUncheckedUpdateManyWithoutUserInput = {
   isMaster?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WordBookRecordCreateManyWordInput = {
@@ -565,6 +895,14 @@ export type WordBookRecordCreateManyWordInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
+  mastery?: number
+  correctCount?: number
+  wrongCount?: number
+  ease?: number
+  intervalDays?: number
+  repetitions?: number
+  lastReviewedAt?: Date | string | null
+  nextReviewAt?: Date | string | null
 }
 
 export type WordBookRecordUpdateWithoutWordInput = {
@@ -572,6 +910,14 @@ export type WordBookRecordUpdateWithoutWordInput = {
   isMaster?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutWordBookRecordsNestedInput
 }
 
@@ -581,6 +927,14 @@ export type WordBookRecordUncheckedUpdateWithoutWordInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WordBookRecordUncheckedUpdateManyWithoutWordInput = {
@@ -589,6 +943,14 @@ export type WordBookRecordUncheckedUpdateManyWithoutWordInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  mastery?: Prisma.IntFieldUpdateOperationsInput | number
+  correctCount?: Prisma.IntFieldUpdateOperationsInput | number
+  wrongCount?: Prisma.IntFieldUpdateOperationsInput | number
+  ease?: Prisma.FloatFieldUpdateOperationsInput | number
+  intervalDays?: Prisma.IntFieldUpdateOperationsInput | number
+  repetitions?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReviewAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -600,6 +962,14 @@ export type WordBookRecordSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
+  mastery?: boolean
+  correctCount?: boolean
+  wrongCount?: boolean
+  ease?: boolean
+  intervalDays?: boolean
+  repetitions?: boolean
+  lastReviewedAt?: boolean
+  nextReviewAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   word?: boolean | Prisma.WordBookDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["wordBookRecord"]>
@@ -611,6 +981,14 @@ export type WordBookRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
+  mastery?: boolean
+  correctCount?: boolean
+  wrongCount?: boolean
+  ease?: boolean
+  intervalDays?: boolean
+  repetitions?: boolean
+  lastReviewedAt?: boolean
+  nextReviewAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   word?: boolean | Prisma.WordBookDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["wordBookRecord"]>
@@ -622,6 +1000,14 @@ export type WordBookRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
+  mastery?: boolean
+  correctCount?: boolean
+  wrongCount?: boolean
+  ease?: boolean
+  intervalDays?: boolean
+  repetitions?: boolean
+  lastReviewedAt?: boolean
+  nextReviewAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   word?: boolean | Prisma.WordBookDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["wordBookRecord"]>
@@ -633,9 +1019,17 @@ export type WordBookRecordSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
+  mastery?: boolean
+  correctCount?: boolean
+  wrongCount?: boolean
+  ease?: boolean
+  intervalDays?: boolean
+  repetitions?: boolean
+  lastReviewedAt?: boolean
+  nextReviewAt?: boolean
 }
 
-export type WordBookRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "wordId" | "isMaster" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["wordBookRecord"]>
+export type WordBookRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "wordId" | "isMaster" | "createdAt" | "updatedAt" | "userId" | "mastery" | "correctCount" | "wrongCount" | "ease" | "intervalDays" | "repetitions" | "lastReviewedAt" | "nextReviewAt", ExtArgs["result"]["wordBookRecord"]>
 export type WordBookRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   word?: boolean | Prisma.WordBookDefaultArgs<ExtArgs>
@@ -662,6 +1056,14 @@ export type $WordBookRecordPayload<ExtArgs extends runtime.Types.Extensions.Inte
     createdAt: Date
     updatedAt: Date
     userId: string
+    mastery: number
+    correctCount: number
+    wrongCount: number
+    ease: number
+    intervalDays: number
+    repetitions: number
+    lastReviewedAt: Date | null
+    nextReviewAt: Date | null
   }, ExtArgs["result"]["wordBookRecord"]>
   composites: {}
 }
@@ -1093,6 +1495,14 @@ export interface WordBookRecordFieldRefs {
   readonly createdAt: Prisma.FieldRef<"WordBookRecord", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WordBookRecord", 'DateTime'>
   readonly userId: Prisma.FieldRef<"WordBookRecord", 'String'>
+  readonly mastery: Prisma.FieldRef<"WordBookRecord", 'Int'>
+  readonly correctCount: Prisma.FieldRef<"WordBookRecord", 'Int'>
+  readonly wrongCount: Prisma.FieldRef<"WordBookRecord", 'Int'>
+  readonly ease: Prisma.FieldRef<"WordBookRecord", 'Float'>
+  readonly intervalDays: Prisma.FieldRef<"WordBookRecord", 'Int'>
+  readonly repetitions: Prisma.FieldRef<"WordBookRecord", 'Int'>
+  readonly lastReviewedAt: Prisma.FieldRef<"WordBookRecord", 'DateTime'>
+  readonly nextReviewAt: Prisma.FieldRef<"WordBookRecord", 'DateTime'>
 }
     
 

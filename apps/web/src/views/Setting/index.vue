@@ -1,72 +1,88 @@
 <template>
-  <div class="mx-auto w-[1200px] px-4 py-6">
-    <div class="flex items-center justify-between">
+  <div class="mx-auto w-[1200px] max-w-full px-4 pb-20 pt-10">
+    <header class="flex flex-wrap items-end justify-between gap-6 border-b border-zinc-200 pb-8">
       <div>
-        <div class="text-xl font-extrabold text-slate-900">设置</div>
-        <div class="mt-1 text-sm text-slate-500">
-          在这里修改你的个人信息与头像
-        </div>
+        <p
+          class="text-[11px] font-semibold uppercase tracking-[0.3em] text-teal-700"
+        >
+          Account Settings
+        </p>
+        <h1 class="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">
+          设置
+        </h1>
+        <p class="mt-2 text-sm leading-6 text-zinc-500">
+          在这里修改你的个人信息、头像与每日学习提醒。
+        </p>
       </div>
 
       <div class="flex gap-2">
-        <el-button @click="init">重置</el-button>
-        <el-button @click="onSave" type="primary">保存</el-button>
+        <el-button class="h-10 rounded-xl px-5" @click="init">重置</el-button>
+        <el-button class="btn-ink h-10 px-5" @click="onSave">保存</el-button>
       </div>
-    </div>
+    </header>
 
-    <el-row :gutter="16" class="mt-4">
-      <el-col :span="8">
-        <el-card shadow="never">
-          <template #header>
-            <div class="font-bold">头像</div>
-          </template>
+    <div class="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div class="space-y-4">
+        <section class="rounded-2xl border border-zinc-200/80 bg-white p-6">
+          <h2 class="text-sm font-semibold tracking-wide text-zinc-900">头像</h2>
+          <p class="mt-1 text-xs leading-5 text-zinc-400">
+            用于个人资料和评论展示。
+          </p>
 
-          <div class="flex items-center gap-4">
+          <div class="mt-5 flex items-center gap-4">
             <img
-              class="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+              class="h-20 w-20 rounded-full border border-zinc-200 object-cover"
               :src="preViewUrl || avatar"
               loading="lazy"
               referrerpolicy="no-referrer"
             />
 
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col items-start gap-2">
               <el-upload
                 :show-file-list="false"
                 :auto-upload="false"
                 accept="image/*"
                 :on-change="onAvatarSelect"
               >
-                <el-button type="primary">选择头像</el-button>
+                <el-button class="btn-ink h-9 px-4">选择头像</el-button>
               </el-upload>
 
-              <div class="text-xs text-slate-500">
-                支持 png/jpg/webp，建议小于 2MB
+              <div class="text-xs leading-5 text-zinc-400">
+                支持 png / jpg / webp，建议小于 2MB
               </div>
             </div>
           </div>
-        </el-card>
+        </section>
 
-        <el-card shadow="never" class="mt-4">
-          <template #header>
-            <div class="font-bold">账号</div>
-          </template>
+        <section class="rounded-2xl border border-zinc-200/80 bg-white p-6">
+          <h2 class="text-sm font-semibold tracking-wide text-zinc-900">账号</h2>
+          <p class="mt-1 text-xs leading-5 text-zinc-400">
+            当前账号的登录状态。
+          </p>
 
-          <div class="text-sm text-slate-600">
-            <div class="flex items-center justify-between">
-              <span>登录状态</span>
-              <el-tag type="success"> 已登录 </el-tag>
-            </div>
+          <div class="mt-5 flex items-center justify-between text-sm">
+            <span class="text-zinc-500">登录状态</span>
+            <span
+              class="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-2.5 py-1 text-xs font-medium text-teal-700"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-teal-600"></span>
+              已登录
+            </span>
           </div>
-        </el-card>
-      </el-col>
+        </section>
+      </div>
 
-      <el-col :span="16">
-        <el-card shadow="never">
-          <template #header>
-            <div class="font-bold">个人信息</div>
-          </template>
+      <div class="space-y-4">
+        <section class="rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-8">
+          <h2 class="text-sm font-semibold tracking-wide text-zinc-900">
+            个人信息
+          </h2>
+          <p class="mt-1 text-xs leading-5 text-zinc-400">
+            这些信息会同步到你的学习记录和每日报告。
+          </p>
 
           <el-form
+            class="mt-6"
             label-width="140px"
             :model="form"
             :rules="rules"
@@ -100,8 +116,8 @@
                   v-model="form.timingTaskTime"
                   placeholder="请选择定时任务时间"
                 />
-                <div class="text-xs text-slate-500 mt-3">
-                  tips:只有填写邮箱并且开启定时任务，才能收到每日打卡提醒
+                <div class="mt-3 text-xs leading-5 text-zinc-400">
+                  只有填写邮箱并且开启定时任务，才能收到每日打卡提醒。
                 </div>
               </div>
             </el-form-item>
@@ -125,25 +141,24 @@
               />
             </el-form-item>
           </el-form>
-        </el-card>
+        </section>
 
-        <el-card shadow="never" class="mt-4">
-          <template #header>
-            <div class="font-bold">危险操作</div>
-          </template>
-
-          <div class="flex items-center justify-between">
+        <section class="rounded-2xl border border-red-200/70 bg-white p-6 sm:p-8">
+          <h2 class="text-sm font-semibold tracking-wide text-red-700">
+            危险操作
+          </h2>
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div class="font-bold text-slate-900">退出登录</div>
-              <div class="text-sm text-slate-500">清除本地登录状态</div>
+              <div class="text-sm font-semibold text-zinc-900">退出登录</div>
+              <div class="mt-1 text-sm text-zinc-500">清除本地登录状态</div>
             </div>
             <el-button @click="logoutHandle" type="danger" plain>
               退出
             </el-button>
           </div>
-        </el-card>
-      </el-col>
-    </el-row>
+        </section>
+      </div>
+    </div>
   </div>
 </template>
 

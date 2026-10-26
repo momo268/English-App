@@ -13,7 +13,7 @@
 
         <!-- 弹框 -->
         <div
-          class="relative w-full max-w-md rounded-2xl bg-white shadow-xl shadow-indigo-500/10 border border-zinc-100 overflow-hidden"
+          class="relative w-full max-w-md overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl shadow-zinc-900/10"
           role="dialog"
           aria-modal="true"
           aria-labelledby="pay-dialog-title"
@@ -50,10 +50,10 @@
               </div>
             </div>
             <div
-              class="flex items-center justify-between rounded-xl border border-zinc-100 bg-indigo-50/50 px-4 py-3"
+              class="flex items-center justify-between rounded-xl border border-zinc-200 bg-[#f7f6f1] px-4 py-3"
             >
               <span class="text-sm text-zinc-600">支付金额</span>
-              <span class="text-xl font-bold text-indigo-600"
+              <span class="text-xl font-semibold tracking-tight text-zinc-950"
                 >¥{{ course.price }}</span
               >
             </div>
@@ -87,7 +87,7 @@
             </button>
             <button
               type="button"
-              class="flex-1 py-2.5 rounded-xl text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="flex-1 rounded-xl bg-zinc-900 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
               :disabled="isPay"
               @click="onConfirm"
             >

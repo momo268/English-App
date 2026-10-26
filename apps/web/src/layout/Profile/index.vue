@@ -1,6 +1,6 @@
 <template>
   <section
-    class="w-80 overflow-hidden rounded-[14px] bg-linear-to-b from-white/95 to-slate-50/95 backdrop-blur"
+    class="w-80 overflow-hidden rounded-2xl border border-zinc-200/80 bg-[#fbfaf7] backdrop-blur"
     aria-label="用户资料卡"
   >
     <div class="flex items-center gap-3 px-4 pb-3 pt-3.5">
@@ -18,14 +18,14 @@
         <div class="flex min-w-0 items-center gap-2">
           <div class="flex flex-col gap-1">
             <div
-              class="truncate text-sm font-extrabold leading-5 text-slate-900"
+              class="truncate text-sm font-semibold leading-5 text-zinc-950"
               :title="displayName"
             >
               {{ displayName }}
             </div>
             <div
               v-if="bio"
-              class="truncate text-xs leading-4 text-slate-500/90"
+              class="truncate text-xs leading-4 text-zinc-500"
               :title="bio"
             >
               {{ bio }}
@@ -34,7 +34,7 @@
         </div>
         <div
           v-if="!isLoggedIn"
-          class="mt-1 text-xs leading-4 text-slate-500/90"
+          class="mt-1 text-xs leading-4 text-zinc-500"
         >
           登录后可同步词库进度与打卡数据
         </div>
@@ -43,29 +43,29 @@
 
     <div class="grid grid-cols-2 gap-2.5 px-4 pb-3 pt-2" v-if="isLoggedIn">
       <div
-        class="rounded-xl border border-slate-900/5 bg-white/65 px-2.5 py-2.5"
+        class="rounded-xl border border-zinc-200/80 bg-[#f7f6f1] px-2.5 py-2.5"
       >
-        <div class="text-xs leading-4 text-slate-500/95">单词数量</div>
-        <div class="mt-1 text-lg font-black leading-[22px] text-slate-900">
+        <div class="text-xs leading-4 text-zinc-500">单词数量</div>
+        <div class="mt-1 text-lg font-semibold leading-[22px] text-zinc-950">
           {{ userStore?.getUser?.wordNumber ?? 0 }}
         </div>
       </div>
       <div
-        class="rounded-xl border border-amber-500/20 bg-amber-50/90 px-2.5 py-2.5"
+        class="rounded-xl border border-amber-200/70 bg-amber-50 px-2.5 py-2.5"
       >
-        <div class="text-xs leading-4 text-slate-500/95">打卡天数</div>
-        <div class="mt-1 text-lg font-black leading-[22px] text-slate-900">
+        <div class="text-xs leading-4 text-zinc-500">打卡天数</div>
+        <div class="mt-1 text-lg font-semibold leading-[22px] text-zinc-950">
           {{ userStore?.getUser?.dayNumber ?? 0 }}
         </div>
       </div>
     </div>
 
     <div
-      class="flex gap-2.5 border-t border-slate-900/5 bg-white/75 px-4 pb-3.5 pt-3"
+      class="flex gap-2.5 border-t border-zinc-200/80 bg-white/75 px-4 pb-3.5 pt-3"
     >
       <button
         v-if="!isLoggedIn"
-        class="h-9 flex-1 cursor-pointer rounded-[10px] border border-blue-600/25 bg-blue-600/10 text-[13px] font-extrabold text-blue-700 transition duration-150 hover:-translate-y-0.5 hover:shadow-[0_10px_16px_rgba(15,23,42,0.10)] active:translate-y-0 active:shadow-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+        class="h-9 flex-1 cursor-pointer rounded-xl bg-zinc-900 text-[13px] font-semibold text-white transition duration-150 hover:-translate-y-0.5 hover:bg-zinc-800 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
         type="button"
         @click="loginHandle"
       >
@@ -73,14 +73,14 @@
       </button>
       <template v-else>
         <button
-          class="h-9 flex-1 cursor-pointer rounded-[10px] border border-slate-900/10 bg-white/90 text-[13px] font-extrabold text-slate-900/90 transition duration-150 hover:-translate-y-0.5 hover:shadow-[0_10px_16px_rgba(15,23,42,0.10)] active:translate-y-0 active:shadow-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+          class="h-9 flex-1 cursor-pointer rounded-xl border border-zinc-200 bg-white text-[13px] font-semibold text-zinc-700 transition duration-150 hover:-translate-y-0.5 hover:border-zinc-300 hover:text-zinc-950 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           type="button"
           @click="gotoPath('/setting/index')"
         >
           个人资料
         </button>
         <button
-          class="h-9 flex-1 cursor-pointer rounded-[10px] border border-red-500/20 bg-red-500/10 text-[13px] font-extrabold text-red-700 transition duration-150 hover:-translate-y-0.5 hover:shadow-[0_10px_16px_rgba(15,23,42,0.10)] active:translate-y-0 active:shadow-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
+          class="h-9 flex-1 cursor-pointer rounded-xl border border-red-200 bg-red-50 text-[13px] font-semibold text-red-700 transition duration-150 hover:-translate-y-0.5 hover:bg-red-100 active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           type="button"
           @click="logoutHandle"
         >

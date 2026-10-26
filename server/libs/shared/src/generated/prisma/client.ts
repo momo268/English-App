@@ -50,6 +50,11 @@ export type User = Prisma.UserModel
  */
 export type WordBookRecord = Prisma.WordBookRecordModel
 /**
+ * Model PracticeLog
+ * 
+ */
+export type PracticeLog = Prisma.PracticeLogModel
+/**
  * Model WordBook
  * 
  */
@@ -69,3 +74,13 @@ export type CourseRecord = Prisma.CourseRecordModel
  * 
  */
 export type Course = Prisma.CourseModel
+/**
+ * Model StudyGoal
+ * 
+ */
+export type StudyGoal = Prisma.StudyGoalModel
+/**
+ * Model CheckIn
+ * 
+ */
+export type CheckIn = Prisma.CheckInModel

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[1200px] mx-auto flex mt-10">
+  <div class="mx-auto mt-8 flex w-[1200px] max-w-full px-4 pb-12">
     <Conversations @onGetRole="getRole" />
     <Bubble :list="list" @onSendMessage="sendMessage" />
   </div>
@@ -44,11 +44,13 @@ const sendMessage = (
       webSearch,
     },
     (data) => {
+      const last = list.value.at(-1);
+      if (!last) return;
       if (data.type === "reasoning") {
-        list.value[list.value.length - 1].reasoning += data.content;
+        last.reasoning += data.content;
       }
       if (data.type === "chat") {
-        list.value[list.value.length - 1].content += data.content;
+        last.content += data.content;
       }
     },
   );

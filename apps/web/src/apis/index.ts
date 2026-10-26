@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores/user' //pinia user的
-import router from '@/router' //路由
 import { refreshTokenApi } from './auth' //刷新token接口
 import { ElMessage } from 'element-plus'
+import { REQUIRE_LOGIN_EVENT } from '@/components/Login/type'
 
 export const timeout = 50000
 export const uploadUrl = import.meta.env.DEV ? 'http://127.0.0.1:9000' : 'http://线上地址待定'
@@ -13,7 +13,11 @@ export const serverApi = axios.create({
     timeout,
 })
 let isRefreshing = false //是否正在刷新token
-let requestQueue: ((newAccessToken: string) => void)[] = [] //存储失败的请求
+type QueueItem = {
+    resolve: (newAccessToken: string) => void
+    reject: (error: unknown) => void
+}
+let requestQueue: QueueItem[] = [] //存储等待新 token 的请求
 //请求拦截器
 serverApi.interceptors.request.use(config => {
     const userStore = useUserStore()
@@ -46,17 +50,27 @@ serverApi.interceptors.response.use(res => {
     const accessToken = userStore.getAccessToken
     const refreshToken = userStore.getRefreshToken
     const originalRequest = error.config //读取原始请求
+
+    const rejectQueue = (reason: unknown) => {
+        requestQueue.forEach((item) => item.reject(reason))
+        requestQueue = []
+    }
+
+    // 渐进式登录：未登录时不踢回首页，只弹登录框，保留当前页面
     if (!accessToken || !refreshToken) {
-        userStore.logout() //清空user
-        ElMessage.error("登录已过期，请重新登录")
-        router.replace('/') //跳转到首页
+        userStore.logout()
+        ElMessage.warning("请先登录")
+        window.dispatchEvent(new Event(REQUIRE_LOGIN_EVENT))
         return Promise.reject(error)
     }
     if (isRefreshing) {
-        return new Promise((resolve) => {
-            requestQueue.push((newAccessToken: string) => {
-                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-                resolve(serverApi(originalRequest))
+        return new Promise((resolve, reject) => {
+            requestQueue.push({
+                resolve: (newAccessToken: string) => {
+                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+                    resolve(serverApi(originalRequest))
+                },
+                reject,
             })
         })
     }
@@ -70,16 +84,21 @@ serverApi.interceptors.response.use(res => {
         } else {
             userStore.logout() //清空user
             ElMessage.error("登录已过期，请重新登录")
-            router.replace('/') //跳转到首页
+            rejectQueue(error)
+            window.dispatchEvent(new Event(REQUIRE_LOGIN_EVENT))
             return Promise.reject(error)
         }
         const newAccessToken = newToken.data.accessToken
-        requestQueue.forEach(callback => callback(newAccessToken)) //执行存储的请求
+        const pending = requestQueue
+        requestQueue = []
+        pending.forEach(item => item.resolve(newAccessToken)) //执行等待中的请求
         return serverApi(originalRequest)
-    } catch (error) {
-        return Promise.reject(error)
+    } catch (refreshError) {
+        userStore.logout()
+        rejectQueue(refreshError)
+        window.dispatchEvent(new Event(REQUIRE_LOGIN_EVENT))
+        return Promise.reject(refreshError)
     } finally {
-        requestQueue = [] //清空队列
         isRefreshing = false //重置刷新状态
     }
 })

@@ -4,11 +4,14 @@
 
 <script setup lang="ts">
 import * as THREE from "three";
-import { ref, useTemplateRef, onMounted } from "vue";
+import { useTemplateRef, onMounted, onUnmounted } from "vue";
+import { disposeModel } from "@/utils/disposeModel";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //gltf模型加载器
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"; //轨道控制器
 
 const hologramRef = useTemplateRef<HTMLCanvasElement>("hologramRef");
+let disposed = false;
+let cleanup = () => {};
 
 const initThree = () => {
   // 创建场景 - > 模型 + 相机 + 渲染器 + 灯光（可选 ）
@@ -21,8 +24,27 @@ const initThree = () => {
   camera.position.set(0, 0, 10);
   const loader = new GLTFLoader();
   loader.load("/models/hologram/scene.gltf", (gltf) => {
+    if (disposed) {
+      disposeModel(gltf.scene);
+      return;
+    }
     scene.add(gltf.scene); //添加模型到场景
     gltf.scene.scale.set(4, 4, 4);
+    // 模型自带的 HoloFillDark 是一层接近黑色的半透明填充，
+    // 放在深色背景上会把整体压暗；这里只降低这层填充的浓度。
+    gltf.scene.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
+      const materials = Array.isArray(object.material)
+        ? object.material
+        : [object.material];
+      materials.forEach((material) => {
+        if (material.name !== "HoloFillDark") return;
+        material.transparent = true;
+        material.opacity = 0.18;
+        material.depthWrite = false;
+        material.needsUpdate = true;
+      });
+    });
     if (gltf.animations && gltf.animations.length > 0) {
       mixer = new THREE.AnimationMixer(gltf.scene);
       gltf.animations.forEach((clip) => {
@@ -49,17 +71,30 @@ const initThree = () => {
   renderer.setSize(500, 250); // 设置渲染尺寸
   // 创建轨道控制器
   const controls = new OrbitControls(camera, renderer.domElement);
+  let animationId = 0;
   const animate = () => {
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
     const delta = clock.getDelta();
     if (mixer) mixer.update(delta);
     controls.update(); // 更新轨道控制器
     renderer.render(scene, camera); // 渲染场景
+  };
+  cleanup = () => {
+    cancelAnimationFrame(animationId);
+    mixer?.stopAllAction();
+    controls.dispose();
+    disposeModel(scene);
+    scene.clear();
+    renderer.dispose();
   };
   animate();
 };
 
 onMounted(() => {
   initThree();
+});
+onUnmounted(() => {
+  disposed = true;
+  cleanup();
 });
 </script>

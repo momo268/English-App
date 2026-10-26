@@ -1,28 +1,32 @@
 <template>
-  <div class="min-h-[60vh] bg-zinc-50/80">
-    <div class="w-[1200px] mx-auto px-4 pt-12 pb-24">
+  <div class="min-h-[60vh] bg-[#f7f6f1]">
+    <div class="w-[1200px] max-w-full mx-auto px-4 pt-12 pb-24">
       <!-- 标题 -->
-      <header class="mb-12 text-center">
+      <header class="mb-10 text-center">
         <p
-          class="text-sm font-medium text-indigo-600 tracking-wide uppercase mb-2"
+          class="text-[11px] font-semibold text-teal-700 tracking-[0.3em] uppercase"
         >
           Vocabulary Courses
         </p>
-        <h1 class="text-3xl font-bold text-zinc-900 tracking-tight sm:text-4xl">
+        <h1 class="mt-3 text-3xl font-semibold text-zinc-950 tracking-tight sm:text-4xl">
           精选课程
         </h1>
         <p class="mt-3 text-zinc-500 text-sm max-w-md mx-auto">
           一次购买，长期有效 · 覆盖高考、考研、四六级、托福雅思等
         </p>
+        <span class="mx-auto mt-6 block h-px w-12 bg-teal-700/60"></span>
       </header>
 
-      <el-tabs type="card" v-model="currentTab" @tab-change="getList">
+      <el-tabs v-model="currentTab" class="course-tabs" @tab-change="handleTabChange">
         <el-tab-pane name="list" label="精选课程"></el-tab-pane>
-        <el-tab-pane
-          v-if="userStore.user?.id"
-          name="my"
-          label="我的课程"
-        ></el-tab-pane>
+        <el-tab-pane name="my">
+          <template #label>
+            <span class="inline-flex items-center gap-1">
+              我的课程
+              <el-icon v-if="!userStore.user?.id"><Lock /></el-icon>
+            </span>
+          </template>
+        </el-tab-pane>
       </el-tabs>
 
       <!-- 课程卡片 3 列 -->
@@ -30,7 +34,7 @@
         <article
           v-for="item in list"
           :key="item.id"
-          class="group bg-white rounded-2xl overflow-hidden border border-zinc-100 shadow-sm hover:shadow-lg hover:shadow-indigo-500/5 hover:border-indigo-100 transition-all duration-300 flex flex-col"
+          class="group flex flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white transition-all duration-300 hover:border-zinc-300 hover:shadow-[0_20px_50px_-32px_rgba(24,24,27,0.28)]"
         >
           <div class="relative aspect-4/3 bg-zinc-100 overflow-hidden">
             <img
@@ -39,7 +43,7 @@
               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             />
             <div
-              class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur text-xs font-medium text-zinc-600 shadow-sm"
+              class="absolute top-3 left-3 rounded-md bg-white/90 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500 backdrop-blur"
             >
               词汇
             </div>
@@ -54,22 +58,33 @@
               {{ item.description }}
             </p>
             <div
-              class="mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between gap-3"
+              class="mt-4 flex items-center justify-between gap-3 border-t border-zinc-100 pt-4"
             >
-              <span class="text-xs text-zinc-400 truncate"
+              <span class="truncate text-xs text-zinc-400"
                 >讲师 {{ item.teacher }}</span
               >
-              <span class="text-lg font-bold text-indigo-600 shrink-0"
+              <span class="shrink-0 text-xl font-semibold tracking-tight text-zinc-950"
                 >¥{{ item.price }}</span
               >
             </div>
-            <button
-              type="button"
-              @click="openPay(item)"
-              class="mt-4 w-full py-2.5 rounded-xl text-sm font-medium text-indigo-600 border border-indigo-200 bg-white hover:bg-indigo-50 transition-colors cursor-pointer"
-            >
-              {{ currentTab === "list" ? "购买课程" : "学习课程" }}
-            </button>
+            <div class="mt-4 flex gap-2">
+              <button
+                type="button"
+                @click="openPay(item)"
+                class="rounded-xl bg-zinc-900 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 cursor-pointer"
+                :class="currentTab === 'my' ? 'flex-1' : 'w-full'"
+              >
+                {{ currentTab === "list" ? "购买课程" : "学习课程" }}
+              </button>
+              <button
+                v-if="currentTab === 'my'"
+                type="button"
+                @click="openReview(item)"
+                class="shrink-0 rounded-xl border border-zinc-300 px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:text-zinc-950 cursor-pointer"
+              >
+                复习
+              </button>
+            </div>
           </div>
         </article>
       </div>
@@ -89,11 +104,12 @@ import { useLogin } from "@/hooks/useLogin";
 import { useUserStore } from "@/stores/user";
 import { useSocket } from "@/hooks/useSocket";
 import { useRouter } from "vue-router";
+import { Lock } from "@element-plus/icons-vue";
 
 const router = useRouter();
 const userStore = useUserStore();
 const currentTab = ref("list");
-const { login } = useLogin();
+const { login, requireLogin } = useLogin();
 const list = ref<CourseList>([]);
 const payVisible = ref<boolean>(false);
 const selectedCourse = ref<Course | null>(null); //选中的课程
@@ -108,27 +124,56 @@ const getList = async () => {
     list.value = res.data;
   }
 };
-//打开支付弹框
+
+// 未登录点“我的课程”：先弹登录框，登录成功后切过去；取消则留在精选课程
+const handleTabChange = async (name: string | number) => {
+  if (name === "my" && !userStore.user?.id) {
+    const ok = await requireLogin();
+    if (!ok) {
+      currentTab.value = "list";
+      return;
+    }
+  }
+  currentTab.value = String(name);
+  await getList();
+};
+
+// 打开支付弹框
 const openPay = async (course: Course) => {
-  await login();
+  const ok = await login();
+  if (!ok) return;
   if (currentTab.value === "list") {
-    watch(
-      () => userStore.user?.id,
-      (newVal) => {
-        if (newVal) {
-          connect();
-        } else {
-          disconnect();
-        }
-      },
-      { immediate: true },
-    );
     payVisible.value = true;
     selectedCourse.value = course;
   } else {
     router.push(`/learn/index/${course.id}/${course.name}`);
   }
 };
+
+// 今日复习：只对“我的课程”开放
+const openReview = async (course: Course) => {
+  const ok = await login();
+  if (!ok) return;
+  router.push(`/review/index/${course.id}/${course.name}`);
+};
+
+// 退出登录时：断开 socket，并把“我的课程”切回精选课程
+watch(
+  () => userStore.user?.id,
+  (id) => {
+    if (id) {
+      connect();
+    } else {
+      disconnect();
+      if (currentTab.value === "my") {
+        currentTab.value = "list";
+        getList();
+      }
+    }
+  },
+  { immediate: true },
+);
+
 const imageSrc = (url: string) => {
   return uploadUrl + url;
 };
@@ -136,3 +181,32 @@ onMounted(() => {
   getList();
 });
 </script>
+
+<style scoped>
+.course-tabs :deep(.el-tabs__header) {
+  margin-bottom: 2rem;
+}
+.course-tabs :deep(.el-tabs__nav-wrap::after) {
+  height: 1px;
+  background-color: #e4e4e7;
+}
+.course-tabs :deep(.el-tabs__item) {
+  height: 40px;
+  margin-right: 2rem;
+  padding: 0 2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #71717a;
+}
+.course-tabs :deep(.el-tabs__item:hover),
+.course-tabs :deep(.el-tabs__item.is-active) {
+  color: #18181b;
+}
+.course-tabs :deep(.el-tabs__item.is-active) {
+  font-weight: 600;
+}
+.course-tabs :deep(.el-tabs__active-bar) {
+  height: 2px;
+  background-color: #0f766e;
+}
+</style>

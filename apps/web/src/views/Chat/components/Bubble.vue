@@ -1,32 +1,57 @@
 <template>
-  <div class="flex-1 h-[750px] p-5 bg-purple-50 flex flex-col">
-    <div class="flex-1 overflow-y-auto">
+  <div
+    class="ml-4 flex h-[750px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white"
+  >
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+      <div
+        v-if="!list?.length"
+        class="flex h-full flex-col items-center justify-center text-center"
+      >
+        <div
+          class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 text-teal-700"
+        >
+          <el-icon :size="22"><ChatDotRound /></el-icon>
+        </div>
+        <h2 class="mt-4 text-lg font-semibold text-zinc-950">
+          开始一段对话
+        </h2>
+        <p class="mt-2 max-w-xs text-sm leading-6 text-zinc-500">
+          选择左侧的对话模式，输入一句话，AI 会陪你用英语聊下去。
+        </p>
+      </div>
+
       <div v-for="(item, index) in list" :key="index">
         <div
-          class="flex justify-end items-center gap-4 mt-5 mb-5 mr-5"
+          class="mb-5 flex items-center justify-end gap-3"
           v-if="item.role === 'human'"
         >
           <div
-            class="text-sm text-white max-w-[80%] rounded-lg p-2 bg-blue-500 shadow-md"
+            class="max-w-[78%] rounded-2xl rounded-tr-md bg-zinc-900 px-4 py-3 text-sm leading-6 text-white shadow-sm"
           >
             {{ item.content }}
           </div>
-          <div>
-            <el-avatar :size="35">user</el-avatar>
-          </div>
+          <el-avatar
+            :size="32"
+            class="shrink-0 !bg-zinc-200 !text-xs !font-semibold !text-zinc-600"
+            >你</el-avatar
+          >
         </div>
-        <div class="flex justify-start items-center gap-4 mt-5 mb-5" v-else>
-          <div><el-avatar :size="35">AI</el-avatar></div>
-          <div>
+        <div class="mb-5 flex items-start gap-3" v-else>
+          <el-avatar
+            :size="32"
+            class="shrink-0 !bg-teal-700 !text-xs !font-semibold !text-white"
+            >AI</el-avatar
+          >
+          <div class="min-w-0 max-w-[82%]">
             <div
               v-if="item.role === 'ai' && item.reasoning"
-              class="text-[12px] text-gray-500 max-w-[80%] p-2"
+              class="mb-2 border-l-2 border-teal-200 pl-3 text-xs leading-6 text-zinc-400"
             >
               {{ item.reasoning }}
             </div>
             <div
               v-if="item.role === 'ai' && item.content !== ''"
-              class="text-sm text-gray-700 max-w-[80%] bg-white rounded-lg mt-2 deepseek-markdown"
+              class="deepseek-markdown !max-w-none !rounded-2xl !rounded-tl-md !border !border-zinc-200 !bg-[#f7f6f1] !p-3 text-sm text-zinc-700"
               v-html="parseMarkdown(item.content)"
             />
           </div>
@@ -34,63 +59,71 @@
       </div>
       <div ref="chatRef"></div>
     </div>
-    <div class="flex p-5 border-t border-gray-200 box-border flex-col gap-3">
+
+    <div class="border-t border-zinc-200 bg-[#fbfaf7] p-4">
       <!-- 功能选项 -->
-      <div class="flex items-center gap-3">
-        <div
-          class="flex items-center gap-1 px-3 py-1 rounded-full text-xs cursor-pointer transition-all border"
+      <div class="mb-3 flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          class="inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
           :class="
             deepThink
-              ? 'bg-purple-100 border-purple-400 text-purple-700'
-              : 'bg-gray-100 border-gray-200 text-gray-500 hover:bg-gray-200'
+              ? 'border-teal-200 bg-teal-50 text-teal-700'
+              : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50'
           "
           @click="deepThink = !deepThink"
         >
-          <span>🧠</span>
+          <el-icon :size="14"><MagicStick /></el-icon>
           <span>深度思考</span>
-        </div>
-        <div
-          class="flex items-center gap-1 px-3 py-1 rounded-full text-xs cursor-pointer transition-all border"
+        </button>
+        <button
+          type="button"
+          class="inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
           :class="
             webSearch
-              ? 'bg-blue-100 border-blue-400 text-blue-700'
-              : 'bg-gray-100 border-gray-200 text-gray-500 hover:bg-gray-200'
+              ? 'border-teal-200 bg-teal-50 text-teal-700'
+              : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50'
           "
           @click="webSearch = !webSearch"
         >
-          <span>🌐</span>
+          <el-icon :size="14"><Connection /></el-icon>
           <span>联网搜索</span>
-        </div>
+        </button>
       </div>
       <!-- 输入框 -->
-      <div class="flex">
+      <div class="flex items-end gap-2">
         <el-input
           @keyup.enter="sendMessage"
           type="textarea"
           :rows="2"
+          resize="none"
           v-model="message"
-          placeholder="请输入内容"
+          placeholder="输入你想说的话，Enter 发送"
         />
-        <el-button
-          class="ml-2"
-          :icon="Position"
-          type="primary"
+        <button
+          type="button"
+          :disabled="!message.trim()"
+          class="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-zinc-900 text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40"
           @click="sendMessage"
-        ></el-button>
-        <el-button
+        >
+          <el-icon :size="18"><Position /></el-icon>
+        </button>
+        <button
           v-if="!isRecording"
-          class="ml-2"
-          :icon="Mic"
-          type="primary"
+          type="button"
+          class="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-colors hover:border-zinc-300 hover:text-zinc-950"
           @click="startRecording"
-        ></el-button>
-        <el-button
+        >
+          <el-icon :size="18"><Mic /></el-icon>
+        </button>
+        <button
           v-else
-          class="ml-2"
-          :icon="VideoPause"
-          type="primary"
+          type="button"
+          class="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100"
           @click="stopRecording"
-        ></el-button>
+        >
+          <el-icon :size="18"><VideoPause /></el-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -98,7 +131,14 @@
 
 <script setup lang="ts">
 import { ref, useTemplateRef, watch, nextTick } from "vue";
-import { Position, Mic, VideoPause } from "@element-plus/icons-vue";
+import {
+  Position,
+  Mic,
+  VideoPause,
+  MagicStick,
+  Connection,
+  ChatDotRound,
+} from "@element-plus/icons-vue";
 import type { ChatMessageList } from "@en/common/chat";
 import { marked } from "marked";
 import "@/assets/css/deep-seek.css";

@@ -1,16 +1,16 @@
 <template>
   <div
-    class="relative w-[800px] h-full bg-linear-to-br from-gray-800 to-gray-900"
+    class="relative h-full w-[800px] bg-[#101312]"
   >
     <canvas class="w-full h-full" ref="canvasRef"></canvas>
     <div class="absolute top-6 left-6">
       <div class="flex items-center gap-2">
         <div
-          class="w-10 h-10 bg-linear-to-br from-indigo-500 to-purple-600 rounded-[10px] flex items-center justify-center"
+          class="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-700"
         >
           <span class="text-white font-bold text-xl">E</span>
         </div>
-        <span class="text-white text-xl font-bold">English App</span>
+        <span class="text-xl font-semibold tracking-tight text-white">English App</span>
       </div>
     </div>
     <!-- 登录/注册切换按钮 -->
@@ -28,7 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, useTemplateRef } from "vue";
+import { ref, computed, onMounted, onUnmounted, useTemplateRef } from "vue";
+import { disposeModel } from "@/utils/disposeModel";
 import * as THREE from "three";
 import type { LoginType } from "./type";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //gltf模型加载器
@@ -37,51 +38,54 @@ const canvasRef = useTemplateRef<HTMLCanvasElement>("canvasRef"); //获取canvas
 const type = ref<LoginType>("login"); // 登录/注册类型
 const loginClass = computed(() => {
   return type.value === "login"
-    ? "bg-indigo-500 text-white shadow-lg px-4 py-2 rounded-md text-sm font-medium transition-all"
-    : "text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-md text-sm font-medium transition-all";
+    ? "rounded-lg bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-all"
+    : "rounded-lg px-4 py-2 text-sm font-medium text-white/60 transition-all hover:bg-white/10 hover:text-white";
 });
 const registerClass = computed(() => {
   return type.value === "register"
-    ? "bg-indigo-500 text-white shadow-lg px-4 py-2 rounded-md text-sm font-medium transition-all"
-    : "text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-md text-sm font-medium transition-all";
+    ? "rounded-lg bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-all"
+    : "rounded-lg px-4 py-2 text-sm font-medium text-white/60 transition-all hover:bg-white/10 hover:text-white";
 });
 const emits = defineEmits(["changeType"]);
 const scene = new THREE.Scene(); //创建场景
 const clock = new THREE.Clock(); //创建时钟
 let currentModel: THREE.Group | null = null; //记录当前的模型
 let mixer: THREE.AnimationMixer | null = null; //记录当前的动画混合器
+let renderer: THREE.WebGLRenderer | null = null;
+let controls: OrbitControls | null = null;
+let animationId = 0;
+let loadId = 0;
+
+const clearModel = () => {
+  if (!currentModel) return;
+  mixer?.stopAllAction();
+  mixer?.uncacheRoot(currentModel);
+  mixer = null;
+  scene.remove(currentModel);
+  disposeModel(currentModel);
+  currentModel = null;
+};
+
 const loadModel = (url: LoginType) => {
-  //移除当前模型
-  if (currentModel) {
-    scene.remove(currentModel);
-    currentModel = null;
-  }
-  //加载新模型
+  clearModel();
+  const id = ++loadId;
   const loader = new GLTFLoader();
   type.value = url;
-  if (url === "login") {
-    loader.load("/models/login/scene.gltf", (gltf) => {
-      currentModel = gltf.scene;
-      scene.add(currentModel);
-      scene.position.y = -0.8; //往下一点
-      currentModel.scale.set(0.8, 0.8, 0.8);
-    });
-  }
-  if (url === "register") {
-    loader.load("/models/register/scene.gltf", (gltf) => {
-      currentModel = gltf.scene;
-      scene.add(currentModel);
-      scene.position.y = -0.8; //往下一点
-      currentModel.scale.set(0.8, 0.8, 0.8);
-      if (gltf.animations && gltf.animations.length > 0) {
-        mixer = new THREE.AnimationMixer(currentModel);
-        gltf.animations.forEach((animation) => {
-          const action = mixer!.clipAction(animation);
-          action.play();
-        });
-      }
-    });
-  }
+  loader.load(`/models/${url}/scene.gltf`, (gltf) => {
+    // 快速切换登录/注册或关闭弹窗后，丢弃已经过期的加载结果。
+    if (id !== loadId) {
+      disposeModel(gltf.scene);
+      return;
+    }
+    currentModel = gltf.scene;
+    scene.add(currentModel);
+    scene.position.y = -0.8;
+    currentModel.scale.set(0.8, 0.8, 0.8);
+    if (url === "register" && gltf.animations.length > 0) {
+      mixer = new THREE.AnimationMixer(currentModel);
+      gltf.animations.forEach((animation) => mixer!.clipAction(animation).play());
+    }
+  });
   emits("changeType", url); // 通知父组件切换类型
 };
 
@@ -90,7 +94,7 @@ const initThree = () => {
   const height = canvasRef.value!.clientHeight; //获取canvas高度
   const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000); //创建相机
   camera.position.set(1, 0.5, 1); //设置相机位置
-  const renderer = new THREE.WebGLRenderer({
+  renderer = new THREE.WebGLRenderer({
     canvas: canvasRef.value!, //渲染容器
     antialias: true, //抗锯齿
     alpha: true, //透明背景
@@ -100,20 +104,29 @@ const initThree = () => {
   loadModel(type.value);
   renderer.setSize(width, height); //设置渲染器大小
   renderer.render(scene, camera); //渲染场景
-  const controls = new OrbitControls(camera, renderer.domElement); //创建轨道控制器
+  controls = new OrbitControls(camera, renderer.domElement); //创建轨道控制器
   const animate = () => {
-    requestAnimationFrame(animate);
+    animationId = requestAnimationFrame(animate);
     if (mixer) {
       mixer.update(clock.getDelta());
     }
     scene.rotation.y += 0.002; //旋转场景
-    controls.update(); //更新轨道控制器
-    renderer.render(scene, camera); //渲染场景
+    controls?.update(); //更新轨道控制器
+    renderer?.render(scene, camera); //渲染场景
   };
   animate();
 };
 
 onMounted(() => {
   initThree();
+});
+onUnmounted(() => {
+  loadId += 1;
+  cancelAnimationFrame(animationId);
+  controls?.dispose();
+  clearModel();
+  renderer?.dispose();
+  controls = null;
+  renderer = null;
 });
 </script>

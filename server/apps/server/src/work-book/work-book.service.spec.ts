@@ -28,7 +28,7 @@ describe('WorkBookService', () => {
     const result = await service.findAll({ page: 2, pageSize: 20, word: ' style ', gk: true });
     expect(prisma.wordBook.findMany).toHaveBeenCalledWith(expect.objectContaining({
       skip: 20, take: 20,
-      where: expect.objectContaining({ word: { contains: 'style' }, gk: true }),
+      where: expect.objectContaining({ word: { contains: 'style', mode: 'insensitive' }, gk: true }),
     }));
     expect(result).toEqual({ total: 1, list: [{ id: 'word-1', word: 'style' }] });
   });

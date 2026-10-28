@@ -4,6 +4,7 @@ export type Word = {
     phonetic?: string; // 音标
     definition?: string; // 定义
     translation?: string; // 翻译
+    example?: string; // 例句
     pos?: string; // 词性
     collins?: string; // 柯林斯
     oxford?: string; // 牛津

@@ -59,7 +59,13 @@ export const ModelName = {
   CourseRecord: 'CourseRecord',
   Course: 'Course',
   StudyGoal: 'StudyGoal',
-  CheckIn: 'CheckIn'
+  CheckIn: 'CheckIn',
+  ChatSession: 'ChatSession',
+  KnowledgeChunk: 'KnowledgeChunk',
+  UserWordBook: 'UserWordBook',
+  UserWordBookItem: 'UserWordBookItem',
+  CourseWord: 'CourseWord',
+  ImportJob: 'ImportJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -146,6 +152,7 @@ export const WordBookScalarFieldEnum = {
   phonetic: 'phonetic',
   definition: 'definition',
   translation: 'translation',
+  example: 'example',
   pos: 'pos',
   collins: 'collins',
   oxford: 'oxford',
@@ -153,6 +160,8 @@ export const WordBookScalarFieldEnum = {
   bnc: 'bnc',
   frq: 'frq',
   exchange: 'exchange',
+  ownerId: 'ownerId',
+  source: 'source',
   gk: 'gk',
   zk: 'zk',
   gre: 'gre',
@@ -208,6 +217,9 @@ export const CourseScalarFieldEnum = {
   teacher: 'teacher',
   url: 'url',
   price: 'price',
+  ownerId: 'ownerId',
+  isCustom: 'isCustom',
+  wordCount: 'wordCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -241,12 +253,104 @@ export const CheckInScalarFieldEnum = {
 export type CheckInScalarFieldEnum = (typeof CheckInScalarFieldEnum)[keyof typeof CheckInScalarFieldEnum]
 
 
+export const ChatSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  assistantId: 'assistantId',
+  title: 'title',
+  lastMessage: 'lastMessage',
+  lastMessageAt: 'lastMessageAt',
+  messageCount: 'messageCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChatSessionScalarFieldEnum = (typeof ChatSessionScalarFieldEnum)[keyof typeof ChatSessionScalarFieldEnum]
+
+
+export const KnowledgeChunkScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  examType: 'examType',
+  sourceType: 'sourceType',
+  title: 'title',
+  content: 'content',
+  keywords: 'keywords',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KnowledgeChunkScalarFieldEnum = (typeof KnowledgeChunkScalarFieldEnum)[keyof typeof KnowledgeChunkScalarFieldEnum]
+
+
+export const UserWordBookScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  description: 'description',
+  wordCount: 'wordCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserWordBookScalarFieldEnum = (typeof UserWordBookScalarFieldEnum)[keyof typeof UserWordBookScalarFieldEnum]
+
+
+export const UserWordBookItemScalarFieldEnum = {
+  id: 'id',
+  bookId: 'bookId',
+  wordId: 'wordId',
+  sortOrder: 'sortOrder'
+} as const
+
+export type UserWordBookItemScalarFieldEnum = (typeof UserWordBookItemScalarFieldEnum)[keyof typeof UserWordBookItemScalarFieldEnum]
+
+
+export const CourseWordScalarFieldEnum = {
+  id: 'id',
+  courseId: 'courseId',
+  wordId: 'wordId',
+  sortOrder: 'sortOrder',
+  unit: 'unit'
+} as const
+
+export type CourseWordScalarFieldEnum = (typeof CourseWordScalarFieldEnum)[keyof typeof CourseWordScalarFieldEnum]
+
+
+export const ImportJobScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  status: 'status',
+  fileName: 'fileName',
+  targetId: 'targetId',
+  total: 'total',
+  success: 'success',
+  failed: 'failed',
+  message: 'message',
+  errors: 'errors',
+  payload: 'payload',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ImportJobScalarFieldEnum = (typeof ImportJobScalarFieldEnum)[keyof typeof ImportJobScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -263,4 +367,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

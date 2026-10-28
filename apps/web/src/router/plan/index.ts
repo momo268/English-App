@@ -3,14 +3,11 @@ import layout from '@/layout/index.vue'
 export default [
     {
         path: '/plan',
-        component: layout,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/Plan/index.vue'),
-                meta: { auth: true },
-            },
-        ],
+        redirect: '/',
+    },
+    {
+        path: '/plan/:pathMatch(.*)*',
+        redirect: '/',
     },
     {
         path: '/wrong-book',

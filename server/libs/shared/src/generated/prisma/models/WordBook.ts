@@ -30,6 +30,7 @@ export type WordBookMinAggregateOutputType = {
   phonetic: string | null
   definition: string | null
   translation: string | null
+  example: string | null
   pos: string | null
   collins: string | null
   oxford: string | null
@@ -37,6 +38,8 @@ export type WordBookMinAggregateOutputType = {
   bnc: string | null
   frq: string | null
   exchange: string | null
+  ownerId: string | null
+  source: string | null
   gk: boolean | null
   zk: boolean | null
   gre: boolean | null
@@ -55,6 +58,7 @@ export type WordBookMaxAggregateOutputType = {
   phonetic: string | null
   definition: string | null
   translation: string | null
+  example: string | null
   pos: string | null
   collins: string | null
   oxford: string | null
@@ -62,6 +66,8 @@ export type WordBookMaxAggregateOutputType = {
   bnc: string | null
   frq: string | null
   exchange: string | null
+  ownerId: string | null
+  source: string | null
   gk: boolean | null
   zk: boolean | null
   gre: boolean | null
@@ -80,6 +86,7 @@ export type WordBookCountAggregateOutputType = {
   phonetic: number
   definition: number
   translation: number
+  example: number
   pos: number
   collins: number
   oxford: number
@@ -87,6 +94,8 @@ export type WordBookCountAggregateOutputType = {
   bnc: number
   frq: number
   exchange: number
+  ownerId: number
+  source: number
   gk: number
   zk: number
   gre: number
@@ -107,6 +116,7 @@ export type WordBookMinAggregateInputType = {
   phonetic?: true
   definition?: true
   translation?: true
+  example?: true
   pos?: true
   collins?: true
   oxford?: true
@@ -114,6 +124,8 @@ export type WordBookMinAggregateInputType = {
   bnc?: true
   frq?: true
   exchange?: true
+  ownerId?: true
+  source?: true
   gk?: true
   zk?: true
   gre?: true
@@ -132,6 +144,7 @@ export type WordBookMaxAggregateInputType = {
   phonetic?: true
   definition?: true
   translation?: true
+  example?: true
   pos?: true
   collins?: true
   oxford?: true
@@ -139,6 +152,8 @@ export type WordBookMaxAggregateInputType = {
   bnc?: true
   frq?: true
   exchange?: true
+  ownerId?: true
+  source?: true
   gk?: true
   zk?: true
   gre?: true
@@ -157,6 +172,7 @@ export type WordBookCountAggregateInputType = {
   phonetic?: true
   definition?: true
   translation?: true
+  example?: true
   pos?: true
   collins?: true
   oxford?: true
@@ -164,6 +180,8 @@ export type WordBookCountAggregateInputType = {
   bnc?: true
   frq?: true
   exchange?: true
+  ownerId?: true
+  source?: true
   gk?: true
   zk?: true
   gre?: true
@@ -255,6 +273,7 @@ export type WordBookGroupByOutputType = {
   phonetic: string | null
   definition: string | null
   translation: string | null
+  example: string | null
   pos: string | null
   collins: string | null
   oxford: string | null
@@ -262,6 +281,8 @@ export type WordBookGroupByOutputType = {
   bnc: string | null
   frq: string | null
   exchange: string | null
+  ownerId: string | null
+  source: string
   gk: boolean | null
   zk: boolean | null
   gre: boolean | null
@@ -301,6 +322,7 @@ export type WordBookWhereInput = {
   phonetic?: Prisma.StringNullableFilter<"WordBook"> | string | null
   definition?: Prisma.StringNullableFilter<"WordBook"> | string | null
   translation?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  example?: Prisma.StringNullableFilter<"WordBook"> | string | null
   pos?: Prisma.StringNullableFilter<"WordBook"> | string | null
   collins?: Prisma.StringNullableFilter<"WordBook"> | string | null
   oxford?: Prisma.StringNullableFilter<"WordBook"> | string | null
@@ -308,6 +330,8 @@ export type WordBookWhereInput = {
   bnc?: Prisma.StringNullableFilter<"WordBook"> | string | null
   frq?: Prisma.StringNullableFilter<"WordBook"> | string | null
   exchange?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  ownerId?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  source?: Prisma.StringFilter<"WordBook"> | string
   gk?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
   zk?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
   gre?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
@@ -318,7 +342,10 @@ export type WordBookWhereInput = {
   ky?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"WordBook"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WordBook"> | Date | string
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   wordBookRecords?: Prisma.WordBookRecordListRelationFilter
+  userWordBookItems?: Prisma.UserWordBookItemListRelationFilter
+  courseWords?: Prisma.CourseWordListRelationFilter
 }
 
 export type WordBookOrderByWithRelationInput = {
@@ -327,6 +354,7 @@ export type WordBookOrderByWithRelationInput = {
   phonetic?: Prisma.SortOrderInput | Prisma.SortOrder
   definition?: Prisma.SortOrderInput | Prisma.SortOrder
   translation?: Prisma.SortOrderInput | Prisma.SortOrder
+  example?: Prisma.SortOrderInput | Prisma.SortOrder
   pos?: Prisma.SortOrderInput | Prisma.SortOrder
   collins?: Prisma.SortOrderInput | Prisma.SortOrder
   oxford?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,6 +362,8 @@ export type WordBookOrderByWithRelationInput = {
   bnc?: Prisma.SortOrderInput | Prisma.SortOrder
   frq?: Prisma.SortOrderInput | Prisma.SortOrder
   exchange?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrder
   gk?: Prisma.SortOrderInput | Prisma.SortOrder
   zk?: Prisma.SortOrderInput | Prisma.SortOrder
   gre?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,11 +374,15 @@ export type WordBookOrderByWithRelationInput = {
   ky?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  owner?: Prisma.UserOrderByWithRelationInput
   wordBookRecords?: Prisma.WordBookRecordOrderByRelationAggregateInput
+  userWordBookItems?: Prisma.UserWordBookItemOrderByRelationAggregateInput
+  courseWords?: Prisma.CourseWordOrderByRelationAggregateInput
 }
 
 export type WordBookWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  ownerId_word?: Prisma.WordBookOwnerIdWordCompoundUniqueInput
   AND?: Prisma.WordBookWhereInput | Prisma.WordBookWhereInput[]
   OR?: Prisma.WordBookWhereInput[]
   NOT?: Prisma.WordBookWhereInput | Prisma.WordBookWhereInput[]
@@ -356,6 +390,7 @@ export type WordBookWhereUniqueInput = Prisma.AtLeast<{
   phonetic?: Prisma.StringNullableFilter<"WordBook"> | string | null
   definition?: Prisma.StringNullableFilter<"WordBook"> | string | null
   translation?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  example?: Prisma.StringNullableFilter<"WordBook"> | string | null
   pos?: Prisma.StringNullableFilter<"WordBook"> | string | null
   collins?: Prisma.StringNullableFilter<"WordBook"> | string | null
   oxford?: Prisma.StringNullableFilter<"WordBook"> | string | null
@@ -363,6 +398,8 @@ export type WordBookWhereUniqueInput = Prisma.AtLeast<{
   bnc?: Prisma.StringNullableFilter<"WordBook"> | string | null
   frq?: Prisma.StringNullableFilter<"WordBook"> | string | null
   exchange?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  ownerId?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  source?: Prisma.StringFilter<"WordBook"> | string
   gk?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
   zk?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
   gre?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
@@ -373,8 +410,11 @@ export type WordBookWhereUniqueInput = Prisma.AtLeast<{
   ky?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"WordBook"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WordBook"> | Date | string
+  owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   wordBookRecords?: Prisma.WordBookRecordListRelationFilter
-}, "id">
+  userWordBookItems?: Prisma.UserWordBookItemListRelationFilter
+  courseWords?: Prisma.CourseWordListRelationFilter
+}, "id" | "ownerId_word">
 
 export type WordBookOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -382,6 +422,7 @@ export type WordBookOrderByWithAggregationInput = {
   phonetic?: Prisma.SortOrderInput | Prisma.SortOrder
   definition?: Prisma.SortOrderInput | Prisma.SortOrder
   translation?: Prisma.SortOrderInput | Prisma.SortOrder
+  example?: Prisma.SortOrderInput | Prisma.SortOrder
   pos?: Prisma.SortOrderInput | Prisma.SortOrder
   collins?: Prisma.SortOrderInput | Prisma.SortOrder
   oxford?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -389,6 +430,8 @@ export type WordBookOrderByWithAggregationInput = {
   bnc?: Prisma.SortOrderInput | Prisma.SortOrder
   frq?: Prisma.SortOrderInput | Prisma.SortOrder
   exchange?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrder
   gk?: Prisma.SortOrderInput | Prisma.SortOrder
   zk?: Prisma.SortOrderInput | Prisma.SortOrder
   gre?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -413,6 +456,7 @@ export type WordBookScalarWhereWithAggregatesInput = {
   phonetic?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   definition?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   translation?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
+  example?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   pos?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   collins?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   oxford?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
@@ -420,6 +464,8 @@ export type WordBookScalarWhereWithAggregatesInput = {
   bnc?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   frq?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
   exchange?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
+  ownerId?: Prisma.StringNullableWithAggregatesFilter<"WordBook"> | string | null
+  source?: Prisma.StringWithAggregatesFilter<"WordBook"> | string
   gk?: Prisma.BoolNullableWithAggregatesFilter<"WordBook"> | boolean | null
   zk?: Prisma.BoolNullableWithAggregatesFilter<"WordBook"> | boolean | null
   gre?: Prisma.BoolNullableWithAggregatesFilter<"WordBook"> | boolean | null
@@ -438,6 +484,7 @@ export type WordBookCreateInput = {
   phonetic?: string | null
   definition?: string | null
   translation?: string | null
+  example?: string | null
   pos?: string | null
   collins?: string | null
   oxford?: string | null
@@ -445,6 +492,7 @@ export type WordBookCreateInput = {
   bnc?: string | null
   frq?: string | null
   exchange?: string | null
+  source?: string
   gk?: boolean | null
   zk?: boolean | null
   gre?: boolean | null
@@ -455,7 +503,10 @@ export type WordBookCreateInput = {
   ky?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutWordsInput
   wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutWordInput
+  userWordBookItems?: Prisma.UserWordBookItemCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordCreateNestedManyWithoutWordInput
 }
 
 export type WordBookUncheckedCreateInput = {
@@ -464,6 +515,7 @@ export type WordBookUncheckedCreateInput = {
   phonetic?: string | null
   definition?: string | null
   translation?: string | null
+  example?: string | null
   pos?: string | null
   collins?: string | null
   oxford?: string | null
@@ -471,6 +523,8 @@ export type WordBookUncheckedCreateInput = {
   bnc?: string | null
   frq?: string | null
   exchange?: string | null
+  ownerId?: string | null
+  source?: string
   gk?: boolean | null
   zk?: boolean | null
   gre?: boolean | null
@@ -482,6 +536,8 @@ export type WordBookUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutWordInput
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordUncheckedCreateNestedManyWithoutWordInput
 }
 
 export type WordBookUpdateInput = {
@@ -490,6 +546,7 @@ export type WordBookUpdateInput = {
   phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -497,6 +554,7 @@ export type WordBookUpdateInput = {
   bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -507,7 +565,10 @@ export type WordBookUpdateInput = {
   ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutWordsNestedInput
   wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutWordNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUpdateManyWithoutWordNestedInput
 }
 
 export type WordBookUncheckedUpdateInput = {
@@ -516,6 +577,7 @@ export type WordBookUncheckedUpdateInput = {
   phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -523,6 +585,8 @@ export type WordBookUncheckedUpdateInput = {
   bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -534,6 +598,8 @@ export type WordBookUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutWordNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUncheckedUpdateManyWithoutWordNestedInput
 }
 
 export type WordBookCreateManyInput = {
@@ -542,6 +608,7 @@ export type WordBookCreateManyInput = {
   phonetic?: string | null
   definition?: string | null
   translation?: string | null
+  example?: string | null
   pos?: string | null
   collins?: string | null
   oxford?: string | null
@@ -549,6 +616,8 @@ export type WordBookCreateManyInput = {
   bnc?: string | null
   frq?: string | null
   exchange?: string | null
+  ownerId?: string | null
+  source?: string
   gk?: boolean | null
   zk?: boolean | null
   gre?: boolean | null
@@ -567,6 +636,7 @@ export type WordBookUpdateManyMutationInput = {
   phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -574,6 +644,7 @@ export type WordBookUpdateManyMutationInput = {
   bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -592,6 +663,7 @@ export type WordBookUncheckedUpdateManyInput = {
   phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -599,6 +671,8 @@ export type WordBookUncheckedUpdateManyInput = {
   bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -611,9 +685,24 @@ export type WordBookUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type WordBookListRelationFilter = {
+  every?: Prisma.WordBookWhereInput
+  some?: Prisma.WordBookWhereInput
+  none?: Prisma.WordBookWhereInput
+}
+
+export type WordBookOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type WordBookScalarRelationFilter = {
   is?: Prisma.WordBookWhereInput
   isNot?: Prisma.WordBookWhereInput
+}
+
+export type WordBookOwnerIdWordCompoundUniqueInput = {
+  ownerId: string
+  word: string
 }
 
 export type WordBookCountOrderByAggregateInput = {
@@ -622,6 +711,7 @@ export type WordBookCountOrderByAggregateInput = {
   phonetic?: Prisma.SortOrder
   definition?: Prisma.SortOrder
   translation?: Prisma.SortOrder
+  example?: Prisma.SortOrder
   pos?: Prisma.SortOrder
   collins?: Prisma.SortOrder
   oxford?: Prisma.SortOrder
@@ -629,6 +719,8 @@ export type WordBookCountOrderByAggregateInput = {
   bnc?: Prisma.SortOrder
   frq?: Prisma.SortOrder
   exchange?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   gk?: Prisma.SortOrder
   zk?: Prisma.SortOrder
   gre?: Prisma.SortOrder
@@ -647,6 +739,7 @@ export type WordBookMaxOrderByAggregateInput = {
   phonetic?: Prisma.SortOrder
   definition?: Prisma.SortOrder
   translation?: Prisma.SortOrder
+  example?: Prisma.SortOrder
   pos?: Prisma.SortOrder
   collins?: Prisma.SortOrder
   oxford?: Prisma.SortOrder
@@ -654,6 +747,8 @@ export type WordBookMaxOrderByAggregateInput = {
   bnc?: Prisma.SortOrder
   frq?: Prisma.SortOrder
   exchange?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   gk?: Prisma.SortOrder
   zk?: Prisma.SortOrder
   gre?: Prisma.SortOrder
@@ -672,6 +767,7 @@ export type WordBookMinOrderByAggregateInput = {
   phonetic?: Prisma.SortOrder
   definition?: Prisma.SortOrder
   translation?: Prisma.SortOrder
+  example?: Prisma.SortOrder
   pos?: Prisma.SortOrder
   collins?: Prisma.SortOrder
   oxford?: Prisma.SortOrder
@@ -679,6 +775,8 @@ export type WordBookMinOrderByAggregateInput = {
   bnc?: Prisma.SortOrder
   frq?: Prisma.SortOrder
   exchange?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   gk?: Prisma.SortOrder
   zk?: Prisma.SortOrder
   gre?: Prisma.SortOrder
@@ -689,6 +787,48 @@ export type WordBookMinOrderByAggregateInput = {
   ky?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type WordBookCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutOwnerInput, Prisma.WordBookUncheckedCreateWithoutOwnerInput> | Prisma.WordBookCreateWithoutOwnerInput[] | Prisma.WordBookUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutOwnerInput | Prisma.WordBookCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.WordBookCreateManyOwnerInputEnvelope
+  connect?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+}
+
+export type WordBookUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutOwnerInput, Prisma.WordBookUncheckedCreateWithoutOwnerInput> | Prisma.WordBookCreateWithoutOwnerInput[] | Prisma.WordBookUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutOwnerInput | Prisma.WordBookCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.WordBookCreateManyOwnerInputEnvelope
+  connect?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+}
+
+export type WordBookUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutOwnerInput, Prisma.WordBookUncheckedCreateWithoutOwnerInput> | Prisma.WordBookCreateWithoutOwnerInput[] | Prisma.WordBookUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutOwnerInput | Prisma.WordBookCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.WordBookUpsertWithWhereUniqueWithoutOwnerInput | Prisma.WordBookUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.WordBookCreateManyOwnerInputEnvelope
+  set?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  disconnect?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  delete?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  connect?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  update?: Prisma.WordBookUpdateWithWhereUniqueWithoutOwnerInput | Prisma.WordBookUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.WordBookUpdateManyWithWhereWithoutOwnerInput | Prisma.WordBookUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.WordBookScalarWhereInput | Prisma.WordBookScalarWhereInput[]
+}
+
+export type WordBookUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutOwnerInput, Prisma.WordBookUncheckedCreateWithoutOwnerInput> | Prisma.WordBookCreateWithoutOwnerInput[] | Prisma.WordBookUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutOwnerInput | Prisma.WordBookCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.WordBookUpsertWithWhereUniqueWithoutOwnerInput | Prisma.WordBookUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.WordBookCreateManyOwnerInputEnvelope
+  set?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  disconnect?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  delete?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  connect?: Prisma.WordBookWhereUniqueInput | Prisma.WordBookWhereUniqueInput[]
+  update?: Prisma.WordBookUpdateWithWhereUniqueWithoutOwnerInput | Prisma.WordBookUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.WordBookUpdateManyWithWhereWithoutOwnerInput | Prisma.WordBookUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.WordBookScalarWhereInput | Prisma.WordBookScalarWhereInput[]
 }
 
 export type WordBookCreateNestedOneWithoutWordBookRecordsInput = {
@@ -709,12 +849,41 @@ export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
 
-export type WordBookCreateWithoutWordBookRecordsInput = {
+export type WordBookCreateNestedOneWithoutUserWordBookItemsInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutUserWordBookItemsInput, Prisma.WordBookUncheckedCreateWithoutUserWordBookItemsInput>
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutUserWordBookItemsInput
+  connect?: Prisma.WordBookWhereUniqueInput
+}
+
+export type WordBookUpdateOneRequiredWithoutUserWordBookItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutUserWordBookItemsInput, Prisma.WordBookUncheckedCreateWithoutUserWordBookItemsInput>
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutUserWordBookItemsInput
+  upsert?: Prisma.WordBookUpsertWithoutUserWordBookItemsInput
+  connect?: Prisma.WordBookWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WordBookUpdateToOneWithWhereWithoutUserWordBookItemsInput, Prisma.WordBookUpdateWithoutUserWordBookItemsInput>, Prisma.WordBookUncheckedUpdateWithoutUserWordBookItemsInput>
+}
+
+export type WordBookCreateNestedOneWithoutCourseWordsInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutCourseWordsInput, Prisma.WordBookUncheckedCreateWithoutCourseWordsInput>
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutCourseWordsInput
+  connect?: Prisma.WordBookWhereUniqueInput
+}
+
+export type WordBookUpdateOneRequiredWithoutCourseWordsNestedInput = {
+  create?: Prisma.XOR<Prisma.WordBookCreateWithoutCourseWordsInput, Prisma.WordBookUncheckedCreateWithoutCourseWordsInput>
+  connectOrCreate?: Prisma.WordBookCreateOrConnectWithoutCourseWordsInput
+  upsert?: Prisma.WordBookUpsertWithoutCourseWordsInput
+  connect?: Prisma.WordBookWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WordBookUpdateToOneWithWhereWithoutCourseWordsInput, Prisma.WordBookUpdateWithoutCourseWordsInput>, Prisma.WordBookUncheckedUpdateWithoutCourseWordsInput>
+}
+
+export type WordBookCreateWithoutOwnerInput = {
   id?: string
   word: string
   phonetic?: string | null
   definition?: string | null
   translation?: string | null
+  example?: string | null
   pos?: string | null
   collins?: string | null
   oxford?: string | null
@@ -722,6 +891,7 @@ export type WordBookCreateWithoutWordBookRecordsInput = {
   bnc?: string | null
   frq?: string | null
   exchange?: string | null
+  source?: string
   gk?: boolean | null
   zk?: boolean | null
   gre?: boolean | null
@@ -732,6 +902,126 @@ export type WordBookCreateWithoutWordBookRecordsInput = {
   ky?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutWordInput
+  userWordBookItems?: Prisma.UserWordBookItemCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordCreateNestedManyWithoutWordInput
+}
+
+export type WordBookUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutWordInput
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordUncheckedCreateNestedManyWithoutWordInput
+}
+
+export type WordBookCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.WordBookWhereUniqueInput
+  create: Prisma.XOR<Prisma.WordBookCreateWithoutOwnerInput, Prisma.WordBookUncheckedCreateWithoutOwnerInput>
+}
+
+export type WordBookCreateManyOwnerInputEnvelope = {
+  data: Prisma.WordBookCreateManyOwnerInput | Prisma.WordBookCreateManyOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type WordBookUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.WordBookWhereUniqueInput
+  update: Prisma.XOR<Prisma.WordBookUpdateWithoutOwnerInput, Prisma.WordBookUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.WordBookCreateWithoutOwnerInput, Prisma.WordBookUncheckedCreateWithoutOwnerInput>
+}
+
+export type WordBookUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.WordBookWhereUniqueInput
+  data: Prisma.XOR<Prisma.WordBookUpdateWithoutOwnerInput, Prisma.WordBookUncheckedUpdateWithoutOwnerInput>
+}
+
+export type WordBookUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.WordBookScalarWhereInput
+  data: Prisma.XOR<Prisma.WordBookUpdateManyMutationInput, Prisma.WordBookUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type WordBookScalarWhereInput = {
+  AND?: Prisma.WordBookScalarWhereInput | Prisma.WordBookScalarWhereInput[]
+  OR?: Prisma.WordBookScalarWhereInput[]
+  NOT?: Prisma.WordBookScalarWhereInput | Prisma.WordBookScalarWhereInput[]
+  id?: Prisma.StringFilter<"WordBook"> | string
+  word?: Prisma.StringFilter<"WordBook"> | string
+  phonetic?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  definition?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  translation?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  example?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  pos?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  collins?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  oxford?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  tag?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  bnc?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  frq?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  exchange?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  ownerId?: Prisma.StringNullableFilter<"WordBook"> | string | null
+  source?: Prisma.StringFilter<"WordBook"> | string
+  gk?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  zk?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  gre?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  toefl?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  ielts?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  cet6?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  cet4?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  ky?: Prisma.BoolNullableFilter<"WordBook"> | boolean | null
+  createdAt?: Prisma.DateTimeFilter<"WordBook"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"WordBook"> | Date | string
+}
+
+export type WordBookCreateWithoutWordBookRecordsInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutWordsInput
+  userWordBookItems?: Prisma.UserWordBookItemCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordCreateNestedManyWithoutWordInput
 }
 
 export type WordBookUncheckedCreateWithoutWordBookRecordsInput = {
@@ -740,6 +1030,7 @@ export type WordBookUncheckedCreateWithoutWordBookRecordsInput = {
   phonetic?: string | null
   definition?: string | null
   translation?: string | null
+  example?: string | null
   pos?: string | null
   collins?: string | null
   oxford?: string | null
@@ -747,6 +1038,8 @@ export type WordBookUncheckedCreateWithoutWordBookRecordsInput = {
   bnc?: string | null
   frq?: string | null
   exchange?: string | null
+  ownerId?: string | null
+  source?: string
   gk?: boolean | null
   zk?: boolean | null
   gre?: boolean | null
@@ -757,6 +1050,8 @@ export type WordBookUncheckedCreateWithoutWordBookRecordsInput = {
   ky?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordUncheckedCreateNestedManyWithoutWordInput
 }
 
 export type WordBookCreateOrConnectWithoutWordBookRecordsInput = {
@@ -781,6 +1076,7 @@ export type WordBookUpdateWithoutWordBookRecordsInput = {
   phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -788,6 +1084,7 @@ export type WordBookUpdateWithoutWordBookRecordsInput = {
   bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -798,6 +1095,9 @@ export type WordBookUpdateWithoutWordBookRecordsInput = {
   ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutWordsNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUpdateManyWithoutWordNestedInput
 }
 
 export type WordBookUncheckedUpdateWithoutWordBookRecordsInput = {
@@ -806,6 +1106,7 @@ export type WordBookUncheckedUpdateWithoutWordBookRecordsInput = {
   phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -813,6 +1114,396 @@ export type WordBookUncheckedUpdateWithoutWordBookRecordsInput = {
   bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUncheckedUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookCreateWithoutUserWordBookItemsInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutWordsInput
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordCreateNestedManyWithoutWordInput
+}
+
+export type WordBookUncheckedCreateWithoutUserWordBookItemsInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  ownerId?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutWordInput
+  courseWords?: Prisma.CourseWordUncheckedCreateNestedManyWithoutWordInput
+}
+
+export type WordBookCreateOrConnectWithoutUserWordBookItemsInput = {
+  where: Prisma.WordBookWhereUniqueInput
+  create: Prisma.XOR<Prisma.WordBookCreateWithoutUserWordBookItemsInput, Prisma.WordBookUncheckedCreateWithoutUserWordBookItemsInput>
+}
+
+export type WordBookUpsertWithoutUserWordBookItemsInput = {
+  update: Prisma.XOR<Prisma.WordBookUpdateWithoutUserWordBookItemsInput, Prisma.WordBookUncheckedUpdateWithoutUserWordBookItemsInput>
+  create: Prisma.XOR<Prisma.WordBookCreateWithoutUserWordBookItemsInput, Prisma.WordBookUncheckedCreateWithoutUserWordBookItemsInput>
+  where?: Prisma.WordBookWhereInput
+}
+
+export type WordBookUpdateToOneWithWhereWithoutUserWordBookItemsInput = {
+  where?: Prisma.WordBookWhereInput
+  data: Prisma.XOR<Prisma.WordBookUpdateWithoutUserWordBookItemsInput, Prisma.WordBookUncheckedUpdateWithoutUserWordBookItemsInput>
+}
+
+export type WordBookUpdateWithoutUserWordBookItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutWordsNestedInput
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookUncheckedUpdateWithoutUserWordBookItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUncheckedUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookCreateWithoutCourseWordsInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner?: Prisma.UserCreateNestedOneWithoutWordsInput
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutWordInput
+  userWordBookItems?: Prisma.UserWordBookItemCreateNestedManyWithoutWordInput
+}
+
+export type WordBookUncheckedCreateWithoutCourseWordsInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  ownerId?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutWordInput
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedCreateNestedManyWithoutWordInput
+}
+
+export type WordBookCreateOrConnectWithoutCourseWordsInput = {
+  where: Prisma.WordBookWhereUniqueInput
+  create: Prisma.XOR<Prisma.WordBookCreateWithoutCourseWordsInput, Prisma.WordBookUncheckedCreateWithoutCourseWordsInput>
+}
+
+export type WordBookUpsertWithoutCourseWordsInput = {
+  update: Prisma.XOR<Prisma.WordBookUpdateWithoutCourseWordsInput, Prisma.WordBookUncheckedUpdateWithoutCourseWordsInput>
+  create: Prisma.XOR<Prisma.WordBookCreateWithoutCourseWordsInput, Prisma.WordBookUncheckedCreateWithoutCourseWordsInput>
+  where?: Prisma.WordBookWhereInput
+}
+
+export type WordBookUpdateToOneWithWhereWithoutCourseWordsInput = {
+  where?: Prisma.WordBookWhereInput
+  data: Prisma.XOR<Prisma.WordBookUpdateWithoutCourseWordsInput, Prisma.WordBookUncheckedUpdateWithoutCourseWordsInput>
+}
+
+export type WordBookUpdateWithoutCourseWordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneWithoutWordsNestedInput
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutWordNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookUncheckedUpdateWithoutCourseWordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutWordNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookCreateManyOwnerInput = {
+  id?: string
+  word: string
+  phonetic?: string | null
+  definition?: string | null
+  translation?: string | null
+  example?: string | null
+  pos?: string | null
+  collins?: string | null
+  oxford?: string | null
+  tag?: string | null
+  bnc?: string | null
+  frq?: string | null
+  exchange?: string | null
+  source?: string
+  gk?: boolean | null
+  zk?: boolean | null
+  gre?: boolean | null
+  toefl?: boolean | null
+  ielts?: boolean | null
+  cet6?: boolean | null
+  cet4?: boolean | null
+  ky?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WordBookUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutWordNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  toefl?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ielts?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet6?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  cet4?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  ky?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutWordNestedInput
+  userWordBookItems?: Prisma.UserWordBookItemUncheckedUpdateManyWithoutWordNestedInput
+  courseWords?: Prisma.CourseWordUncheckedUpdateManyWithoutWordNestedInput
+}
+
+export type WordBookUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  word?: Prisma.StringFieldUpdateOperationsInput | string
+  phonetic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  definition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  translation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  example?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pos?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  collins?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  oxford?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  frq?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exchange?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   gk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   zk?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   gre?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -832,10 +1523,14 @@ export type WordBookUncheckedUpdateWithoutWordBookRecordsInput = {
 
 export type WordBookCountOutputType = {
   wordBookRecords: number
+  userWordBookItems: number
+  courseWords: number
 }
 
 export type WordBookCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wordBookRecords?: boolean | WordBookCountOutputTypeCountWordBookRecordsArgs
+  userWordBookItems?: boolean | WordBookCountOutputTypeCountUserWordBookItemsArgs
+  courseWords?: boolean | WordBookCountOutputTypeCountCourseWordsArgs
 }
 
 /**
@@ -855,6 +1550,20 @@ export type WordBookCountOutputTypeCountWordBookRecordsArgs<ExtArgs extends runt
   where?: Prisma.WordBookRecordWhereInput
 }
 
+/**
+ * WordBookCountOutputType without action
+ */
+export type WordBookCountOutputTypeCountUserWordBookItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWordBookItemWhereInput
+}
+
+/**
+ * WordBookCountOutputType without action
+ */
+export type WordBookCountOutputTypeCountCourseWordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CourseWordWhereInput
+}
+
 
 export type WordBookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -862,6 +1571,7 @@ export type WordBookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   phonetic?: boolean
   definition?: boolean
   translation?: boolean
+  example?: boolean
   pos?: boolean
   collins?: boolean
   oxford?: boolean
@@ -869,6 +1579,8 @@ export type WordBookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   bnc?: boolean
   frq?: boolean
   exchange?: boolean
+  ownerId?: boolean
+  source?: boolean
   gk?: boolean
   zk?: boolean
   gre?: boolean
@@ -879,7 +1591,10 @@ export type WordBookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   ky?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  owner?: boolean | Prisma.WordBook$ownerArgs<ExtArgs>
   wordBookRecords?: boolean | Prisma.WordBook$wordBookRecordsArgs<ExtArgs>
+  userWordBookItems?: boolean | Prisma.WordBook$userWordBookItemsArgs<ExtArgs>
+  courseWords?: boolean | Prisma.WordBook$courseWordsArgs<ExtArgs>
   _count?: boolean | Prisma.WordBookCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["wordBook"]>
 
@@ -889,6 +1604,7 @@ export type WordBookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   phonetic?: boolean
   definition?: boolean
   translation?: boolean
+  example?: boolean
   pos?: boolean
   collins?: boolean
   oxford?: boolean
@@ -896,6 +1612,8 @@ export type WordBookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   bnc?: boolean
   frq?: boolean
   exchange?: boolean
+  ownerId?: boolean
+  source?: boolean
   gk?: boolean
   zk?: boolean
   gre?: boolean
@@ -906,6 +1624,7 @@ export type WordBookSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   ky?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  owner?: boolean | Prisma.WordBook$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["wordBook"]>
 
 export type WordBookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -914,6 +1633,7 @@ export type WordBookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   phonetic?: boolean
   definition?: boolean
   translation?: boolean
+  example?: boolean
   pos?: boolean
   collins?: boolean
   oxford?: boolean
@@ -921,6 +1641,8 @@ export type WordBookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   bnc?: boolean
   frq?: boolean
   exchange?: boolean
+  ownerId?: boolean
+  source?: boolean
   gk?: boolean
   zk?: boolean
   gre?: boolean
@@ -931,6 +1653,7 @@ export type WordBookSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   ky?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  owner?: boolean | Prisma.WordBook$ownerArgs<ExtArgs>
 }, ExtArgs["result"]["wordBook"]>
 
 export type WordBookSelectScalar = {
@@ -939,6 +1662,7 @@ export type WordBookSelectScalar = {
   phonetic?: boolean
   definition?: boolean
   translation?: boolean
+  example?: boolean
   pos?: boolean
   collins?: boolean
   oxford?: boolean
@@ -946,6 +1670,8 @@ export type WordBookSelectScalar = {
   bnc?: boolean
   frq?: boolean
   exchange?: boolean
+  ownerId?: boolean
+  source?: boolean
   gk?: boolean
   zk?: boolean
   gre?: boolean
@@ -958,18 +1684,28 @@ export type WordBookSelectScalar = {
   updatedAt?: boolean
 }
 
-export type WordBookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "word" | "phonetic" | "definition" | "translation" | "pos" | "collins" | "oxford" | "tag" | "bnc" | "frq" | "exchange" | "gk" | "zk" | "gre" | "toefl" | "ielts" | "cet6" | "cet4" | "ky" | "createdAt" | "updatedAt", ExtArgs["result"]["wordBook"]>
+export type WordBookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "word" | "phonetic" | "definition" | "translation" | "example" | "pos" | "collins" | "oxford" | "tag" | "bnc" | "frq" | "exchange" | "ownerId" | "source" | "gk" | "zk" | "gre" | "toefl" | "ielts" | "cet6" | "cet4" | "ky" | "createdAt" | "updatedAt", ExtArgs["result"]["wordBook"]>
 export type WordBookInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.WordBook$ownerArgs<ExtArgs>
   wordBookRecords?: boolean | Prisma.WordBook$wordBookRecordsArgs<ExtArgs>
+  userWordBookItems?: boolean | Prisma.WordBook$userWordBookItemsArgs<ExtArgs>
+  courseWords?: boolean | Prisma.WordBook$courseWordsArgs<ExtArgs>
   _count?: boolean | Prisma.WordBookCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type WordBookIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type WordBookIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type WordBookIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.WordBook$ownerArgs<ExtArgs>
+}
+export type WordBookIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.WordBook$ownerArgs<ExtArgs>
+}
 
 export type $WordBookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "WordBook"
   objects: {
+    owner: Prisma.$UserPayload<ExtArgs> | null
     wordBookRecords: Prisma.$WordBookRecordPayload<ExtArgs>[]
+    userWordBookItems: Prisma.$UserWordBookItemPayload<ExtArgs>[]
+    courseWords: Prisma.$CourseWordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -977,6 +1713,7 @@ export type $WordBookPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     phonetic: string | null
     definition: string | null
     translation: string | null
+    example: string | null
     pos: string | null
     collins: string | null
     oxford: string | null
@@ -984,6 +1721,8 @@ export type $WordBookPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     bnc: string | null
     frq: string | null
     exchange: string | null
+    ownerId: string | null
+    source: string
     gk: boolean | null
     zk: boolean | null
     gre: boolean | null
@@ -1388,7 +2127,10 @@ readonly fields: WordBookFieldRefs;
  */
 export interface Prisma__WordBookClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  owner<T extends Prisma.WordBook$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WordBook$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   wordBookRecords<T extends Prisma.WordBook$wordBookRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WordBook$wordBookRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WordBookRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userWordBookItems<T extends Prisma.WordBook$userWordBookItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WordBook$userWordBookItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserWordBookItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  courseWords<T extends Prisma.WordBook$courseWordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WordBook$courseWordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseWordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1423,6 +2165,7 @@ export interface WordBookFieldRefs {
   readonly phonetic: Prisma.FieldRef<"WordBook", 'String'>
   readonly definition: Prisma.FieldRef<"WordBook", 'String'>
   readonly translation: Prisma.FieldRef<"WordBook", 'String'>
+  readonly example: Prisma.FieldRef<"WordBook", 'String'>
   readonly pos: Prisma.FieldRef<"WordBook", 'String'>
   readonly collins: Prisma.FieldRef<"WordBook", 'String'>
   readonly oxford: Prisma.FieldRef<"WordBook", 'String'>
@@ -1430,6 +2173,8 @@ export interface WordBookFieldRefs {
   readonly bnc: Prisma.FieldRef<"WordBook", 'String'>
   readonly frq: Prisma.FieldRef<"WordBook", 'String'>
   readonly exchange: Prisma.FieldRef<"WordBook", 'String'>
+  readonly ownerId: Prisma.FieldRef<"WordBook", 'String'>
+  readonly source: Prisma.FieldRef<"WordBook", 'String'>
   readonly gk: Prisma.FieldRef<"WordBook", 'Boolean'>
   readonly zk: Prisma.FieldRef<"WordBook", 'Boolean'>
   readonly gre: Prisma.FieldRef<"WordBook", 'Boolean'>
@@ -1694,6 +2439,10 @@ export type WordBookCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    */
   data: Prisma.WordBookCreateManyInput | Prisma.WordBookCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WordBookIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1764,6 +2513,10 @@ export type WordBookUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many WordBooks to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WordBookIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1833,6 +2586,25 @@ export type WordBookDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * WordBook.owner
+ */
+export type WordBook$ownerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * WordBook.wordBookRecords
  */
 export type WordBook$wordBookRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1854,6 +2626,54 @@ export type WordBook$wordBookRecordsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.WordBookRecordScalarFieldEnum | Prisma.WordBookRecordScalarFieldEnum[]
+}
+
+/**
+ * WordBook.userWordBookItems
+ */
+export type WordBook$userWordBookItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserWordBookItem
+   */
+  select?: Prisma.UserWordBookItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserWordBookItem
+   */
+  omit?: Prisma.UserWordBookItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserWordBookItemInclude<ExtArgs> | null
+  where?: Prisma.UserWordBookItemWhereInput
+  orderBy?: Prisma.UserWordBookItemOrderByWithRelationInput | Prisma.UserWordBookItemOrderByWithRelationInput[]
+  cursor?: Prisma.UserWordBookItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserWordBookItemScalarFieldEnum | Prisma.UserWordBookItemScalarFieldEnum[]
+}
+
+/**
+ * WordBook.courseWords
+ */
+export type WordBook$courseWordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CourseWord
+   */
+  select?: Prisma.CourseWordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CourseWord
+   */
+  omit?: Prisma.CourseWordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CourseWordInclude<ExtArgs> | null
+  where?: Prisma.CourseWordWhereInput
+  orderBy?: Prisma.CourseWordOrderByWithRelationInput | Prisma.CourseWordOrderByWithRelationInput[]
+  cursor?: Prisma.CourseWordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CourseWordScalarFieldEnum | Prisma.CourseWordScalarFieldEnum[]
 }
 
 /**

@@ -6,6 +6,11 @@ export default [
         component: layout,
         children: [
             { path: 'index', component: () => import('@/views/WordBook/index.vue') },
+            {
+                path: 'mine/:id',
+                component: () => import('@/views/WordBook/Detail.vue'),
+                meta: { auth: true },
+            },
         ]
     }
 ]

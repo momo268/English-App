@@ -41,6 +41,11 @@ model User {
   courseRecords   CourseRecord[]
   studyGoal       StudyGoal?
   checkIns        CheckIn[]
+  chatSessions    ChatSession[]
+  words           WordBook[]       @relation("UserWords")
+  wordBooks       UserWordBook[]
+  courses         Course[]         @relation("UserCourses")
+  importJobs      ImportJob[]
   bio             String? // 签名  
   isTimingTask    Boolean          @default(false) // 是否开启定时任务 
   timingTaskTime  String           @default("00:00:00") //定时任务时间默认晚上0点开始，每隔24小时执行一次
@@ -96,31 +101,39 @@ model PracticeLog {
 
 //单词表
 model WordBook {
-  id              String           @id @default(cuid()) // 单词ID
-  word            String // 单词
-  phonetic        String? // 音标
-  definition      String? // 定义
-  translation     String? // 翻译
-  pos             String? // 词性
-  collins         String? // 柯林斯
-  oxford          String? // 牛津
-  tag             String? // 标签
-  bnc             String? // BNC 英国国家语料库
-  frq             String? // FRQ 频率
-  exchange        String? // 同义词
-  gk              Boolean? // 高考
-  zk              Boolean? // 中考
-  gre             Boolean? // GRE
-  toefl           Boolean? // TOEFL 
-  ielts           Boolean? // IELTS 
-  cet6            Boolean? // 大学英语六级
-  cet4            Boolean? // 大学英语四级
-  ky              Boolean? // 考研
-  createdAt       DateTime         @default(now()) // 创建时间
-  updatedAt       DateTime         @updatedAt // 更新时间
-  wordBookRecords WordBookRecord[]
+  id                String             @id @default(cuid()) // 单词ID
+  word              String // 单词
+  phonetic          String? // 音标
+  definition        String? // 定义
+  translation       String? // 翻译
+  example           String? // 例句
+  pos               String? // 词性
+  collins           String? // 柯林斯
+  oxford            String? // 牛津
+  tag               String? // 标签
+  bnc               String? // BNC 英国国家语料库
+  frq               String? // FRQ 频率
+  exchange          String? // 同义词
+  ownerId           String? // null 为公共词典
+  owner             User?              @relation("UserWords", fields: [ownerId], references: [id], onDelete: Cascade)
+  source            String             @default("system") // system | custom
+  gk                Boolean? // 高考
+  zk                Boolean? // 中考
+  gre               Boolean? // GRE
+  toefl             Boolean? // TOEFL 
+  ielts             Boolean? // IELTS 
+  cet6              Boolean? // 大学英语六级
+  cet4              Boolean? // 大学英语四级
+  ky                Boolean? // 考研
+  createdAt         DateTime           @default(now()) // 创建时间
+  updatedAt         DateTime           @updatedAt // 更新时间
+  wordBookRecords   WordBookRecord[]
+  userWordBookItems UserWordBookItem[]
+  courseWords       CourseWord[]
 
+  @@unique([ownerId, word])
   @@index([word])
+  @@index([ownerId])
   @@index([tag])
   @@index([word, tag])
 }
@@ -166,14 +179,21 @@ model CourseRecord {
 model Course {
   id            String         @id @default(cuid()) // 课程ID
   name          String // 课程名
-  value         String // 课程value
+  value         String // 课程value；自定义课程为 custom
   description   String? // 课程描述
   teacher       String // 教师
   url           String // 课程url
   price         Decimal // 课程价格
+  ownerId       String? // 自定义课程所属用户；null 为平台课程
+  owner         User?          @relation("UserCourses", fields: [ownerId], references: [id], onDelete: Cascade)
+  isCustom      Boolean        @default(false)
+  wordCount     Int            @default(0)
   createdAt     DateTime       @default(now()) // 创建时间
   updatedAt     DateTime       @updatedAt // 更新时间
   courseRecords CourseRecord[]
+  courseWords   CourseWord[]
+
+  @@index([ownerId, isCustom])
 }
 
 // 每日学习目标
@@ -201,4 +221,98 @@ model CheckIn {
 
   @@unique([userId, date])
   @@index([userId, date])
+}
+
+// AI 对话会话（历史消息仍由 LangGraph checkpointer 保存，thread_id = userId:sessionId）
+model ChatSession {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assistantId   String // kaoyan | cet4 | cet6 | grammar | general
+  title         String
+  lastMessage   String?  @db.Text
+  lastMessageAt DateTime @default(now())
+  messageCount  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId, lastMessageAt])
+}
+
+// AI 教练知识库（第一版使用关键词检索；后续可平滑替换为 pgvector）
+model KnowledgeChunk {
+  id         String   @id @default(cuid())
+  key        String   @unique
+  examType   String // kaoyan | cet4 | cet6 | grammar | general
+  sourceType String // grammar | reading | writing | translation | vocabulary
+  title      String
+  content    String   @db.Text
+  keywords   String   @default("")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([examType])
+  @@index([examType, sourceType])
+}
+
+// 用户自定义词库（一组私有词条，不等于可学习课程）
+model UserWordBook {
+  id          String             @id @default(cuid())
+  userId      String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  wordCount   Int                @default(0)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  items       UserWordBookItem[]
+
+  @@index([userId, updatedAt])
+}
+
+model UserWordBookItem {
+  id        String       @id @default(cuid())
+  bookId    String
+  book      UserWordBook @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  wordId    String
+  word      WordBook     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  sortOrder Int          @default(0)
+
+  @@unique([bookId, wordId])
+  @@index([wordId])
+}
+
+// 自定义课程的单词关联，保留导入顺序
+model CourseWord {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  wordId    String
+  word      WordBook @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  sortOrder Int      @default(0)
+  unit      String?
+
+  @@unique([courseId, wordId])
+  @@index([wordId])
+}
+
+// 导入任务（模板解析、预览、异步入库、错误报告）
+model ImportJob {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // wordbook | course
+  status    String   @default("pending") // pending | importing | done | failed
+  fileName  String
+  targetId  String?
+  total     Int      @default(0)
+  success   Int      @default(0)
+  failed    Int      @default(0)
+  message   String?
+  errors    Json?
+  payload   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
 }

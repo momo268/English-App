@@ -1,5 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { WordQuery } from "@en/common/word";
+import type { UpdateUserWordBookPayload } from '@en/common/word-book';
 import { ResponseService, PrismaService } from "@libs/shared"
 import type { Prisma } from '@libs/shared/generated/prisma/client';
 
@@ -30,7 +31,8 @@ export class WorkBookService {
     const word = query.word?.trim()
     // 只接收页面支持的分类，不把任意 URL 参数直接传给数据库。
     const where: Prisma.WordBookWhereInput = {
-      word: word ? { contains: word } : undefined,
+      ownerId: null,
+      word: word ? { contains: word, mode: 'insensitive' } : undefined,
       gk: this.toBoolean(query.gk),
       zk: this.toBoolean(query.zk),
       gre: this.toBoolean(query.gre),
@@ -52,6 +54,72 @@ export class WorkBookService {
       }),
     ])
     return this.response.success({ total, list });
+  }
+
+  async findMyBooks(userId: string) {
+    const list = await this.prisma.userWordBook.findMany({
+      where: { userId },
+      orderBy: { updatedAt: 'desc' },
+    })
+    return this.response.success({
+      list: list.map((item) => ({
+        ...item,
+        createdAt: item.createdAt.toISOString(),
+        updatedAt: item.updatedAt.toISOString(),
+      })),
+      total: list.length,
+    })
+  }
+
+  async findMyBook(id: string, userId: string) {
+    const book = await this.prisma.userWordBook.findFirst({
+      where: { id, userId },
+      include: {
+        items: {
+          orderBy: { sortOrder: 'asc' },
+          include: { word: true },
+        },
+      },
+    })
+    if (!book) throw new NotFoundException('词库不存在')
+    return this.response.success({
+      id: book.id,
+      name: book.name,
+      description: book.description,
+      wordCount: book.wordCount,
+      createdAt: book.createdAt.toISOString(),
+      updatedAt: book.updatedAt.toISOString(),
+      words: book.items.map((item) => item.word),
+    })
+  }
+
+  async updateMyBook(id: string, userId: string, dto: UpdateUserWordBookPayload) {
+    const book = await this.prisma.userWordBook.findFirst({ where: { id, userId } })
+    if (!book) throw new NotFoundException('词库不存在')
+    const name = dto.name?.trim()
+    if (dto.name != null && !name) throw new BadRequestException('词库名称不能为空')
+    const updated = await this.prisma.userWordBook.update({
+      where: { id },
+      data: {
+        name: name || undefined,
+        description: dto.description === undefined ? undefined : dto.description.trim() || null,
+      },
+    })
+    return this.response.success({
+      ...updated,
+      createdAt: updated.createdAt.toISOString(),
+      updatedAt: updated.updatedAt.toISOString(),
+    })
+  }
+
+  async removeMyBook(id: string, userId: string) {
+    const book = await this.prisma.userWordBook.findFirst({ where: { id, userId } })
+    if (!book) throw new NotFoundException('词库不存在')
+    await this.prisma.$transaction([
+      this.prisma.userWordBookItem.deleteMany({ where: { bookId: id } }),
+      this.prisma.userWordBook.delete({ where: { id } }),
+    ])
+    return this.response.success({ id })
   }
 
   findOne(id: number) {

@@ -108,10 +108,60 @@ export const aiApi = axios.create({
     timeout,
 })
 
-aiApi.interceptors.response.use(res => {
-    return res.data
+aiApi.interceptors.request.use(config => {
+    const userStore = useUserStore()
+    if (userStore.getAccessToken) {
+        config.headers.Authorization = `Bearer ${userStore.getAccessToken}`
+    }
+    return config
 })
 
+let aiRefreshPromise: Promise<string | null> | null = null
+
+const ensureAiAccessToken = () => {
+    if (!aiRefreshPromise) {
+        aiRefreshPromise = (async () => {
+            const userStore = useUserStore()
+            const refreshToken = userStore.getRefreshToken
+            if (!refreshToken) return null
+            try {
+                const result = await refreshTokenApi({ refreshToken })
+                if (!result.success) return null
+                userStore.updateToken(result.data)
+                return result.data.accessToken
+            } catch {
+                return null
+            } finally {
+                aiRefreshPromise = null
+            }
+        })()
+    }
+    return aiRefreshPromise
+}
+
+aiApi.interceptors.response.use(res => {
+    return res.data
+}, async error => {
+    if (error.response?.status !== 401) {
+        return Promise.reject(error)
+    }
+    const originalRequest = error.config as typeof error.config & { _aiRetried?: boolean }
+    if (!originalRequest || originalRequest._aiRetried) {
+        return Promise.reject(error)
+    }
+    const accessToken = await ensureAiAccessToken()
+    if (!accessToken) {
+        useUserStore().logout()
+        window.dispatchEvent(new Event(REQUIRE_LOGIN_EVENT))
+        return Promise.reject(error)
+    }
+    originalRequest._aiRetried = true
+    originalRequest.headers.Authorization = `Bearer ${accessToken}`
+    return aiApi(originalRequest)
+})
+
+
+export const refreshAiAccessToken = () => ensureAiAccessToken()
 
 export interface Response<T = any> {
     timestamp: string,

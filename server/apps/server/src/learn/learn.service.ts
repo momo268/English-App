@@ -164,6 +164,57 @@ export class LearnService {
       return this.response.error('非法请求');
     }
     const courseType = courseRecord.course.value; // gk,zk等一些分类
+    const isCustom = courseRecord.course.isCustom;
+
+    if (isCustom) {
+      const courseWords = await this.prisma.courseWord.findMany({
+        where: {
+          courseId: id,
+          word: {
+            wordBookRecords: {
+              none: { userId, isMaster: true },
+            },
+          },
+        },
+        include: {
+          word: {
+            include: {
+              wordBookRecords: {
+                where: { userId },
+                select: {
+                  mastery: true,
+                  correctCount: true,
+                  wrongCount: true,
+                  ease: true,
+                  intervalDays: true,
+                  repetitions: true,
+                  lastReviewedAt: true,
+                  nextReviewAt: true,
+                  isMaster: true,
+                },
+              },
+            },
+          },
+        },
+        take: 10,
+        orderBy: { sortOrder: 'asc' },
+      })
+
+      const list = courseWords.map(({ word, unit }) => {
+        const { wordBookRecords, ...rest } = word
+        return {
+          ...rest,
+          unit,
+          progress: wordBookRecords[0] ?? null,
+        }
+      })
+
+      return this.response.success({
+        list,
+        lastWordIndex: courseRecord.lastWordIndex,
+        total: list.length,
+      })
+    }
 
     const words = await this.prisma.wordBook.findMany({
       where: {
@@ -222,18 +273,20 @@ export class LearnService {
     }
 
     const courseType = courseRecord.course.value;
+    const isCustom = courseRecord.course.isCustom;
     const take = Math.min(Math.max(Math.floor(limit) || 20, 1), 50);
+    const wordFilter = isCustom
+      ? { courseWords: { some: { courseId } } }
+      : { [courseType]: true };
     const dueWhere = {
       userId,
       nextReviewAt: { lte: new Date() },
-      word: {
-        [courseType]: true,
-      },
+      word: wordFilter,
     };
     const where = wordId
       ? {
           userId,
-          word: { [courseType]: true },
+          word: wordFilter,
           OR: [{ nextReviewAt: { lte: new Date() } }, { wordId }],
         }
       : dueWhere;
@@ -474,7 +527,7 @@ export class LearnService {
   }
 
   // 学习计划：目标 + 今日进度 + 打卡 + 待复习/错词概览
-  async getStudyGoalSummary(userId: string) {
+  async getGoalSnapshot(userId: string) {
     const date = this.todayKey();
     const [goal, progress, checkIn, streak, wrongBookCount, dueReviewCount] = await Promise.all([
       this.getGoalConfig(userId),
@@ -487,7 +540,7 @@ export class LearnService {
       }),
     ]);
 
-    return this.response.success({
+    return {
       goal: {
         dailyNew: goal.dailyNew,
         dailyReview: goal.dailyReview,
@@ -499,7 +552,11 @@ export class LearnService {
       streak,
       wrongBookCount,
       dueReviewCount,
-    });
+    };
+  }
+
+  async getStudyGoalSummary(userId: string) {
+    return this.response.success(await this.getGoalSnapshot(userId));
   }
 
   async updateStudyGoals(dto: UpdateStudyGoalsDto, userId: string) {
@@ -596,7 +653,7 @@ export class LearnService {
     const safeSize = Math.min(50, Math.max(1, Math.floor(Number(pageSize) || 20)));
     const where = { userId, wrongCount: { gt: 0 } };
 
-    const [records, total, dueCount, courseRows] = await Promise.all([
+    const [records, total, dueCount, courseRows, customRows] = await Promise.all([
       this.prisma.wordBookRecord.findMany({
         where,
         include: { word: true },
@@ -615,12 +672,30 @@ export class LearnService {
           course: { select: { name: true, value: true } },
         },
       }),
+      this.prisma.courseWord.findMany({
+        where: {
+          course: { ownerId: userId, isCustom: true },
+          word: {
+            wordBookRecords: {
+              some: { userId, wrongCount: { gt: 0 } },
+            },
+          },
+        },
+        select: {
+          wordId: true,
+          courseId: true,
+          course: { select: { name: true } },
+        },
+      }),
     ]);
 
     const list = records.map(({ word, ...progress }) => {
-      const course = courseRows.find(item =>
-        Boolean((word as unknown as Record<string, unknown>)[item.course.value]),
-      );
+      const custom = customRows.find(item => item.wordId === word.id);
+      const course = custom
+        ? { courseId: custom.courseId, course: { name: custom.course.name } }
+        : courseRows.find(item =>
+            Boolean((word as unknown as Record<string, unknown>)[item.course.value]),
+          );
       return {
         ...word,
         recordId: progress.id,

@@ -84,3 +84,33 @@ export type StudyGoal = Prisma.StudyGoalModel
  * 
  */
 export type CheckIn = Prisma.CheckInModel
+/**
+ * Model ChatSession
+ * 
+ */
+export type ChatSession = Prisma.ChatSessionModel
+/**
+ * Model KnowledgeChunk
+ * 
+ */
+export type KnowledgeChunk = Prisma.KnowledgeChunkModel
+/**
+ * Model UserWordBook
+ * 
+ */
+export type UserWordBook = Prisma.UserWordBookModel
+/**
+ * Model UserWordBookItem
+ * 
+ */
+export type UserWordBookItem = Prisma.UserWordBookItemModel
+/**
+ * Model CourseWord
+ * 
+ */
+export type CourseWord = Prisma.CourseWordModel
+/**
+ * Model ImportJob
+ * 
+ */
+export type ImportJob = Prisma.ImportJobModel

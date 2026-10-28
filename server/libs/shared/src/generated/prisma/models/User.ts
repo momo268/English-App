@@ -305,6 +305,11 @@ export type UserWhereInput = {
   courseRecords?: Prisma.CourseRecordListRelationFilter
   studyGoal?: Prisma.XOR<Prisma.StudyGoalNullableScalarRelationFilter, Prisma.StudyGoalWhereInput> | null
   checkIns?: Prisma.CheckInListRelationFilter
+  chatSessions?: Prisma.ChatSessionListRelationFilter
+  words?: Prisma.WordBookListRelationFilter
+  wordBooks?: Prisma.UserWordBookListRelationFilter
+  courses?: Prisma.CourseListRelationFilter
+  importJobs?: Prisma.ImportJobListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -328,6 +333,11 @@ export type UserOrderByWithRelationInput = {
   courseRecords?: Prisma.CourseRecordOrderByRelationAggregateInput
   studyGoal?: Prisma.StudyGoalOrderByWithRelationInput
   checkIns?: Prisma.CheckInOrderByRelationAggregateInput
+  chatSessions?: Prisma.ChatSessionOrderByRelationAggregateInput
+  words?: Prisma.WordBookOrderByRelationAggregateInput
+  wordBooks?: Prisma.UserWordBookOrderByRelationAggregateInput
+  courses?: Prisma.CourseOrderByRelationAggregateInput
+  importJobs?: Prisma.ImportJobOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -354,6 +364,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   courseRecords?: Prisma.CourseRecordListRelationFilter
   studyGoal?: Prisma.XOR<Prisma.StudyGoalNullableScalarRelationFilter, Prisma.StudyGoalWhereInput> | null
   checkIns?: Prisma.CheckInListRelationFilter
+  chatSessions?: Prisma.ChatSessionListRelationFilter
+  words?: Prisma.WordBookListRelationFilter
+  wordBooks?: Prisma.UserWordBookListRelationFilter
+  courses?: Prisma.CourseListRelationFilter
+  importJobs?: Prisma.ImportJobListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -421,6 +436,11 @@ export type UserCreateInput = {
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -444,6 +464,11 @@ export type UserUncheckedCreateInput = {
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -467,6 +492,11 @@ export type UserUpdateInput = {
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -490,6 +520,11 @@ export type UserUncheckedUpdateInput = {
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -615,6 +650,11 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -657,6 +697,22 @@ export type UserUpdateOneRequiredWithoutWordBookRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWordBookRecordsInput, Prisma.UserUpdateWithoutWordBookRecordsInput>, Prisma.UserUncheckedUpdateWithoutWordBookRecordsInput>
 }
 
+export type UserCreateNestedOneWithoutWordsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWordsInput, Prisma.UserUncheckedCreateWithoutWordsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWordsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutWordsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWordsInput, Prisma.UserUncheckedCreateWithoutWordsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWordsInput
+  upsert?: Prisma.UserUpsertWithoutWordsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWordsInput, Prisma.UserUpdateWithoutWordsInput>, Prisma.UserUncheckedUpdateWithoutWordsInput>
+}
+
 export type UserCreateNestedOneWithoutPaymentRecordsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentRecordsInput, Prisma.UserUncheckedCreateWithoutPaymentRecordsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentRecordsInput
@@ -683,6 +739,22 @@ export type UserUpdateOneRequiredWithoutCourseRecordsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutCourseRecordsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCourseRecordsInput, Prisma.UserUpdateWithoutCourseRecordsInput>, Prisma.UserUncheckedUpdateWithoutCourseRecordsInput>
+}
+
+export type UserCreateNestedOneWithoutCoursesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoursesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCoursesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCoursesInput
+  upsert?: Prisma.UserUpsertWithoutCoursesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCoursesInput, Prisma.UserUpdateWithoutCoursesInput>, Prisma.UserUncheckedUpdateWithoutCoursesInput>
 }
 
 export type UserCreateNestedOneWithoutStudyGoalInput = {
@@ -713,6 +785,48 @@ export type UserUpdateOneRequiredWithoutCheckInsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCheckInsInput, Prisma.UserUpdateWithoutCheckInsInput>, Prisma.UserUncheckedUpdateWithoutCheckInsInput>
 }
 
+export type UserCreateNestedOneWithoutChatSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatSessionsInput, Prisma.UserUncheckedCreateWithoutChatSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutChatSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutChatSessionsInput, Prisma.UserUncheckedCreateWithoutChatSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatSessionsInput
+  upsert?: Prisma.UserUpsertWithoutChatSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatSessionsInput, Prisma.UserUpdateWithoutChatSessionsInput>, Prisma.UserUncheckedUpdateWithoutChatSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutWordBooksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWordBooksInput, Prisma.UserUncheckedCreateWithoutWordBooksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWordBooksInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWordBooksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWordBooksInput, Prisma.UserUncheckedCreateWithoutWordBooksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWordBooksInput
+  upsert?: Prisma.UserUpsertWithoutWordBooksInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWordBooksInput, Prisma.UserUpdateWithoutWordBooksInput>, Prisma.UserUncheckedUpdateWithoutWordBooksInput>
+}
+
+export type UserCreateNestedOneWithoutImportJobsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutImportJobsInput, Prisma.UserUncheckedCreateWithoutImportJobsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutImportJobsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutImportJobsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutImportJobsInput, Prisma.UserUncheckedCreateWithoutImportJobsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutImportJobsInput
+  upsert?: Prisma.UserUpsertWithoutImportJobsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutImportJobsInput, Prisma.UserUpdateWithoutImportJobsInput>, Prisma.UserUncheckedUpdateWithoutImportJobsInput>
+}
+
 export type UserCreateWithoutWordBookRecordsInput = {
   id?: string
   name: string
@@ -733,6 +847,11 @@ export type UserCreateWithoutWordBookRecordsInput = {
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWordBookRecordsInput = {
@@ -755,6 +874,11 @@ export type UserUncheckedCreateWithoutWordBookRecordsInput = {
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWordBookRecordsInput = {
@@ -793,6 +917,11 @@ export type UserUpdateWithoutWordBookRecordsInput = {
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWordBookRecordsInput = {
@@ -815,6 +944,135 @@ export type UserUncheckedUpdateWithoutWordBookRecordsInput = {
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWordsInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWordsInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWordsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWordsInput, Prisma.UserUncheckedCreateWithoutWordsInput>
+}
+
+export type UserUpsertWithoutWordsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWordsInput, Prisma.UserUncheckedUpdateWithoutWordsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWordsInput, Prisma.UserUncheckedCreateWithoutWordsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWordsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWordsInput, Prisma.UserUncheckedUpdateWithoutWordsInput>
+}
+
+export type UserUpdateWithoutWordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentRecordsInput = {
@@ -837,6 +1095,11 @@ export type UserCreateWithoutPaymentRecordsInput = {
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentRecordsInput = {
@@ -859,6 +1122,11 @@ export type UserUncheckedCreateWithoutPaymentRecordsInput = {
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentRecordsInput = {
@@ -897,6 +1165,11 @@ export type UserUpdateWithoutPaymentRecordsInput = {
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentRecordsInput = {
@@ -919,6 +1192,11 @@ export type UserUncheckedUpdateWithoutPaymentRecordsInput = {
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCourseRecordsInput = {
@@ -941,6 +1219,11 @@ export type UserCreateWithoutCourseRecordsInput = {
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCourseRecordsInput = {
@@ -963,6 +1246,11 @@ export type UserUncheckedCreateWithoutCourseRecordsInput = {
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCourseRecordsInput = {
@@ -1001,6 +1289,11 @@ export type UserUpdateWithoutCourseRecordsInput = {
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCourseRecordsInput = {
@@ -1023,6 +1316,135 @@ export type UserUncheckedUpdateWithoutCourseRecordsInput = {
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCoursesInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCoursesInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCoursesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+}
+
+export type UserUpsertWithoutCoursesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCoursesInput, Prisma.UserUncheckedUpdateWithoutCoursesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCoursesInput, Prisma.UserUncheckedCreateWithoutCoursesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCoursesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCoursesInput, Prisma.UserUncheckedUpdateWithoutCoursesInput>
+}
+
+export type UserUpdateWithoutCoursesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCoursesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStudyGoalInput = {
@@ -1045,6 +1467,11 @@ export type UserCreateWithoutStudyGoalInput = {
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
   checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStudyGoalInput = {
@@ -1067,6 +1494,11 @@ export type UserUncheckedCreateWithoutStudyGoalInput = {
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
   checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStudyGoalInput = {
@@ -1105,6 +1537,11 @@ export type UserUpdateWithoutStudyGoalInput = {
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
   checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudyGoalInput = {
@@ -1127,6 +1564,11 @@ export type UserUncheckedUpdateWithoutStudyGoalInput = {
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
   checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCheckInsInput = {
@@ -1149,6 +1591,11 @@ export type UserCreateWithoutCheckInsInput = {
   paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCheckInsInput = {
@@ -1171,6 +1618,11 @@ export type UserUncheckedCreateWithoutCheckInsInput = {
   paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
   courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
   studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCheckInsInput = {
@@ -1209,6 +1661,11 @@ export type UserUpdateWithoutCheckInsInput = {
   paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCheckInsInput = {
@@ -1231,6 +1688,383 @@ export type UserUncheckedUpdateWithoutCheckInsInput = {
   paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
   courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
   studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutChatSessionsInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutChatSessionsInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutChatSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatSessionsInput, Prisma.UserUncheckedCreateWithoutChatSessionsInput>
+}
+
+export type UserUpsertWithoutChatSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutChatSessionsInput, Prisma.UserUncheckedUpdateWithoutChatSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutChatSessionsInput, Prisma.UserUncheckedCreateWithoutChatSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutChatSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutChatSessionsInput, Prisma.UserUncheckedUpdateWithoutChatSessionsInput>
+}
+
+export type UserUpdateWithoutChatSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutChatSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWordBooksInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWordBooksInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+  importJobs?: Prisma.ImportJobUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWordBooksInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWordBooksInput, Prisma.UserUncheckedCreateWithoutWordBooksInput>
+}
+
+export type UserUpsertWithoutWordBooksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWordBooksInput, Prisma.UserUncheckedUpdateWithoutWordBooksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWordBooksInput, Prisma.UserUncheckedCreateWithoutWordBooksInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWordBooksInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWordBooksInput, Prisma.UserUncheckedUpdateWithoutWordBooksInput>
+}
+
+export type UserUpdateWithoutWordBooksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWordBooksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
+  importJobs?: Prisma.ImportJobUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutImportJobsInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutImportJobsInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone: string
+  address?: string | null
+  password: string
+  avatar?: string | null
+  wordNumber?: number
+  dayNumber?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  bio?: string | null
+  isTimingTask?: boolean
+  timingTaskTime?: string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedCreateNestedManyWithoutUserInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedCreateNestedManyWithoutUserInput
+  courseRecords?: Prisma.CourseRecordUncheckedCreateNestedManyWithoutUserInput
+  studyGoal?: Prisma.StudyGoalUncheckedCreateNestedOneWithoutUserInput
+  checkIns?: Prisma.CheckInUncheckedCreateNestedManyWithoutUserInput
+  chatSessions?: Prisma.ChatSessionUncheckedCreateNestedManyWithoutUserInput
+  words?: Prisma.WordBookUncheckedCreateNestedManyWithoutOwnerInput
+  wordBooks?: Prisma.UserWordBookUncheckedCreateNestedManyWithoutUserInput
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutImportJobsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutImportJobsInput, Prisma.UserUncheckedCreateWithoutImportJobsInput>
+}
+
+export type UserUpsertWithoutImportJobsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutImportJobsInput, Prisma.UserUncheckedUpdateWithoutImportJobsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutImportJobsInput, Prisma.UserUncheckedCreateWithoutImportJobsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutImportJobsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutImportJobsInput, Prisma.UserUncheckedUpdateWithoutImportJobsInput>
+}
+
+export type UserUpdateWithoutImportJobsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutImportJobsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wordNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  dayNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTimingTask?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  timingTaskTime?: Prisma.StringFieldUpdateOperationsInput | string
+  wordBookRecords?: Prisma.WordBookRecordUncheckedUpdateManyWithoutUserNestedInput
+  paymentRecords?: Prisma.PaymentRecordUncheckedUpdateManyWithoutUserNestedInput
+  courseRecords?: Prisma.CourseRecordUncheckedUpdateManyWithoutUserNestedInput
+  studyGoal?: Prisma.StudyGoalUncheckedUpdateOneWithoutUserNestedInput
+  checkIns?: Prisma.CheckInUncheckedUpdateManyWithoutUserNestedInput
+  chatSessions?: Prisma.ChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  words?: Prisma.WordBookUncheckedUpdateManyWithoutOwnerNestedInput
+  wordBooks?: Prisma.UserWordBookUncheckedUpdateManyWithoutUserNestedInput
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -1243,6 +2077,11 @@ export type UserCountOutputType = {
   paymentRecords: number
   courseRecords: number
   checkIns: number
+  chatSessions: number
+  words: number
+  wordBooks: number
+  courses: number
+  importJobs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1250,6 +2089,11 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   paymentRecords?: boolean | UserCountOutputTypeCountPaymentRecordsArgs
   courseRecords?: boolean | UserCountOutputTypeCountCourseRecordsArgs
   checkIns?: boolean | UserCountOutputTypeCountCheckInsArgs
+  chatSessions?: boolean | UserCountOutputTypeCountChatSessionsArgs
+  words?: boolean | UserCountOutputTypeCountWordsArgs
+  wordBooks?: boolean | UserCountOutputTypeCountWordBooksArgs
+  courses?: boolean | UserCountOutputTypeCountCoursesArgs
+  importJobs?: boolean | UserCountOutputTypeCountImportJobsArgs
 }
 
 /**
@@ -1290,6 +2134,41 @@ export type UserCountOutputTypeCountCheckInsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.CheckInWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountChatSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChatSessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WordBookWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWordBooksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWordBookWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCoursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CourseWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountImportJobsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ImportJobWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1312,6 +2191,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   courseRecords?: boolean | Prisma.User$courseRecordsArgs<ExtArgs>
   studyGoal?: boolean | Prisma.User$studyGoalArgs<ExtArgs>
   checkIns?: boolean | Prisma.User$checkInsArgs<ExtArgs>
+  chatSessions?: boolean | Prisma.User$chatSessionsArgs<ExtArgs>
+  words?: boolean | Prisma.User$wordsArgs<ExtArgs>
+  wordBooks?: boolean | Prisma.User$wordBooksArgs<ExtArgs>
+  courses?: boolean | Prisma.User$coursesArgs<ExtArgs>
+  importJobs?: boolean | Prisma.User$importJobsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1376,6 +2260,11 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   courseRecords?: boolean | Prisma.User$courseRecordsArgs<ExtArgs>
   studyGoal?: boolean | Prisma.User$studyGoalArgs<ExtArgs>
   checkIns?: boolean | Prisma.User$checkInsArgs<ExtArgs>
+  chatSessions?: boolean | Prisma.User$chatSessionsArgs<ExtArgs>
+  words?: boolean | Prisma.User$wordsArgs<ExtArgs>
+  wordBooks?: boolean | Prisma.User$wordBooksArgs<ExtArgs>
+  courses?: boolean | Prisma.User$coursesArgs<ExtArgs>
+  importJobs?: boolean | Prisma.User$importJobsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1389,6 +2278,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     courseRecords: Prisma.$CourseRecordPayload<ExtArgs>[]
     studyGoal: Prisma.$StudyGoalPayload<ExtArgs> | null
     checkIns: Prisma.$CheckInPayload<ExtArgs>[]
+    chatSessions: Prisma.$ChatSessionPayload<ExtArgs>[]
+    words: Prisma.$WordBookPayload<ExtArgs>[]
+    wordBooks: Prisma.$UserWordBookPayload<ExtArgs>[]
+    courses: Prisma.$CoursePayload<ExtArgs>[]
+    importJobs: Prisma.$ImportJobPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1805,6 +2699,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   courseRecords<T extends Prisma.User$courseRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$courseRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   studyGoal<T extends Prisma.User$studyGoalArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studyGoalArgs<ExtArgs>>): Prisma.Prisma__StudyGoalClient<runtime.Types.Result.GetResult<Prisma.$StudyGoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   checkIns<T extends Prisma.User$checkInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$checkInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  chatSessions<T extends Prisma.User$chatSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  words<T extends Prisma.User$wordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WordBookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  wordBooks<T extends Prisma.User$wordBooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wordBooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserWordBookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  courses<T extends Prisma.User$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  importJobs<T extends Prisma.User$importJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$importJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2354,6 +3253,126 @@ export type User$checkInsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.CheckInScalarFieldEnum | Prisma.CheckInScalarFieldEnum[]
+}
+
+/**
+ * User.chatSessions
+ */
+export type User$chatSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatSession
+   */
+  select?: Prisma.ChatSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatSession
+   */
+  omit?: Prisma.ChatSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatSessionInclude<ExtArgs> | null
+  where?: Prisma.ChatSessionWhereInput
+  orderBy?: Prisma.ChatSessionOrderByWithRelationInput | Prisma.ChatSessionOrderByWithRelationInput[]
+  cursor?: Prisma.ChatSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChatSessionScalarFieldEnum | Prisma.ChatSessionScalarFieldEnum[]
+}
+
+/**
+ * User.words
+ */
+export type User$wordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WordBook
+   */
+  select?: Prisma.WordBookSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WordBook
+   */
+  omit?: Prisma.WordBookOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WordBookInclude<ExtArgs> | null
+  where?: Prisma.WordBookWhereInput
+  orderBy?: Prisma.WordBookOrderByWithRelationInput | Prisma.WordBookOrderByWithRelationInput[]
+  cursor?: Prisma.WordBookWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WordBookScalarFieldEnum | Prisma.WordBookScalarFieldEnum[]
+}
+
+/**
+ * User.wordBooks
+ */
+export type User$wordBooksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserWordBook
+   */
+  select?: Prisma.UserWordBookSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserWordBook
+   */
+  omit?: Prisma.UserWordBookOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserWordBookInclude<ExtArgs> | null
+  where?: Prisma.UserWordBookWhereInput
+  orderBy?: Prisma.UserWordBookOrderByWithRelationInput | Prisma.UserWordBookOrderByWithRelationInput[]
+  cursor?: Prisma.UserWordBookWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserWordBookScalarFieldEnum | Prisma.UserWordBookScalarFieldEnum[]
+}
+
+/**
+ * User.courses
+ */
+export type User$coursesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Course
+   */
+  select?: Prisma.CourseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Course
+   */
+  omit?: Prisma.CourseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CourseInclude<ExtArgs> | null
+  where?: Prisma.CourseWhereInput
+  orderBy?: Prisma.CourseOrderByWithRelationInput | Prisma.CourseOrderByWithRelationInput[]
+  cursor?: Prisma.CourseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CourseScalarFieldEnum | Prisma.CourseScalarFieldEnum[]
+}
+
+/**
+ * User.importJobs
+ */
+export type User$importJobsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ImportJob
+   */
+  select?: Prisma.ImportJobSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ImportJob
+   */
+  omit?: Prisma.ImportJobOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ImportJobInclude<ExtArgs> | null
+  where?: Prisma.ImportJobWhereInput
+  orderBy?: Prisma.ImportJobOrderByWithRelationInput | Prisma.ImportJobOrderByWithRelationInput[]
+  cursor?: Prisma.ImportJobWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ImportJobScalarFieldEnum | Prisma.ImportJobScalarFieldEnum[]
 }
 
 /**

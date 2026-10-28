@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative h-full w-[800px] bg-[#101312]"
+    class="relative hidden h-full w-[42%] min-w-[360px] max-w-[560px] bg-[#101312] lg:block"
   >
     <canvas class="w-full h-full" ref="canvasRef"></canvas>
     <div class="absolute top-6 left-6">

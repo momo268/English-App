@@ -41,6 +41,12 @@ html:root {
   --el-border-radius-small: 8px;
 }
 
+/* Chat 移动端会话抽屉：去掉默认内边距，贴合页面纸感 */
+.chat-drawer .el-drawer__body {
+  padding: 0;
+  background: #f7f6f1;
+}
+
 body {
   @apply bg-[#f7f6f1] text-zinc-900 antialiased;
 }
@@ -67,6 +73,26 @@ body {
 .btn-ink.is-disabled,
 .btn-ink.is-loading {
   opacity: 0.55;
+}
+
+/* 可交互元素统一手型；禁用态保持 not-allowed */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+a[href] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'],
+.el-button.is-disabled,
+.el-button.is-loading {
+  cursor: not-allowed;
+}
+
+button,
+a,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dark body {

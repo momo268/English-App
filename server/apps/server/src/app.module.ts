@@ -10,10 +10,14 @@ import { CourseModule } from './course/course.module';
 import { PayModule } from './pay/pay.module';
 import { SocketModule } from './socket/socket.module';
 import { LearnModule } from './learn/learn.module';
+import { StatsModule } from './stats/stats.module';
+import { HomeModule } from './home/home.module';
+import { ImportModule } from './import/import.module';
+import { ReportModule } from './report/report.module';
 
 
 @Module({
-  imports: [UserModule, SharedModule, WorkBookModule, AuthModule, CourseModule, PayModule, SocketModule, LearnModule],
+  imports: [UserModule, SharedModule, WorkBookModule, AuthModule, CourseModule, PayModule, SocketModule, LearnModule, StatsModule, HomeModule, ImportModule, ReportModule],
   controllers: [AppController],
   providers: [AppService, AuthService],
 })

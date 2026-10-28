@@ -111,6 +111,7 @@
             <el-form-item label="定时任务时间：" prop="timingTaskTime">
               <div>
                 <el-time-picker
+                  class="w-full sm:w-[220px]"
                   format="HH:mm:ss"
                   value-format="HH:mm:ss"
                   v-model="form.timingTaskTime"
@@ -259,3 +260,25 @@ onMounted(() => {
   init();
 });
 </script>
+
+<style scoped>
+@media (max-width: 639px) {
+  :deep(.el-form-item) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  :deep(.el-form-item__label) {
+    width: 100% !important;
+    height: auto;
+    justify-content: flex-start;
+    padding: 0 0 6px;
+    text-align: left;
+    line-height: 1.4;
+  }
+  :deep(.el-form-item__content) {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+}
+</style>
